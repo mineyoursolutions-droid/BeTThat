@@ -9,6 +9,11 @@ const LINKS = [
   { label: 'Post a challenge', to: '/create' },
 ];
 
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', to: '/privacy' },
+  { label: 'Delete Account', to: '/account-deletion' },
+];
+
 export default function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border bg-ink">
@@ -26,11 +31,23 @@ export default function SiteFooter() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:gap-16">
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-16">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Play</p>
               <ul className="mt-4 space-y-2.5">
                 {LINKS.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to} className="text-sm text-foreground/80 transition hover:text-primary">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Legal</p>
+              <ul className="mt-4 space-y-2.5">
+                {LEGAL_LINKS.map((l) => (
                   <li key={l.to}>
                     <Link to={l.to} className="text-sm text-foreground/80 transition hover:text-primary">
                       {l.label}

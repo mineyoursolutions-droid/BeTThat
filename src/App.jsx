@@ -30,6 +30,8 @@ const Login = lazy(() => import('@/pages/Login'));
 const Register = lazy(() => import('@/pages/Register'));
 const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
+const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
+const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
 
 function RouteLoading() {
   return (
@@ -73,6 +75,8 @@ const AuthenticatedApp = () => {
           <Route path="/console" element={<ConsoleBridge />} />
           <Route path="/match/:id" element={<MatchDetail />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/account-deletion" element={<AccountDeletion />} />
 
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
             <Route path="/create" element={<CreateMatch />} />

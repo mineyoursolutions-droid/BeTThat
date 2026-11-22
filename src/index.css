@@ -516,16 +516,18 @@
 }
 
 .neon-sign-cyan {
-  /* Tight glow: this class is only used on the hero headline, where
-     the old 4-layer wide glow (up to 96px blur) bled into the
-     letterforms and read as blurry. Same cyan, crisper edge, plus a
-     dark backing shadow for contrast against the brick/grid backdrop. */
+  /* Tight glow + hard dark edge: this class is only used on the hero
+     headline. The old 4-layer wide glow (up to 96px blur) bled into the
+     letterforms, and the tightened 2/10/28px version still softened
+     them. The real blur, though, was synthetic bold (see
+     .hero-headline below) — so the glow is now one modest halo plus a
+     hard dark edge for contrast, and nothing wider. Same cyan. */
   color: hsl(var(--neon-cyan));
   text-shadow:
-    0 0 2px hsl(var(--neon-cyan) / 0.9),
-    0 0 10px hsl(var(--neon-cyan) / 0.55),
-    0 0 28px hsl(var(--neon-cyan) / 0.3),
-    0 2px 4px hsl(222 18% 2% / 0.6);
+    0 0 6px hsl(var(--neon-cyan) / 0.55),
+    0 0 18px hsl(var(--neon-cyan) / 0.28),
+    0 1px 0 hsl(222 18% 2% / 0.9),
+    0 2px 5px hsl(222 18% 2% / 0.65);
 }
 
 .neon-sign-yellow {
@@ -540,13 +542,32 @@
 /* --- Hero headline only: same neon colors, tighter glow so the big
        letterforms stay crisp. .neon-sign-lime is shared with the
        smaller section headings (where the wide glow is fine), so the
-       hero gets a scoped override instead of a global change. --- */
+       hero gets a scoped override instead of a global change.
+       Same treatment as .neon-sign-cyan above: one modest halo plus a
+       hard dark edge, nothing wider. --- */
 .hero-headline .neon-sign-lime {
   text-shadow:
-    0 0 2px hsl(var(--neon-lime) / 0.9),
-    0 0 10px hsl(var(--neon-lime) / 0.55),
-    0 0 28px hsl(var(--neon-lime) / 0.3),
-    0 2px 4px hsl(222 18% 2% / 0.6);
+    0 0 6px hsl(var(--neon-lime) / 0.55),
+    0 0 18px hsl(var(--neon-lime) / 0.28),
+    0 1px 0 hsl(222 18% 2% / 0.9),
+    0 2px 5px hsl(222 18% 2% / 0.65);
+}
+
+/* --- Hero headline must render at weight 400 — no exceptions.
+       ROOT CAUSE of the blurry hero: the <h1> carried Tailwind's
+       font-extrabold (800), which beat the base layer's weight 400, so
+       the browser faux-bolded Rubik Spray Paint — a face that ships
+       only weight 400 — by stroking its already distressed, splattery
+       glyphs into a smeared blob (the cyan line, "Stake the match.").
+       The lime line escaped it only because its span carries
+       .font-graffiti, whose weight-400 rule lands after the utilities
+       in the built CSS. The tightened text-shadow from the first fix
+       shipped fine (it is in the built CSS) but never touched the
+       weight, so the blob survived. This unlayered rule pins weight
+       400 on the whole headline so no utility can faux-bold it again;
+       the font-extrabold class is also removed from the <h1>. --- */
+.hero-headline {
+  font-weight: 400;
 }
 
 /* --- Neon key numbers: mono figures in glowing lime, for live

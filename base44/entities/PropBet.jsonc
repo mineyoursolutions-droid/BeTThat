@@ -1,0 +1,92 @@
+{
+  "name": "PropBet",
+  "type": "object",
+  "properties": {
+    "market_id": {
+      "type": "string"
+    },
+    "match_id": {
+      "type": "string"
+    },
+    "question": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "user_handle": {
+      "type": "string"
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "locked",
+        "won",
+        "lost",
+        "refunded"
+      ],
+      "default": "locked"
+    },
+    "payout": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "market_id",
+    "match_id",
+    "user_id",
+    "coin",
+    "side",
+    "amount",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
+import SectionHeading from '@/components/SectionHeading';
+import { GAMES } from '@/lib/demo';
+
+export default function GameGrid({ counts }) {
+  return (
+    <section className="mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:py-24">
+      <SectionHeading
+        eyebrow="Game catalogue"
+        title="Every title worth arguing about"
+        description="Console and cross-play lobbies, one book. Filters for platform, ruleset and stake live inside the lobby."
+        actionLabel="Open the lobby"
+        actionTo="/lobby"
+      />
+
+      <div className="mt-10 grid grid-cols-2 gap-3.5 sm:gap-4 lg:grid-cols-4">
+        {GAMES.map((game) => (
+          <Link
+            key={game.slug}
+            to={`/lobby?game=${game.slug}`}
+            className="group relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition duration-300 hover:-translate-y-0.5 hover:border-primary/35 sm:p-5"
+          >
+            <div
+              className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${game.gradient} opacity-50 transition duration-500 group-hover:opacity-100`}
+            />
+            <div className="relative flex h-full flex-col">
+              <div className="flex items-start justify-between">
+                <span className="font-display text-[22px] font-extrabold leading-none tracking-[-0.03em] text-foreground/90 sm:text-[26px]">
+                  {game.monogram}
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-foreground/60 opacity-0 transition group-hover:opacity-100" />
+              </div>
+
+              <div className="mt-12 sm:mt-14">
+                <p className="truncate text-[13.5px] font-semibold text-foreground">{game.name}</p>
+                <p className="truncate text-[11.5px] text-muted-foreground">{game.subtitle}</p>
+              </div>
+
+              <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2.5">
+                <span className="truncate text-[10.5px] uppercase tracking-[0.1em] text-muted-foreground">
+                  {game.platforms.join(' · ')}
+                </span>
+                <span className="nums shrink-0 text-[10.5px] font-semibold text-foreground/80">
+                  {(counts && counts[game.slug]) || 0}
+                </span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}

@@ -1,0 +1,91 @@
+{
+  "name": "PlayerProfile",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "handle": {
+      "type": "string"
+    },
+    "xbox_gamertag": {
+      "type": "string"
+    },
+    "psn_id": {
+      "type": "string"
+    },
+    "steam_id": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "game_slug": {
+      "type": "string"
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "stake": {
+      "type": "number",
+      "default": 0
+    },
+    "looking": {
+      "type": "boolean",
+      "default": false
+    },
+    "looking_note": {
+      "type": "string"
+    },
+    "last_seen": {
+      "type": "string"
+    },
+    "reputation": {
+      "type": "number",
+      "default": 50
+    },
+    "matches_played": {
+      "type": "number",
+      "default": 0
+    },
+    "matches_won": {
+      "type": "number",
+      "default": 0
+    },
+    "disputes": {
+      "type": "number",
+      "default": 0
+    },
+    "reputation_updated_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "handle"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

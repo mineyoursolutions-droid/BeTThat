@@ -1,0 +1,89 @@
+{
+  "name": "PropMarket",
+  "type": "object",
+  "properties": {
+    "match_id": {
+      "type": "string"
+    },
+    "match_title": {
+      "type": "string"
+    },
+    "game_slug": {
+      "type": "string"
+    },
+    "question": {
+      "type": "string"
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "locked",
+        "resolved",
+        "void"
+      ],
+      "default": "open"
+    },
+    "result": {
+      "type": "string",
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
+    "yes_pool": {
+      "type": "number",
+      "default": 0
+    },
+    "no_pool": {
+      "type": "number",
+      "default": 0
+    },
+    "bettor_count": {
+      "type": "number",
+      "default": 0
+    },
+    "resolved_by": {
+      "type": "string"
+    },
+    "resolved_at": {
+      "type": "string"
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "match_id",
+    "question",
+    "coin",
+    "status"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

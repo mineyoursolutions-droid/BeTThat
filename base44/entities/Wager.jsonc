@@ -1,0 +1,98 @@
+{
+  "name": "Wager",
+  "type": "object",
+  "properties": {
+    "match_id": {
+      "type": "string"
+    },
+    "match_title": {
+      "type": "string"
+    },
+    "game_slug": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "player",
+        "spectator"
+      ]
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "creator",
+        "challenger"
+      ]
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "user_handle": {
+      "type": "string"
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "amount": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "locked",
+        "won",
+        "lost",
+        "refunded"
+      ],
+      "default": "locked"
+    },
+    "payout": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "match_id",
+    "kind",
+    "side",
+    "coin",
+    "amount",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

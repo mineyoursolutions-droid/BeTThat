@@ -1,0 +1,66 @@
+import { Link } from 'react-router-dom';
+import { Image } from '@/components/ui/image';
+import { BRAND_LOGO, BRAND_NAME } from '@/lib/brand';
+
+const LINKS = [
+  { label: 'Lobby', to: '/lobby' },
+  { label: 'Leaderboard', to: '/leaderboard' },
+  { label: 'Wallet', to: '/wallet' },
+  { label: 'Post a challenge', to: '/create' },
+];
+
+export default function SiteFooter() {
+  return (
+    <footer className="mt-24 border-t border-border bg-ink">
+      <div className="mx-auto max-w-7xl px-5 py-14 sm:px-8">
+        <div className="flex flex-col gap-10 md:flex-row md:justify-between">
+          <div className="max-w-sm">
+            <Image
+              src={BRAND_LOGO}
+              alt={BRAND_NAME}
+              className="h-14 w-[148px] mix-blend-screen"
+            />
+            <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+              Head-to-head wagers across console and PC titles, settled in crypto. Players stake, spectators take a side,
+              every payout is recorded in the open ledger.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-10 sm:gap-16">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Play</p>
+              <ul className="mt-4 space-y-2.5">
+                {LINKS.map((l) => (
+                  <li key={l.to}>
+                    <Link to={l.to} className="text-[13px] text-foreground/80 transition hover:text-primary">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding</p>
+              <ul className="mt-4 space-y-2.5 text-[13px] text-foreground/80">
+                <li>Bitcoin</li>
+                <li>Tether (USDT)</li>
+                <li>USD Coin (USDC)</li>
+                <li>Ethereum</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 border-t border-border pt-6">
+          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+            18+ only. Wagering involves risk of loss. Stakes are held in escrow until a match is settled and verified by
+            an official result. Playing for money may be restricted or require a licence in your jurisdiction — check
+            your local rules before you fund a wallet. Balances are held per-account and payouts are released by the
+            operator.
+          </p>
+          <p className="mt-4 text-[11px] text-muted-foreground/70">© {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}

@@ -1,0 +1,121 @@
+{
+  "name": "CryptoTransaction",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_handle": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "deposit",
+        "withdrawal"
+      ]
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "network": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "amount_usd": {
+      "type": "number",
+      "default": 0
+    },
+    "tx_hash": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "deposit_address": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "awaiting_tx",
+        "verifying",
+        "confirmed",
+        "expired",
+        "failed",
+        "rejected",
+        "paid"
+      ],
+      "default": "pending"
+    },
+    "quote_expires_at": {
+      "type": "string"
+    },
+    "confirmations": {
+      "type": "number",
+      "default": 0
+    },
+    "required_confirmations": {
+      "type": "number",
+      "default": 0
+    },
+    "credited": {
+      "type": "boolean",
+      "default": false
+    },
+    "verified_at": {
+      "type": "string"
+    },
+    "review_note": {
+      "type": "string"
+    },
+    "reviewed_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_id",
+    "kind",
+    "coin",
+    "amount",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "name": "Match",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "game_slug": {
+      "type": "string"
+    },
+    "game_name": {
+      "type": "string"
+    },
+    "ruleset": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "coin": {
+      "type": "string",
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ]
+    },
+    "stake": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "matched",
+        "in_play",
+        "awaiting_result",
+        "settled",
+        "cancelled"
+      ],
+      "default": "open"
+    },
+    "creator_id": {
+      "type": "string"
+    },
+    "creator_handle": {
+      "type": "string"
+    },
+    "challenger_id": {
+      "type": "string"
+    },
+    "challenger_handle": {
+      "type": "string"
+    },
+    "starts_at": {
+      "type": "string"
+    },
+    "winner_id": {
+      "type": "string"
+    },
+    "settle_note": {
+      "type": "string"
+    },
+    "spectator_pool_creator": {
+      "type": "number",
+      "default": 0
+    },
+    "spectator_pool_challenger": {
+      "type": "number",
+      "default": 0
+    },
+    "spectator_count": {
+      "type": "number",
+      "default": 0
+    },
+    "creator_proof_uri": {
+      "type": "string"
+    },
+    "creator_proof_kind": {
+      "type": "string",
+      "enum": [
+        "image",
+        "video"
+      ]
+    },
+    "creator_proof_note": {
+      "type": "string"
+    },
+    "creator_proof_at": {
+      "type": "string"
+    },
+    "challenger_proof_uri": {
+      "type": "string"
+    },
+    "challenger_proof_kind": {
+      "type": "string",
+      "enum": [
+        "image",
+        "video"
+      ]
+    },
+    "challenger_proof_note": {
+      "type": "string"
+    },
+    "challenger_proof_at": {
+      "type": "string"
+    },
+    "reported_winner": {
+      "type": "string",
+      "enum": [
+        "creator",
+        "challenger"
+      ]
+    },
+    "reported_by_id": {
+      "type": "string"
+    },
+    "reported_by_handle": {
+      "type": "string"
+    },
+    "reported_at": {
+      "type": "string"
+    },
+    "result_disputed": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "game_slug",
+    "coin",
+    "stake",
+    "status",
+    "creator_id"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

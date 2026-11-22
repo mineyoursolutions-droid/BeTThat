@@ -1,0 +1,49 @@
+{
+  "name": "TrashTalk",
+  "type": "object",
+  "properties": {
+    "match_id": {
+      "type": "string"
+    },
+    "user_id": {
+      "type": "string"
+    },
+    "user_handle": {
+      "type": "string"
+    },
+    "side": {
+      "type": "string",
+      "enum": [
+        "creator",
+        "challenger",
+        "spectator"
+      ]
+    },
+    "body": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "match_id",
+    "user_id",
+    "body"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

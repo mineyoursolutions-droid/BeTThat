@@ -128,6 +128,28 @@
     "result_disputed": {
       "type": "boolean",
       "default": false
+    },
+    "raise_status": {
+      "type": "string",
+      "enum": ["none", "pending", "accepted", "declined", "expired"],
+      "default": "none"
+    },
+    "raise_proposer_id": {
+      "type": "string"
+    },
+    "raise_proposer_side": {
+      "type": "string",
+      "enum": ["creator", "challenger"]
+    },
+    "raise_new_stake": {
+      "type": "number"
+    },
+    "raise_expires_at": {
+      "type": "string"
+    },
+    "raise_count": {
+      "type": "number",
+      "default": 0
     }
   },
   "required": [

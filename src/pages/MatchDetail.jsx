@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import StatusPill from '@/components/StatusPill';
 import CoinMark from '@/components/CoinMark';
 import WagerPanel from '@/components/WagerPanel';
+import RaiseStakes from '@/components/RaiseStakes';
 import MatchProof from '@/components/MatchProof';
 import OutcomeReporter from '@/components/OutcomeReporter';
 import CopyLinkButton from '@/components/CopyLinkButton';
@@ -76,6 +77,21 @@ export default function MatchDetail() {
   useEffect(() => {
     loadWallet();
   }, [loadWallet]);
+
+  // Live matches poll every 10s (paused while the tab is hidden) so both
+  // players see a timeout raise, its countdown and its outcome together.
+  useEffect(() => {
+    if (!match || match.status !== 'in_play') return;
+    const tick = () => {
+      if (!document.hidden) load();
+    };
+    const id = window.setInterval(tick, 10000);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener('visibilitychange', tick);
+    };
+  }, [match?.status, load]);
 
   useEffect(() => {
     if (!missing) return;
@@ -199,6 +215,16 @@ export default function MatchDetail() {
             </div>
           </div>
 
+          <RaiseStakes
+            match={match}
+            wallets={wallets}
+            user={user}
+            onChanged={() => {
+              load();
+              loadWallet();
+            }}
+          />
+
           <TrashTalk match={match} user={user} />
 
           <div className="rounded-2xl border border-border bg-card p-6">
@@ -239,6 +265,9 @@ export default function MatchDetail() {
               <Row label="Stake per player" value={fmtCoin(match.stake, match.coin)} />
               <Row label="Pot" value={fmtCoin(Number(match.stake) * 2, match.coin)} />
               <Row label="Operator fee" value="5% of the pot" />
+              {Number(match.raise_count || 0) > 0 ? (
+                <Row label="Raises this match" value={`${match.raise_count}`} />
+              ) : null}
               <Row label="Settlement" value="Both players confirm, or an operator settles" />
               <Row label="Status" value={statusLabel(match.status)} />
               {match.starts_at ? <Row label="Scheduled" value={new Date(match.starts_at).toLocaleString()} /> : null}

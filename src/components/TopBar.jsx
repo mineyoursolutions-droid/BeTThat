@@ -44,8 +44,8 @@ export default function TopBar() {
   const handle = (user && (user.full_name || String(user.email).split('@')[0])) || '';
 
   return (
-    <header className="safe-top relative z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl md:sticky md:top-0">
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 sm:px-8">
+    <header className="safe-top no-select relative z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl md:sticky md:top-0">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 px-5 sm:px-8 md:h-16">
         <Link to="/" className="flex shrink-0 items-center" aria-label={BRAND_NAME}>
           <Image
             src={BRAND_LOGO}
@@ -112,16 +112,16 @@ export default function TopBar() {
                 onClick={cycleTheme}
                 aria-label={`Theme: ${theme}. Tap to change.`}
                 title={`Theme: ${theme}`}
-                className="grid h-8 w-8 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+                className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary md:h-8 md:w-8"
               >
                 {theme === 'light' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
               </button>
-              <DeleteAccount className="inline-flex h-8 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-[11px] font-semibold text-destructive transition hover:bg-destructive/10" />
+              <DeleteAccount className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-[11px] font-semibold text-destructive transition hover:bg-destructive/10 md:min-h-0 md:h-8" />
               <button
                 type="button"
                 onClick={() => logout()}
                 aria-label="Sign out"
-                className="grid h-8 w-8 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+                className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary md:h-8 md:w-8"
               >
                 <LogOut className="h-3.5 w-3.5" />
               </button>

@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import CryptoAddressForm from '@/components/admin/CryptoAddressForm';
 import CryptoAddressRow from '@/components/admin/CryptoAddressRow';
 import { NETWORKS } from '@/lib/crypto';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 
 export default function CryptoSettings() {
   const { user } = useAuth();
@@ -48,7 +49,8 @@ export default function CryptoSettings() {
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
-      <Link to="/admin" className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground">
+      <MobileBackBar to="/admin" label="Operator desk" />
+      <Link to="/admin" className="hidden items-center gap-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
         <ArrowLeft className="h-3.5 w-3.5" />
         Operator desk
       </Link>

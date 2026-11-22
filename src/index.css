@@ -142,15 +142,53 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Route transitions: pages fade/slide in on navigation. */
+  /* Route transitions: directional — forward navigations slide in from
+     the right, back navigations from the left (see ScrollToTop, which
+     sets data-nav-direction on <html>). Light 240ms, matching native
+     push/pop. */
   main > * {
-    animation: page-in 240ms ease-out;
+    animation: page-in-forward 240ms ease-out;
   }
 
-  @keyframes page-in {
+  html[data-nav-direction='back'] main > * {
+    animation: page-in-back 240ms ease-out;
+  }
+
+  @keyframes page-in-forward {
     from {
       opacity: 0;
-      transform: translateY(6px);
+      transform: translateX(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes page-in-back {
+    from {
+      opacity: 0;
+      transform: translateX(-24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Hero entrance (replaces framer-motion on the first screen). */
+  .hero-fade {
+    animation: hero-fade-in 550ms ease-out;
+  }
+
+  .hero-fade-delay {
+    animation-delay: 120ms;
+  }
+
+  @keyframes hero-fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
     }
     to {
       opacity: 1;
@@ -159,8 +197,39 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    main > * {
+    main > *,
+    .hero-fade {
       animation: none;
+    }
+  }
+
+  /* Visible keyboard focus everywhere (accessibility). */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* Mobile native feel + readability:
+     - text smaller than 12px is unreadable on a phone, so the smallest
+       sizes get a floor on mobile;
+     - inputs at 16px stop iOS from zooming the page on focus;
+     - vertical panning only on the main scroll surface, so horizontal
+       swipe gestures do not fight the WebView. */
+  main {
+    touch-action: pan-y;
+  }
+
+  @media (max-width: 767px) {
+    .text-\[10px\] {
+      font-size: 11px;
+    }
+    .text-\[11px\] {
+      font-size: 12.5px;
+    }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
     }
   }
 

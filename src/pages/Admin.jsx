@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/AuthContext';
 import ReviewQueue from '@/components/admin/ReviewQueue';
 import SettlementQueue from '@/components/admin/SettlementQueue';
 import PropDesk from '@/components/admin/PropDesk';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 
 const TABS = [
   { id: 'transfers', label: 'Transfers', icon: ArrowLeftRight, blurb: 'Confirm deposits and release withdrawals once you have verified the transfer on chain.' },
@@ -38,6 +39,7 @@ export default function Admin() {
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
+      <MobileBackBar to="/lobby" label="Lobby" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Operator desk</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
         Settle the book

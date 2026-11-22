@@ -13,7 +13,7 @@ export default function MatchCard({ match }) {
   return (
     <Link
       to={`/match/${match.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]"
+      className="no-select group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]"
     >
       <div className={`h-[3px] w-full bg-gradient-to-r ${game.gradient}`} />
       <div className="flex flex-1 flex-col gap-4 p-5">

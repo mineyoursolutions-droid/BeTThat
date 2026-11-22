@@ -16,6 +16,7 @@ import FormCard from '@/components/match/FormCard';
 import PropBoard from '@/components/props/PropBoard';
 import { fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
 import { gameLook, oddsFor, statusLabel } from '@/lib/matches';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 
 export default function MatchDetail() {
   const { id } = useParams();
@@ -107,7 +108,8 @@ export default function MatchDetail() {
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-12">
-      <Link to="/lobby" className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition hover:text-foreground">
+      <MobileBackBar to="/lobby" label="Lobby" className="-mt-8 sm:-mt-12" />
+      <Link to="/lobby" className="hidden items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
         <ArrowLeft className="h-3.5 w-3.5" />
         Back to the lobby
       </Link>

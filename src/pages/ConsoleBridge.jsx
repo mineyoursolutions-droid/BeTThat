@@ -5,6 +5,7 @@ import RoomForm from '@/components/console/RoomForm';
 import RoomBoard from '@/components/console/RoomBoard';
 import BilliardsBook from '@/components/console/BilliardsBook';
 import PlatformNotes from '@/components/console/PlatformNotes';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 
 export default function ConsoleBridge() {
   const { user } = useAuth();
@@ -18,6 +19,7 @@ export default function ConsoleBridge() {
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
+      <MobileBackBar to="/lobby" label="Lobby" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Console bridge</p>
       <h1 className="mt-2.5 max-w-2xl text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[40px]">
         Both cues, one room

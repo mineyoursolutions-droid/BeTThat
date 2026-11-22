@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
 import MobileSelect from '@/components/mobile/MobileSelect';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 import { COINS, GAMES, fmtCoin } from '@/lib/demo';
 
 export default function CreateMatch() {
@@ -58,6 +59,7 @@ export default function CreateMatch() {
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
+      <MobileBackBar to="/lobby" label="Lobby" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">New challenge</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
         Set your terms

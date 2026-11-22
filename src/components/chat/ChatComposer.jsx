@@ -78,7 +78,7 @@ export default function ChatComposer({ match, user, onSent }) {
       ) : null}
 
       <div className="flex items-end gap-1.5">
-        <label className="grid h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary">
+        <label className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-lg border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary md:h-9 md:w-9">
           <Paperclip className="h-4 w-4" />
           <input type="file" accept="image/*,video/*" className="hidden" onChange={pick} />
         </label>
@@ -99,7 +99,7 @@ export default function ChatComposer({ match, user, onSent }) {
           onClick={send}
           disabled={busy || (!text.trim() && !file)}
           aria-label="Send message"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition disabled:opacity-40"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition disabled:opacity-40 md:h-9 md:w-9"
         >
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
         </button>

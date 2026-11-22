@@ -72,7 +72,7 @@ export default function TrashTalkComposer({ match, user, onPosted }) {
         onClick={send}
         disabled={busy || !text.trim()}
         aria-label="Post trash talk"
-        className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition disabled:opacity-40"
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground transition disabled:opacity-40 md:h-9 md:w-9"
       >
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
       </button>

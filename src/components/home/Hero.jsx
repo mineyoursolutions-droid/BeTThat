@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, Scale, Timer } from 'lucide-react';
 import HeroTicket from '@/components/home/HeroTicket';
 
@@ -28,7 +27,10 @@ export default function Hero() {
       </div>
 
       <div className="relative mx-auto grid max-w-7xl gap-14 px-5 pb-16 pt-16 sm:px-8 lg:grid-cols-[1.06fr_0.94fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-24">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, ease: 'easeOut' }}>
+        {/* CSS fade-up (hero-fade in index.css) replaces framer-motion here:
+            same 550ms rise, but framer-motion no longer ships in the
+            first-paint bundle. */}
+        <div className="hero-fade">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1.5">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-live opacity-60" />
@@ -74,15 +76,11 @@ export default function Hero() {
               </li>
             ))}
           </ul>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.12, ease: 'easeOut' }}
-        >
+        <div className="hero-fade hero-fade-delay">
           <HeroTicket />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

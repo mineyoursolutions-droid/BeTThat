@@ -8,6 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 import MyPresence from '@/components/lounge/MyPresence';
 import LookingPlayers from '@/components/lounge/LookingPlayers';
 import { gameBySlug } from '@/lib/demo';
+import MobileBackBar from '@/components/mobile/MobileBackBar';
 
 const ONLINE_WINDOW_MS = 10 * 60 * 1000;
 
@@ -106,6 +107,7 @@ export default function FindGame() {
 
   return (
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
+      <MobileBackBar to="/lobby" label="Lobby" />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Matchmaking</p>

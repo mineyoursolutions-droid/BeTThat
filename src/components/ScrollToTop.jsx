@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
+import { rememberRoute } from '@/lib/tabStacks';
 
 const getHashId = (hash) => {
   const rawId = hash.slice(1);
@@ -13,7 +14,10 @@ const getHashId = (hash) => {
 
 // Per-tab stack preservation: remember each route's scroll position and
 // restore it on back/forward (POP) navigation, so switching tabs does not
-// lose your place. New (PUSH) navigations still start at the top.
+// lose your place. New (PUSH) navigations still start at the top — unless
+// the destination is a tab screen the user has already visited, in which
+// case their saved scroll position is restored (native tab behaviour:
+// returning to a tab picks up where you left it).
 const SCROLL_KEY = 'betthat-scroll-positions';
 
 function readPositions() {
@@ -37,10 +41,21 @@ function savePosition(pathname) {
 export default function ScrollToTop() {
   const { pathname, hash } = useLocation();
   const navigationType = useNavigationType();
+  const prevPathname = useRef(pathname);
 
   useEffect(() => {
+    // Directional page transitions (see index.css): forward navigations
+    // slide in from the right, back navigations from the left.
+    document.documentElement.dataset.navDirection = navigationType === 'POP' ? 'back' : 'forward';
+
+    // Remember this route in its tab's stack (bottom-tab preservation).
+    rememberRoute(pathname);
+
+    const saved = readPositions()[pathname];
+    const cameFromAnotherScreen = prevPathname.current !== pathname;
+    prevPathname.current = pathname;
+
     if (navigationType === 'POP') {
-      const saved = readPositions()[pathname];
       if (hash) {
         const id = getHashId(hash);
         const timer = window.setTimeout(() => {
@@ -62,6 +77,14 @@ export default function ScrollToTop() {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
       }, 50);
       return () => window.clearTimeout(timer);
+    }
+
+    // PUSH navigation: restore the saved scroll position when returning to
+    // a screen the user has already visited (tab switches, back-to-parent);
+    // brand-new destinations start at the top.
+    if (cameFromAnotherScreen && typeof saved === 'number' && saved > 0) {
+      window.scrollTo({ top: saved, left: 0, behavior: 'instant' });
+      return undefined;
     }
 
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });

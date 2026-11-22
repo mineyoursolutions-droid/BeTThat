@@ -7,7 +7,7 @@ export default function SectionHeading({ eyebrow, title, description, actionLabe
         {eyebrow ? (
           <p className="section-tag">{eyebrow}</p>
         ) : null}
-        <h2 className="mt-2.5 text-[26px] font-extrabold leading-tight tracking-[-0.03em] sm:text-[34px]">{title}</h2>
+        <h2 className="neon-sign-lime mt-2.5 text-[26px] font-extrabold leading-tight tracking-[-0.03em] sm:text-[34px]">{title}</h2>
         {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">{description}</p> : null}
       </div>
       {actionLabel && actionTo ? (

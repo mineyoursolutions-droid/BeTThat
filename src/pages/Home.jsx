@@ -59,7 +59,7 @@ export default function Home() {
           </div>
           <div className="relative mx-auto max-w-xl">
             <p className="font-tag text-[15px] text-neon-yellow">No empty corners here.</p>
-            <h2 className="mt-3 text-[28px] font-extrabold leading-tight tracking-[-0.03em] sm:text-[38px]">
+            <h2 className="neon-sign-pink mt-3 text-[28px] font-extrabold leading-tight tracking-[-0.03em] sm:text-[38px]">
               Somebody is always waiting for a match.
             </h2>
             <p className="mx-auto mt-4 max-w-md text-[14px] leading-relaxed text-muted-foreground">

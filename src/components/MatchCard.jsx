@@ -48,7 +48,7 @@ export default function MatchCard({ match }) {
         <div className="flex items-center justify-between gap-3 border-t border-border/70 pt-3">
           <div className="flex min-w-0 items-baseline gap-2">
             <CoinMark ticker={match.stake.ticker} size="sm" />
-            <span className="nums text-sm font-semibold text-foreground">{fmtCoin(match.stake.amount, match.stake.ticker)}</span>
+            <span className="nums neon-number text-sm font-semibold">{fmtCoin(match.stake.amount, match.stake.ticker)}</span>
             <span className="nums hidden text-sm text-muted-foreground sm:inline">≈ {fmtUsd(stakeUsd)}</span>
           </div>
           <div className="flex shrink-0 items-center gap-3 text-sm text-muted-foreground">

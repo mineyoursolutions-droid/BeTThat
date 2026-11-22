@@ -19,7 +19,7 @@ function GameTile({ game, count }) {
       />
       <div className="tilt-lift relative flex h-full flex-col">
         <div className="flex items-start justify-between">
-          <span className="font-display text-[22px] font-extrabold leading-none tracking-[-0.03em] text-foreground/90 sm:text-[26px]">
+          <span className="font-graffiti text-[22px] leading-none tracking-[-0.03em] text-foreground/90 sm:text-[26px]">
             {game.monogram}
           </span>
           <ArrowUpRight className="h-4 w-4 text-foreground/60 opacity-0 transition group-hover:opacity-100" />

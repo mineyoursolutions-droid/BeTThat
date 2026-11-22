@@ -80,7 +80,7 @@ export default function HeroTicket() {
           <div className="mt-5 flex items-center justify-between rounded-xl border border-border/80 bg-background/60 px-3 py-2.5">
             <div className="flex items-center gap-2">
               <CoinMark ticker={MATCH.stake.ticker} size="sm" />
-              <span className="nums text-sm font-semibold text-foreground">
+              <span className="nums neon-number text-sm font-semibold">
                 {fmtCoin(MATCH.stake.amount, MATCH.stake.ticker)}
               </span>
             </div>

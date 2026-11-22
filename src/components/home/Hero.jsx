@@ -27,11 +27,11 @@ export default function Hero() {
   return (
     <section ref={sectionRef} onPointerMove={onPointerMove} className="relative overflow-hidden border-b border-border">
       <div className="pointer-events-none absolute inset-0">
-        <div className="plx plx-slow absolute -left-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-primary/10 blur-[130px]" />
-        <div className="plx plx-mid absolute -bottom-56 right-[-10rem] h-[32rem] w-[32rem] rounded-full bg-neon-pink/[0.09] blur-[140px]" />
-        <div className="orb orb-1 left-[12%] top-[18%] h-24 w-24 bg-neon-lime/25" />
-        <div className="orb orb-2 right-[16%] top-[8%] h-16 w-16 bg-neon-cyan/25" />
-        <div className="orb orb-3 bottom-[10%] left-[46%] h-14 w-14 bg-neon-pink/25" />
+        <div className="plx plx-slow absolute -left-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-[130px]" />
+        <div className="plx plx-mid absolute -bottom-56 right-[-10rem] h-[32rem] w-[32rem] rounded-full bg-neon-pink/[0.18] blur-[140px]" />
+        <div className="orb orb-1 left-[12%] top-[18%] h-24 w-24 bg-neon-lime/45" />
+        <div className="orb orb-2 right-[16%] top-[8%] h-16 w-16 bg-neon-cyan/45" />
+        <div className="orb orb-3 bottom-[10%] left-[46%] h-14 w-14 bg-neon-pink/45" />
         <div className="brick-wall absolute inset-0 opacity-60" />
         <div
           className="plx plx-fast absolute inset-0 opacity-[0.5]"
@@ -61,7 +61,7 @@ export default function Hero() {
           </div>
 
           <h1 className="mt-6 text-[2.6rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-[3.6rem] lg:text-[4.1rem]">
-            Stake the match.
+            <span className="neon-sign-cyan">Stake the match.</span>
             <br />
             <span className="font-graffiti neon-sign-lime neon-flicker">Own the outcome.</span>
           </h1>

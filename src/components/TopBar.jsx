@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Plus, LogOut, ShieldCheck, Moon, Sun } from 'lucide-react';
+import { Plus, LogOut, ShieldCheck } from 'lucide-react';
 import DeleteAccount from '@/components/DeleteAccount';
-import { getThemePreference, setThemePreference } from '@/lib/theme';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import CoinMark from '@/components/CoinMark';
@@ -23,14 +22,6 @@ const NAV = [
 export default function TopBar() {
   const { user, logout } = useAuth();
   const [wallets, setWallets] = useState([]);
-  const [theme, setTheme] = useState(() => getThemePreference());
-
-  const cycleTheme = () => {
-    // system -> dark -> light -> system; the OS preference is honoured by default
-    const next = theme === 'system' ? 'dark' : theme === 'dark' ? 'light' : 'system';
-    setTheme(next);
-    setThemePreference(next);
-  };
 
   useEffect(() => {
     if (!user) {
@@ -107,15 +98,6 @@ export default function TopBar() {
               <span className="hidden max-w-[110px] truncate text-sm font-semibold text-foreground lg:block">
                 {handle}
               </span>
-              <button
-                type="button"
-                onClick={cycleTheme}
-                aria-label={`Theme: ${theme}. Tap to change.`}
-                title={`Theme: ${theme}`}
-                className="grid h-11 w-11 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary md:h-8 md:w-8"
-              >
-                {theme === 'light' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
-              </button>
               <DeleteAccount className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-sm font-semibold text-destructive transition hover:bg-destructive/10 md:min-h-0 md:h-8" />
               <button
                 type="button"

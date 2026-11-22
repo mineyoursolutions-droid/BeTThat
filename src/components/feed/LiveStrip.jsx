@@ -92,7 +92,7 @@ function Stat({ label, value, prefix = '' }) {
   return (
     <span className="flex items-baseline gap-2">
       <span className="text-sm uppercase tracking-[0.14em] text-muted-foreground">{label}</span>
-      <span className="nums text-[17px] font-bold text-foreground">
+      <span className="nums neon-number text-[17px] font-bold">
         {value === null ? '—' : <CountUp value={value} prefix={prefix} />}
       </span>
     </span>

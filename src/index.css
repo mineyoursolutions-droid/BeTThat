@@ -6,92 +6,34 @@
 
 @layer base {
   :root {
-    --background: 220 10% 96%;
-    --foreground: 200 30% 8%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 200 30% 8%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 200 30% 8%;
-
-    --primary: 8 72% 42%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 200 18% 92%;
-    --secondary-foreground: 200 30% 8%;
-
-    --muted: 200 18% 92%;
-    --muted-foreground: 200 12% 42%;
-
-    --accent: 200 18% 90%;
-    --accent-foreground: 200 30% 8%;
-
-    --destructive: 4 84% 48%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 200 18% 85%;
-    --input: 200 18% 82%;
-    --ring: 8 72% 42%;
-
-    --win: 96 75% 34%;
-    --win-foreground: 0 0% 100%;
-
-    --live: 4 90% 48%;
-    --live-foreground: 0 0% 100%;
-
-    --ink: 200 20% 94%;
-
-    --chart-1: 96 80% 40%;
-    --chart-2: 322 85% 55%;
-    --chart-3: 187 90% 45%;
-    --chart-4: 46 100% 45%;
-    --chart-5: 8 72% 48%;
-
-    --radius: 0.85rem;
-
-    --neon-pink: 322 90% 52%;
-    --neon-cyan: 187 95% 42%;
-    --neon-yellow: 46 100% 42%;
-    --neon-lime: 96 85% 38%;
-    --brick: 8 72% 42%;
-
-    --font-heading: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
-    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-display: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
-    --font-graffiti: 'Rubik Spray Paint', 'Anton', cursive;
-    --font-tag: 'Permanent Marker', 'Inter', cursive;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 200 30% 8%;
-    --sidebar-primary: 8 72% 42%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 200 18% 92%;
-    --sidebar-accent-foreground: 200 30% 8%;
-    --sidebar-border: 200 18% 85%;
-    --sidebar-ring: 8 72% 42%;
-  }
-
-  .dark {
-    --background: 222 16% 4.5%;
+    /* Dark-only app: the base tokens are the dark set, so the app
+       renders dark even if the .dark class is ever missing. */
+    --background: 222 18% 3%;
     --foreground: 220 10% 94%;
-    --card: 222 13% 8%;
+
+    --card: 222 14% 6.5%;
     --card-foreground: 220 10% 94%;
-    --popover: 222 14% 9%;
+
+    --popover: 222 14% 7.5%;
     --popover-foreground: 220 10% 94%;
+
     --primary: 96 90% 55%;
     --primary-foreground: 100 60% 6%;
-    --secondary: 222 12% 13%;
+
+    --secondary: 222 12% 11%;
     --secondary-foreground: 220 10% 94%;
-    --muted: 222 12% 13%;
+
+    --muted: 222 12% 11%;
     --muted-foreground: 196 12% 62%;
-    --accent: 222 12% 16%;
+
+    --accent: 222 12% 14%;
     --accent-foreground: 220 10% 94%;
+
     --destructive: 4 84% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 222 12% 16%;
-    --input: 222 12% 19%;
+
+    --border: 222 12% 18%;
+    --input: 222 12% 20%;
     --ring: 96 90% 55%;
 
     --win: 110 80% 52%;
@@ -100,7 +42,67 @@
     --live: 4 96% 64%;
     --live-foreground: 0 0% 100%;
 
-    --ink: 222 18% 3%;
+    --ink: 222 18% 2%;
+
+    --chart-1: 96 90% 55%;
+    --chart-2: 322 90% 62%;
+    --chart-3: 187 100% 55%;
+    --chart-4: 46 100% 55%;
+    --chart-5: 8 70% 55%;
+
+    --radius: 0.85rem;
+
+    --neon-pink: 322 95% 62%;
+    --neon-cyan: 187 100% 55%;
+    --neon-yellow: 46 100% 55%;
+    --neon-lime: 96 90% 55%;
+    --brick: 8 70% 55%;
+
+    --font-heading: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
+    --font-graffiti: 'Rubik Spray Paint', 'Anton', cursive;
+    --font-tag: 'Permanent Marker', 'Inter', cursive;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    --sidebar-background: 222 16% 4%;
+    --sidebar-foreground: 220 10% 94%;
+    --sidebar-primary: 96 90% 55%;
+    --sidebar-primary-foreground: 100 60% 6%;
+    --sidebar-accent: 222 12% 11%;
+    --sidebar-accent-foreground: 220 10% 94%;
+    --sidebar-border: 222 12% 18%;
+    --sidebar-ring: 96 90% 55%;
+  }
+
+  .dark {
+    --background: 222 18% 3%;
+    --foreground: 220 10% 94%;
+    --card: 222 14% 6.5%;
+    --card-foreground: 220 10% 94%;
+    --popover: 222 14% 7.5%;
+    --popover-foreground: 220 10% 94%;
+    --primary: 96 90% 55%;
+    --primary-foreground: 100 60% 6%;
+    --secondary: 222 12% 11%;
+    --secondary-foreground: 220 10% 94%;
+    --muted: 222 12% 11%;
+    --muted-foreground: 196 12% 62%;
+    --accent: 222 12% 14%;
+    --accent-foreground: 220 10% 94%;
+    --destructive: 4 84% 58%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 222 12% 18%;
+    --input: 222 12% 20%;
+    --ring: 96 90% 55%;
+
+    --win: 110 80% 52%;
+    --win-foreground: 120 62% 6%;
+
+    --live: 4 96% 64%;
+    --live-foreground: 0 0% 100%;
+
+    --ink: 222 18% 2%;
 
     --chart-1: 96 90% 55%;
     --chart-2: 322 90% 62%;
@@ -114,13 +116,13 @@
     --neon-lime: 96 90% 55%;
     --brick: 8 70% 55%;
 
-    --sidebar-background: 222 16% 5%;
+    --sidebar-background: 222 16% 4%;
     --sidebar-foreground: 220 10% 94%;
     --sidebar-primary: 96 90% 55%;
     --sidebar-primary-foreground: 100 60% 6%;
-    --sidebar-accent: 222 12% 13%;
+    --sidebar-accent: 222 12% 11%;
     --sidebar-accent-foreground: 220 10% 94%;
-    --sidebar-border: 222 12% 16%;
+    --sidebar-border: 222 12% 18%;
     --sidebar-ring: 96 90% 55%;
   }
 
@@ -154,10 +156,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  html:not(.dark) .brand-logo {
-    mix-blend-mode: multiply;
-    filter: invert(1);
-  }
+  /* Dark-only app: there is no light mode, so no light-mode overrides. */
 
   /* Touch targets must not trigger double-tap zoom or text selection on
      long-press; content text itself stays selectable. */
@@ -321,7 +320,15 @@
     }
   }
 
-  h1, h2, h3, h4 {
+  /* Top-level headings are graffiti display type — spray-paint face
+     with a slight tilt, the app's signature voice. Sub-headings stay
+     in the Anton stencil face. */
+  h1, h2 {
+    @apply font-graffiti;
+    letter-spacing: 0.01em;
+  }
+
+  h3, h4 {
     @apply font-display;
     letter-spacing: -0.02em;
   }
@@ -488,29 +495,65 @@
 }
 
 /* --- Neon-sign glow on display words (flicker is subtle: two brief
-       dips per 7s cycle, never a strobe) --- */
+       dips per 7s cycle, never a strobe). Four glow layers so the
+       neon reads even on the near-black asphalt. --- */
 .neon-sign-lime {
   color: hsl(var(--neon-lime));
   text-shadow:
-    0 0 6px hsl(var(--neon-lime) / 0.75),
-    0 0 22px hsl(var(--neon-lime) / 0.45),
-    0 0 48px hsl(var(--neon-lime) / 0.28);
+    0 0 6px hsl(var(--neon-lime) / 0.85),
+    0 0 22px hsl(var(--neon-lime) / 0.6),
+    0 0 48px hsl(var(--neon-lime) / 0.4),
+    0 0 96px hsl(var(--neon-lime) / 0.25);
 }
 
 .neon-sign-pink {
   color: hsl(var(--neon-pink));
   text-shadow:
-    0 0 6px hsl(var(--neon-pink) / 0.75),
-    0 0 22px hsl(var(--neon-pink) / 0.45),
-    0 0 48px hsl(var(--neon-pink) / 0.28);
+    0 0 6px hsl(var(--neon-pink) / 0.85),
+    0 0 22px hsl(var(--neon-pink) / 0.6),
+    0 0 48px hsl(var(--neon-pink) / 0.4),
+    0 0 96px hsl(var(--neon-pink) / 0.25);
 }
 
 .neon-sign-cyan {
   color: hsl(var(--neon-cyan));
   text-shadow:
-    0 0 6px hsl(var(--neon-cyan) / 0.75),
-    0 0 22px hsl(var(--neon-cyan) / 0.45),
-    0 0 48px hsl(var(--neon-cyan) / 0.28);
+    0 0 6px hsl(var(--neon-cyan) / 0.85),
+    0 0 22px hsl(var(--neon-cyan) / 0.6),
+    0 0 48px hsl(var(--neon-cyan) / 0.4),
+    0 0 96px hsl(var(--neon-cyan) / 0.25);
+}
+
+.neon-sign-yellow {
+  color: hsl(var(--neon-yellow));
+  text-shadow:
+    0 0 6px hsl(var(--neon-yellow) / 0.85),
+    0 0 22px hsl(var(--neon-yellow) / 0.6),
+    0 0 48px hsl(var(--neon-yellow) / 0.4),
+    0 0 96px hsl(var(--neon-yellow) / 0.25);
+}
+
+/* --- Neon key numbers: mono figures in glowing lime, for live
+       totals, pots and stat strips --- */
+.neon-number {
+  color: hsl(var(--neon-lime));
+  text-shadow:
+    0 0 8px hsl(var(--neon-lime) / 0.55),
+    0 0 28px hsl(var(--neon-lime) / 0.3);
+}
+
+.neon-number-pink {
+  color: hsl(var(--neon-pink));
+  text-shadow:
+    0 0 8px hsl(var(--neon-pink) / 0.55),
+    0 0 28px hsl(var(--neon-pink) / 0.3);
+}
+
+.neon-number-cyan {
+  color: hsl(var(--neon-cyan));
+  text-shadow:
+    0 0 8px hsl(var(--neon-cyan) / 0.55),
+    0 0 28px hsl(var(--neon-cyan) / 0.3);
 }
 
 .neon-flicker {
@@ -536,7 +579,7 @@
   color: hsl(var(--neon-lime));
   box-shadow:
     0 0 0 1px hsl(var(--background) / 0.6),
-    0 0 18px hsl(var(--neon-lime) / 0.22),
+    0 0 26px hsl(var(--neon-lime) / 0.4),
     0 10px 30px -18px hsl(0 0% 0% / 0.9);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -547,7 +590,7 @@
   color: hsl(var(--neon-pink));
   box-shadow:
     0 0 0 1px hsl(var(--background) / 0.6),
-    0 0 18px hsl(var(--neon-pink) / 0.22),
+    0 0 26px hsl(var(--neon-pink) / 0.4),
     0 10px 30px -18px hsl(0 0% 0% / 0.9);
 }
 
@@ -583,19 +626,14 @@
   pointer-events: none;
   overflow: hidden;
   background:
-    radial-gradient(120% 90% at 50% 0%, hsl(222 14% 8%) 0%, hsl(222 16% 4.5%) 55%, hsl(222 18% 2.5%) 100%);
-}
-
-html:not(.dark) .street-backdrop {
-  background:
-    radial-gradient(120% 90% at 50% 0%, hsl(220 12% 98%) 0%, hsl(220 10% 94%) 60%, hsl(220 10% 90%) 100%);
+    radial-gradient(120% 90% at 50% 0%, hsl(222 16% 6%) 0%, hsl(222 18% 3%) 55%, hsl(222 20% 1.5%) 100%);
 }
 
 .street-backdrop .alley-glow {
   position: absolute;
   border-radius: 9999px;
   filter: blur(90px);
-  opacity: 0.16;
+  opacity: 0.3;
 }
 
 .street-backdrop .alley-glow-pink {
@@ -613,7 +651,7 @@ html:not(.dark) .street-backdrop {
   right: -8rem;
   top: 22%;
   background: hsl(var(--neon-cyan));
-  opacity: 0.12;
+  opacity: 0.24;
   animation: orb-drift 32s ease-in-out infinite alternate-reverse;
 }
 
@@ -623,18 +661,14 @@ html:not(.dark) .street-backdrop {
   left: 38%;
   bottom: -14rem;
   background: hsl(var(--neon-lime));
-  opacity: 0.1;
+  opacity: 0.2;
   animation: orb-drift 38s ease-in-out infinite alternate;
 }
 
 .street-backdrop .alley-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(90% 75% at 50% 42%, transparent 55%, hsl(0 0% 0% / 0.42) 100%);
-}
-
-html:not(.dark) .street-backdrop .alley-vignette {
-  background: radial-gradient(90% 75% at 50% 42%, transparent 62%, hsl(220 15% 20% / 0.14) 100%);
+  background: radial-gradient(90% 75% at 50% 42%, transparent 55%, hsl(0 0% 0% / 0.55) 100%);
 }
 
 .street-backdrop .alley-grain {
@@ -693,7 +727,8 @@ html:not(.dark) .street-backdrop .alley-vignette {
   box-shadow:
     inset 0 1px 0 hsl(0 0% 100% / 0.35),
     inset 0 -2px 0 hsl(0 0% 0% / 0.28),
-    0 12px 28px -10px hsl(var(--primary) / 0.6);
+    0 0 22px hsl(var(--primary) / 0.45),
+    0 12px 28px -10px hsl(var(--primary) / 0.7);
   transition: transform 150ms ease, box-shadow 250ms ease, filter 200ms ease;
 }
 
@@ -702,7 +737,8 @@ html:not(.dark) .street-backdrop .alley-vignette {
   box-shadow:
     inset 0 1px 0 hsl(0 0% 100% / 0.4),
     inset 0 -2px 0 hsl(0 0% 0% / 0.28),
-    0 16px 34px -10px hsl(var(--primary) / 0.75);
+    0 0 34px hsl(var(--primary) / 0.6),
+    0 16px 34px -10px hsl(var(--primary) / 0.85);
 }
 
 .btn-depth:active {

@@ -1,53 +1,43 @@
-// Theme preference for the app shell.
+// Theme for the app shell.
 //
-// Modes: 'system' (follow the OS light/dark preference, the default),
-// 'dark' or 'light' (explicit user choice, stored in localStorage).
-// The app ships dark-first, but a light-system device now gets the light
-// token set instead of a forced dark UI — the Google Play dark-mode
-// requirement is "system preference adaptation", not "dark only".
+// BetThat is a dark-only app: the whole visual system (asphalt
+// background, neon spray-paint accents, graffiti display type) is built
+// on the dark token set, so the app always renders dark regardless of
+// the device's OS light/dark preference. The previous 'system' default
+// followed the OS, which is why the live site read light (white /
+// light-pink grid) on light-system devices instead of dark.
+//
+// The exported API is kept so existing callers (main.jsx) do not break;
+// every path now resolves to 'dark' and no OS listener is attached.
 
 const STORAGE_KEY = 'betthat-theme';
 
 export function getThemePreference() {
-  try {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === 'dark' || saved === 'light' || saved === 'system') return saved;
-  } catch {
-    // storage unavailable — fall through to system
-  }
-  return 'system';
+  return 'dark';
 }
 
-export function resolveTheme(preference) {
-  if (preference === 'dark') return 'dark';
-  if (preference === 'light') return 'light';
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+export function resolveTheme() {
+  return 'dark';
 }
 
-export function applyTheme(preference) {
-  const theme = resolveTheme(preference);
-  document.documentElement.classList.toggle('dark', theme === 'dark');
-  document.documentElement.style.colorScheme = theme;
-  return theme;
+export function applyTheme() {
+  document.documentElement.classList.add('dark');
+  document.documentElement.style.colorScheme = 'dark';
+  return 'dark';
 }
 
 export function initTheme() {
-  const preference = getThemePreference();
-  applyTheme(preference);
-  // Keep following the OS while the user has not picked explicitly.
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
-      if (getThemePreference() === 'system') applyTheme('system');
-    });
+  // Clear any stale light/system choice from before the dark-only switch.
+  try {
+    window.localStorage.setItem(STORAGE_KEY, 'dark');
+  } catch {
+    // storage unavailable — the class is applied regardless
   }
-  return preference;
+  applyTheme();
+  return 'dark';
 }
 
-export function setThemePreference(preference) {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, preference);
-  } catch {
-    // storage unavailable — still apply for this session
-  }
-  return applyTheme(preference);
+export function setThemePreference() {
+  // Dark-only: an explicit choice is a no-op, the app stays dark.
+  return applyTheme();
 }

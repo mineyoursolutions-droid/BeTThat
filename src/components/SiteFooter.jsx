@@ -18,7 +18,7 @@ export default function SiteFooter() {
             <Image
               src={BRAND_LOGO}
               alt={BRAND_NAME}
-              className="h-14 w-[148px] mix-blend-screen"
+              className="brand-logo h-14 w-[148px] mix-blend-screen"
             />
             <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
               Head-to-head wagers across console and PC titles, settled in crypto. Players stake, spectators take a side,

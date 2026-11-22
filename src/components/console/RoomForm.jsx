@@ -4,6 +4,7 @@ import { Check, Copy, Loader2, Radio } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import { PLATFORMS, gamesFor, handleOf, newRoomCode, platformById } from '@/lib/console';
+import MobileSelect from '@/components/mobile/MobileSelect';
 
 const REGIONS = ['Global', 'US East', 'US West', 'EU West', 'EU North', 'Asia Pacific', 'South America', 'Oceania'];
 
@@ -164,17 +165,12 @@ export default function RoomForm({ user, preset, onCreated }) {
       </Field>
 
       <Field label="Billiards title">
-        <select
+        <MobileSelect
+          label="Billiards title"
           value={form.game_slug}
-          onChange={set('game_slug')}
-          className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
-        >
-          {options.map((entry) => (
-            <option key={entry.slug} value={entry.slug}>
-              {entry.game.name} — {entry.game.subtitle}
-            </option>
-          ))}
-        </select>
+          onValueChange={(v) => setForm((f) => ({ ...f, game_slug: v }))}
+          options={options.map((entry) => ({ value: entry.slug, label: `${entry.game.name} — ${entry.game.subtitle}` }))}
+        />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -187,17 +183,12 @@ export default function RoomForm({ user, preset, onCreated }) {
           />
         </Field>
         <Field label="Region">
-          <select
+          <MobileSelect
+            label="Region"
             value={form.region}
-            onChange={set('region')}
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
-          >
-            {REGIONS.map((r) => (
-              <option key={r} value={r}>
-                {r}
-              </option>
-            ))}
-          </select>
+            onValueChange={(v) => setForm((f) => ({ ...f, region: v }))}
+            options={REGIONS.map((r) => ({ value: r, label: r }))}
+          />
         </Field>
       </div>
 

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
+import MobileSelect from '@/components/mobile/MobileSelect';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import { fmtCoin, gameBySlug } from '@/lib/demo';
@@ -81,18 +82,16 @@ export default function PropDesk() {
         </p>
 
         <div className="mt-4 space-y-3">
-          <select
+          <MobileSelect
+            label="Match"
             value={matchId}
-            onChange={(e) => setMatchId(e.target.value)}
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13px] text-foreground outline-none focus:border-primary/50"
-          >
-            {matches.length === 0 && <option value="">No active matches</option>}
-            {matches.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.title} — {(gameBySlug(m.game_slug) || {}).name || m.game_slug} · {m.coin}
-              </option>
-            ))}
-          </select>
+            onValueChange={setMatchId}
+            placeholder={matches.length === 0 ? 'No active matches' : 'Choose a match'}
+            options={matches.map((m) => ({
+              value: m.id,
+              label: `${m.title} — ${(gameBySlug(m.game_slug) || {}).name || m.game_slug} · ${m.coin}`,
+            }))}
+          />
 
           <input
             value={question}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Loader2, Radio } from 'lucide-react';
 import { COINS, GAMES } from '@/lib/demo';
 import ReputationBadge, { RecordLine } from '@/components/ReputationBadge';
+import MobileSelect from '@/components/mobile/MobileSelect';
 
 const PLATFORMS = ['Xbox', 'PlayStation', 'PC', 'Switch'];
 
@@ -53,21 +54,9 @@ export default function MyPresence({ profile, onSave, saving }) {
       </div>
 
       <div className="mt-2.5 grid gap-2.5 sm:grid-cols-4">
-        <Select label="Platform" value={form.platform} onChange={set('platform')}>
-          {PLATFORMS.map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </Select>
-        <Select label="Game" value={form.game_slug} onChange={set('game_slug')}>
-          {GAMES.map((g) => (
-            <option key={g.slug} value={g.slug}>{g.name}</option>
-          ))}
-        </Select>
-        <Select label="Coin" value={form.coin} onChange={set('coin')}>
-          {COINS.map((c) => (
-            <option key={c.ticker} value={c.ticker}>{c.ticker}</option>
-          ))}
-        </Select>
+        <div><span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Platform</span><MobileSelect label="Platform" value={form.platform} onValueChange={(v) => setForm({ ...form, platform: v })} options={PLATFORMS.map((p) => ({ value: p, label: p }))} /></div>
+        <div><span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Game</span><MobileSelect label="Game" value={form.game_slug} onValueChange={(v) => setForm({ ...form, game_slug: v })} options={GAMES.map((g) => ({ value: g.slug, label: g.name }))} /></div>
+        <div><span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Coin</span><MobileSelect label="Coin" value={form.coin} onValueChange={(v) => setForm({ ...form, coin: v })} options={COINS.map((c) => ({ value: c.ticker, label: c.ticker }))} /></div>
         <Input label="Stake" value={form.stake} onChange={set('stake')} placeholder="50" type="number" />
       </div>
 
@@ -112,16 +101,3 @@ function Input({ label, ...props }) {
   );
 }
 
-function Select({ label, children, ...props }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</span>
-      <select
-        {...props}
-        className="w-full rounded-lg border border-input bg-background px-3 py-2 text-[12.5px] text-foreground outline-none transition focus:border-primary/50"
-      >
-        {children}
-      </select>
-    </label>
-  );
-}

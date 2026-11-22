@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Activity } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -11,18 +11,27 @@ import WinLossDonut from '@/components/stats/WinLossDonut';
 import NetCurve from '@/components/stats/NetCurve';
 import ResultList from '@/components/stats/ResultList';
 import CoinTable from '@/components/stats/CoinTable';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
+import DeleteAccount from '@/components/DeleteAccount';
 
 export default function PlayerDashboard() {
   const { user } = useAuth();
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    base44.functions
-      .invoke('getPlayerStats', {})
-      .then((res) => setData(res.data))
-      .catch((err) => setError(err?.response?.data?.error || err.message));
+  const load = useCallback(async () => {
+    try {
+      const res = await base44.functions.invoke('getPlayerStats', {});
+      setData(res.data);
+      setError('');
+    } catch (err) {
+      setError(err?.response?.data?.error || err.message);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const handle = (user && (user.full_name || String(user.email).split('@')[0])) || 'Player';
   const byCoin = data?.byCoin || [];
@@ -30,6 +39,7 @@ export default function PlayerDashboard() {
   const netUsd = byCoin.reduce((sum, c) => sum + toUsd(c.net + c.spectator_net, c.coin), 0);
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -49,12 +59,15 @@ export default function PlayerDashboard() {
             </div>
           ) : null}
         </div>
-        <Link
-          to="/bets"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
-        >
-          All my wagers
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/bets"
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
+          >
+            All my wagers
+          </Link>
+          <DeleteAccount />
+        </div>
       </div>
 
       {error ? (
@@ -109,6 +122,7 @@ export default function PlayerDashboard() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }
 

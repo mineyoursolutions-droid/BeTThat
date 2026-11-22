@@ -10,7 +10,10 @@ const TABS = [
 
 export default function MobileTabBar() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl md:hidden">
+    <nav
+      aria-label="Primary"
+      className="no-select fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl md:hidden"
+    >
       <div className="mx-auto grid max-w-md grid-cols-5 items-center px-2 pb-[env(safe-area-inset-bottom)] pt-1.5">
         {TABS.slice(0, 2).map((tab) => (
           <Tab key={tab.to} {...tab} />
@@ -35,7 +38,7 @@ function Tab({ to, label, icon: Icon }) {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex flex-col items-center gap-1 rounded-lg py-2 text-[10px] font-semibold uppercase tracking-[0.1em] transition ${
+        `flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg py-2 text-[10px] font-semibold uppercase tracking-[0.1em] transition ${
           isActive ? 'text-primary' : 'text-muted-foreground'
         }`
       }

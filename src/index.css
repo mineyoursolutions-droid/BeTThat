@@ -6,47 +6,47 @@
 
 @layer base {
   :root {
-    --background: 200 30% 4%;
-    --foreground: 192 18% 96%;
+    --background: 0 0% 98%;
+    --foreground: 200 30% 8%;
 
-    --card: 200 25% 7%;
-    --card-foreground: 192 18% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 200 30% 8%;
 
-    --popover: 200 27% 8%;
-    --popover-foreground: 192 18% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 200 30% 8%;
 
-    --primary: 187 88% 55%;
-    --primary-foreground: 200 44% 5%;
+    --primary: 187 88% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 200 18% 12%;
-    --secondary-foreground: 192 18% 96%;
+    --secondary: 200 18% 92%;
+    --secondary-foreground: 200 30% 8%;
 
-    --muted: 200 18% 12%;
-    --muted-foreground: 196 12% 62%;
+    --muted: 200 18% 92%;
+    --muted-foreground: 200 12% 42%;
 
-    --accent: 200 18% 15%;
-    --accent-foreground: 192 18% 96%;
+    --accent: 200 18% 90%;
+    --accent-foreground: 200 30% 8%;
 
-    --destructive: 4 84% 58%;
+    --destructive: 4 84% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 198 20% 17%;
-    --input: 198 20% 20%;
-    --ring: 187 88% 55%;
+    --border: 200 18% 85%;
+    --input: 200 18% 82%;
+    --ring: 187 88% 38%;
 
-    --win: 110 86% 56%;
-    --win-foreground: 120 62% 6%;
+    --win: 110 70% 38%;
+    --win-foreground: 0 0% 100%;
 
-    --live: 4 96% 64%;
+    --live: 4 90% 48%;
     --live-foreground: 0 0% 100%;
 
-    --ink: 200 34% 2.5%;
+    --ink: 200 20% 94%;
 
-    --chart-1: 187 88% 55%;
-    --chart-2: 110 86% 56%;
-    --chart-3: 262 84% 68%;
-    --chart-4: 330 82% 66%;
-    --chart-5: 4 84% 62%;
+    --chart-1: 187 88% 38%;
+    --chart-2: 110 70% 38%;
+    --chart-3: 262 84% 55%;
+    --chart-4: 330 82% 50%;
+    --chart-5: 4 84% 50%;
 
     --radius: 0.85rem;
 
@@ -55,14 +55,14 @@
     --font-display: 'Bricolage Grotesque', 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
-    --sidebar-background: 200 28% 5%;
-    --sidebar-foreground: 192 18% 96%;
-    --sidebar-primary: 187 88% 55%;
-    --sidebar-primary-foreground: 200 44% 5%;
-    --sidebar-accent: 200 18% 12%;
-    --sidebar-accent-foreground: 192 18% 96%;
-    --sidebar-border: 198 20% 17%;
-    --sidebar-ring: 187 88% 55%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 200 30% 8%;
+    --sidebar-primary: 187 88% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 18% 92%;
+    --sidebar-accent-foreground: 200 30% 8%;
+    --sidebar-border: 200 18% 85%;
+    --sidebar-ring: 187 88% 38%;
   }
 
   .dark {
@@ -85,6 +85,29 @@
     --border: 198 20% 17%;
     --input: 198 20% 20%;
     --ring: 187 88% 55%;
+
+    --win: 110 86% 56%;
+    --win-foreground: 120 62% 6%;
+
+    --live: 4 96% 64%;
+    --live-foreground: 0 0% 100%;
+
+    --ink: 200 34% 2.5%;
+
+    --chart-1: 187 88% 55%;
+    --chart-2: 110 86% 56%;
+    --chart-3: 262 84% 68%;
+    --chart-4: 330 82% 66%;
+    --chart-5: 4 84% 62%;
+
+    --sidebar-background: 200 28% 5%;
+    --sidebar-foreground: 192 18% 96%;
+    --sidebar-primary: 187 88% 55%;
+    --sidebar-primary-foreground: 200 44% 5%;
+    --sidebar-accent: 200 18% 12%;
+    --sidebar-accent-foreground: 192 18% 96%;
+    --sidebar-border: 198 20% 17%;
+    --sidebar-ring: 187 88% 55%;
   }
 
   * {
@@ -95,10 +118,50 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    /* Android WebView: stop the overscroll glow / pull-bounce at the page
+       edges (the app provides its own pull-to-refresh where it reloads). */
+    overscroll-behavior: none;
   }
 
   body {
     @apply bg-background text-foreground font-body antialiased;
+    overscroll-behavior: none;
+    /* Brand logo is light-on-transparent (mix-blend-screen); in light mode
+       invert it so it stays readable on a light background. */
+  }
+
+  html:not(.dark) .brand-logo {
+    mix-blend-mode: multiply;
+    filter: invert(1);
+  }
+
+  /* Touch targets must not trigger double-tap zoom or text selection on
+     long-press; content text itself stays selectable. */
+  button, a, [role='button'] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Route transitions: pages fade/slide in on navigation. */
+  main > * {
+    animation: page-in 240ms ease-out;
+  }
+
+  @keyframes page-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    main > * {
+      animation: none;
+    }
   }
 
   h1, h2, h3, h4 {
@@ -149,6 +212,22 @@
 
   .hairline-top {
     background-image: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+  }
+
+  /* Interactive chrome (tab bar, chips, cards you tap) must not select
+     text or pop the system context menu on long-press. */
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .no-scrollbar::-webkit-scrollbar {

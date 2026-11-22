@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import CoinMark from '@/components/CoinMark';
 import { fmtCoin } from '@/lib/demo';
 import { gameLook } from '@/lib/matches';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 const STATUS_STYLE = {
   locked: 'text-primary',
@@ -17,14 +18,18 @@ export default function MyWagers() {
   const { user } = useAuth();
   const [wagers, setWagers] = useState(null);
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     if (!user) return;
-    base44.entities.Wager.filter({ user_id: user.id }, { sort: '-created_date', limit: 100 }).then((page) =>
-      setWagers(page.items || []),
-    );
+    const page = await base44.entities.Wager.filter({ user_id: user.id }, { sort: '-created_date', limit: 100 });
+    setWagers(page.items || []);
   }, [user]);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">My wagers</p>
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -95,5 +100,6 @@ export default function MyWagers() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }

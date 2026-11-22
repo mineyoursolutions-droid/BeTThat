@@ -103,9 +103,12 @@ export default function MatchChat({ match, user }) {
       ) : (
         <ChatComposer
           match={match}
-          onSent={(message) =>
+          user={user}
+          onSent={(message, replacedTempId) =>
             setMessages((prev) => {
-              const list = prev || [];
+              let list = prev || [];
+              if (replacedTempId) list = list.filter((m) => m.id !== replacedTempId);
+              if (!message) return list;
               if (list.some((m) => m.id === message.id)) return list;
               return [...list, message];
             })

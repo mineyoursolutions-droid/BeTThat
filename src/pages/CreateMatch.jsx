@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
+import MobileSelect from '@/components/mobile/MobileSelect';
 import { COINS, GAMES, fmtCoin } from '@/lib/demo';
 
 export default function CreateMatch() {
@@ -67,17 +68,12 @@ export default function CreateMatch() {
 
       <form onSubmit={submit} className="mt-8 space-y-5 rounded-2xl border border-border bg-card p-6">
         <Field label="Game">
-          <select
+          <MobileSelect
+            label="Game"
             value={form.game_slug}
-            onChange={set('game_slug')}
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
-          >
-            {GAMES.map((g) => (
-              <option key={g.slug} value={g.slug}>
-                {g.name} — {g.subtitle}
-              </option>
-            ))}
-          </select>
+            onValueChange={(v) => setForm((f) => ({ ...f, game_slug: v }))}
+            options={GAMES.map((g) => ({ value: g.slug, label: `${g.name} — ${g.subtitle}` }))}
+          />
         </Field>
 
         <Field label="Match title">
@@ -102,32 +98,20 @@ export default function CreateMatch() {
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Platform">
-            <select
+            <MobileSelect
+              label="Platform"
               value={form.platform}
-              onChange={set('platform')}
-              className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
-            >
-              {['Cross-play', 'PS5', 'Xbox', 'Switch', 'Wii', 'PC'].map((p) => (
-                <option key={p} value={p}>
-                  {p}
-                </option>
-              ))}
-            </select>
+              onValueChange={(v) => setForm((f) => ({ ...f, platform: v }))}
+              options={['Cross-play', 'PS5', 'Xbox', 'Switch', 'Wii', 'PC'].map((p) => ({ value: p, label: p }))}
+            />
           </Field>
           <Field label="Region">
-            <select
+            <MobileSelect
+              label="Region"
               value={form.region}
-              onChange={set('region')}
-              className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
-            >
-              {['Global', 'US East', 'US West', 'EU West', 'EU North', 'Asia Pacific', 'South America', 'Oceania'].map(
-                (r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ),
-              )}
-            </select>
+              onValueChange={(v) => setForm((f) => ({ ...f, region: v }))}
+              options={['Global', 'US East', 'US West', 'EU West', 'EU North', 'Asia Pacific', 'South America', 'Oceania'].map((r) => ({ value: r, label: r }))}
+            />
           </Field>
         </div>
 

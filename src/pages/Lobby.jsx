@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -7,6 +7,7 @@ import MatchFilters from '@/components/lobby/MatchFilters';
 import ActivityFeed from '@/components/feed/ActivityFeed';
 import { toCardView } from '@/lib/matches';
 import { applyLobbyView, countBuckets } from '@/lib/lobby';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function Lobby() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,20 +19,20 @@ export default function Lobby() {
   const gameFilter = searchParams.get('game') || 'all';
   const setGame = (slug) => setSearchParams(slug === 'all' ? {} : { game: slug });
 
-  useEffect(() => {
-    let active = true;
-    base44.entities.Match.list({ sort: '-created_date', limit: 200 }).then((page) => {
-      if (active) setMatches(page.items || []);
-    });
-    return () => {
-      active = false;
-    };
+  const load = useCallback(async () => {
+    const page = await base44.entities.Match.list({ sort: '-created_date', limit: 200 });
+    setMatches(page.items || []);
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const shown = applyLobbyView(matches, { gameFilter, bucket, coin, sort });
   const counts = countBuckets(matches, { gameFilter, coin });
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -108,5 +109,6 @@ export default function Lobby() {
         </aside>
       </div>
     </div>
+    </PullToRefresh>
   );
 }

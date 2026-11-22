@@ -14,6 +14,9 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
   const [side, setSide] = useState('creator');
   const [amount, setAmount] = useState('');
   const [busy, setBusy] = useState(false);
+  // Optimistic UI: show the wager as locked the moment the user taps, and
+  // roll it back (with a toast) if the backend rejects it.
+  const [pending, setPending] = useState(null);
 
   const odds = oddsFor(match);
   const isCreator = user && user.id === match.creator_id;
@@ -24,12 +27,23 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
 
   const place = async (payload) => {
     setBusy(true);
+    // Optimistic: assume the wager locks, show it immediately.
+    const optimistic = {
+      kind: payload.kind,
+      side: payload.side,
+      amount: payload.kind === 'player' ? match.stake : Number(amount) || 0,
+      coin: match.coin,
+    };
+    setPending(optimistic);
     try {
       await base44.functions.invoke('placeWager', { match_id: match.id, ...payload });
       toast({ title: 'Wager locked', description: 'Your stake is now held in escrow.' });
       setAmount('');
       onPlaced();
     } catch (err) {
+      // Roll back the optimistic row so the UI never shows a wager that
+      // did not happen.
+      setPending(null);
       toast({
         title: 'Could not place that wager',
         description: err?.response?.data?.error || err.message,
@@ -37,6 +51,7 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
       });
     } finally {
       setBusy(false);
+      setPending(null);
     }
   };
 
@@ -89,6 +104,16 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
       </div>
 
       <div className="space-y-4 p-5">
+        {pending ? (
+          <div className="rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-3" aria-live="polite">
+            <p className="text-[12px] font-semibold text-primary">
+              Locking your {pending.kind === 'player' ? 'challenge stake' : 'wager'}…
+            </p>
+            <p className="mt-0.5 text-[11.5px] text-muted-foreground">
+              {fmtCoin(pending.amount, pending.coin)} on the {pending.side} side — confirming with the escrow.
+            </p>
+          </div>
+        ) : null}
         {canAccept && (
           <button
             type="button"

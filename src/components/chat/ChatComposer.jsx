@@ -3,7 +3,7 @@ import { Loader2, Paperclip, Send, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 
-export default function ChatComposer({ match, onSent }) {
+export default function ChatComposer({ match, user, onSent }) {
   const { toast } = useToast();
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
@@ -22,6 +22,25 @@ export default function ChatComposer({ match, onSent }) {
   const send = async () => {
     if (busy || (!text.trim() && !file)) return;
     setBusy(true);
+    const body = text.trim();
+    // Optimistic: show the message immediately, then swap in the saved one
+    // (or remove it) once the backend answers.
+    const tempId = `temp-${Date.now()}`;
+    const temp = {
+      id: tempId,
+      match_id: match.id,
+      sender_id: user?.id,
+      sender_handle: user?.full_name || (user?.email ? String(user.email).split('@')[0] : 'You'),
+      side: match.creator_id === user?.id ? 'creator' : 'challenger',
+      body,
+      file_uri: '',
+      file_kind: '',
+      created_date: new Date().toISOString(),
+      _pending: true,
+    };
+    if (body) onSent?.(temp, null);
+    setText('');
+    setFile(null);
     try {
       let file_uri = '';
       let file_kind = '';
@@ -32,14 +51,15 @@ export default function ChatComposer({ match, onSent }) {
       }
       const res = await base44.functions.invoke('sendMatchMessage', {
         match_id: match.id,
-        text: text.trim(),
+        text: body,
         file_uri,
         file_kind,
       });
-      if (res.data?.message) onSent?.(res.data.message);
-      setText('');
-      setFile(null);
+      if (res.data?.message) onSent?.(res.data.message, tempId);
     } catch (err) {
+      // Roll back the optimistic message.
+      onSent?.(null, tempId);
+      setText(body);
       toast({ title: 'Message not sent', description: err?.response?.data?.error || err.message, variant: 'destructive' });
     } finally {
       setBusy(false);

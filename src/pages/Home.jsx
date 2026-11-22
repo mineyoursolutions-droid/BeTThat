@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -10,24 +10,23 @@ import HowItWorks from '@/components/home/HowItWorks';
 import LeaderboardPreview from '@/components/home/LeaderboardPreview';
 import FundingSection from '@/components/home/FundingSection';
 import { GAMES } from '@/lib/demo';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function Home() {
   const [matches, setMatches] = useState(null);
 
-  useEffect(() => {
-    let active = true;
-    base44.entities.Match
-      .list({ sort: '-created_date', limit: 60 })
-      .then((page) => {
-        if (active) setMatches(page.items || []);
-      })
-      .catch(() => {
-        if (active) setMatches([]);
-      });
-    return () => {
-      active = false;
-    };
+  const load = useCallback(async () => {
+    try {
+      const page = await base44.entities.Match.list({ sort: '-created_date', limit: 60 });
+      setMatches(page.items || []);
+    } catch {
+      setMatches([]);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const counts = {};
   (matches || []).forEach((m) => {
@@ -38,7 +37,7 @@ export default function Home() {
   });
 
   return (
-    <>
+    <PullToRefresh onRefresh={load}>
       <Hero />
       <StatsStrip />
       <FeaturedMatches matches={matches} />
@@ -77,6 +76,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
+    </PullToRefresh>
   );
 }

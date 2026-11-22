@@ -62,9 +62,11 @@ export default function TrashTalk({ match, user }) {
       <TrashTalkComposer
         match={match}
         user={user}
-        onPosted={(post) =>
+        onPosted={(post, replacedTempId) =>
           setPosts((prev) => {
-            const list = prev || [];
+            let list = prev || [];
+            if (replacedTempId) list = list.filter((p) => p.id !== replacedTempId);
+            if (!post) return list;
             if (list.some((p) => p.id === post.id)) return list;
             return [...list, post];
           })

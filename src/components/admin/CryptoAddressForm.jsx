@@ -4,6 +4,7 @@ import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import { COINS } from '@/lib/demo';
 import { looksLikeAddress, networkById, networksForCoin } from '@/lib/crypto';
+import MobileSelect from '@/components/mobile/MobileSelect';
 
 export default function CryptoAddressForm({ onSaved }) {
   const { toast } = useToast();
@@ -53,32 +54,12 @@ export default function CryptoAddressForm({ onSaved }) {
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <label className="block">
           <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Coin</span>
-          <select
-            value={coin}
-            onChange={(e) => changeCoin(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-[12px] font-semibold outline-none focus:border-primary/50"
-          >
-            {COINS.map((c) => (
-              <option key={c.ticker} value={c.ticker}>
-                {c.ticker}
-              </option>
-            ))}
-          </select>
+          <MobileSelect label="Coin" value={coin} onValueChange={changeCoin} options={COINS.map((c) => ({ value: c.ticker, label: c.ticker }))} className="mt-1" />
         </label>
 
         <label className="block">
           <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Network</span>
-          <select
-            value={network}
-            onChange={(e) => setNetwork(e.target.value)}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-3 py-2 text-[12px] font-semibold outline-none focus:border-primary/50"
-          >
-            {options.map((n) => (
-              <option key={n.id} value={n.id}>
-                {n.label}
-              </option>
-            ))}
-          </select>
+          <MobileSelect label="Network" value={network} onValueChange={setNetwork} options={options.map((n) => ({ value: n.id, label: n.label }))} className="mt-1" />
         </label>
       </div>
 

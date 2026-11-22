@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { Plus, LogOut, ShieldCheck } from 'lucide-react';
+import { Plus, LogOut, ShieldCheck, Moon, Sun } from 'lucide-react';
+import DeleteAccount from '@/components/DeleteAccount';
+import { getThemePreference, setThemePreference } from '@/lib/theme';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
 import CoinMark from '@/components/CoinMark';
@@ -21,6 +23,14 @@ const NAV = [
 export default function TopBar() {
   const { user, logout } = useAuth();
   const [wallets, setWallets] = useState([]);
+  const [theme, setTheme] = useState(() => getThemePreference());
+
+  const cycleTheme = () => {
+    // system -> dark -> light -> system; the OS preference is honoured by default
+    const next = theme === 'system' ? 'dark' : theme === 'dark' ? 'light' : 'system';
+    setTheme(next);
+    setThemePreference(next);
+  };
 
   useEffect(() => {
     if (!user) {
@@ -34,13 +44,13 @@ export default function TopBar() {
   const handle = (user && (user.full_name || String(user.email).split('@')[0])) || '';
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl">
+    <header className="safe-top relative z-40 border-b border-border/80 bg-background/80 backdrop-blur-xl md:sticky md:top-0">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-6 px-5 sm:px-8">
         <Link to="/" className="flex shrink-0 items-center" aria-label={BRAND_NAME}>
           <Image
             src={BRAND_LOGO}
             alt={BRAND_NAME}
-            className="h-11 w-[116px] mix-blend-screen"
+            className="brand-logo h-11 w-[116px] mix-blend-screen"
           />
         </Link>
 
@@ -97,6 +107,16 @@ export default function TopBar() {
               <span className="hidden max-w-[110px] truncate text-[12.5px] font-semibold text-foreground lg:block">
                 {handle}
               </span>
+              <button
+                type="button"
+                onClick={cycleTheme}
+                aria-label={`Theme: ${theme}. Tap to change.`}
+                title={`Theme: ${theme}`}
+                className="grid h-8 w-8 place-items-center rounded-full border border-border text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+              >
+                {theme === 'light' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+              </button>
+              <DeleteAccount className="inline-flex h-8 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-[11px] font-semibold text-destructive transition hover:bg-destructive/10" />
               <button
                 type="button"
                 onClick={() => logout()}

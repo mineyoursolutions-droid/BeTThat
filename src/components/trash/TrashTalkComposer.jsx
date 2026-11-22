@@ -23,11 +23,29 @@ export default function TrashTalkComposer({ match, user, onPosted }) {
   const send = async () => {
     if (busy || !text.trim()) return;
     setBusy(true);
+    const body = text.trim();
+    // Optimistic: show the post immediately, swap in the saved one (or
+    // remove it) once the backend answers.
+    const tempId = `temp-${Date.now()}`;
+    const side = match.creator_id === user?.id ? 'creator' : match.challenger_id === user?.id ? 'challenger' : 'spectator';
+    const temp = {
+      id: tempId,
+      match_id: match.id,
+      user_id: user?.id,
+      user_handle: user?.full_name || (user?.email ? String(user.email).split('@')[0] : 'You'),
+      side,
+      body,
+      created_date: new Date().toISOString(),
+      _pending: true,
+    };
+    onPosted?.(temp, null);
+    setText('');
     try {
-      const res = await base44.functions.invoke('sendTrashTalk', { match_id: match.id, text: text.trim() });
-      if (res.data?.post) onPosted?.(res.data.post);
-      setText('');
+      const res = await base44.functions.invoke('sendTrashTalk', { match_id: match.id, text: body });
+      if (res.data?.post) onPosted?.(res.data.post, tempId);
     } catch (err) {
+      onPosted?.(null, tempId);
+      setText(body);
       toast({ title: 'Could not post', description: err?.response?.data?.error || err.message, variant: 'destructive' });
     } finally {
       setBusy(false);

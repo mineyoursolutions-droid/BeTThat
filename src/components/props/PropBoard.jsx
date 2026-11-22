@@ -33,7 +33,7 @@ export default function PropBoard({ match, wallets, user, onPlaced }) {
     <div className="rounded-2xl border border-border bg-card p-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-[14px] font-semibold">Prop markets</h2>
-        <span className="text-[10.5px] text-muted-foreground">Yes / No · 5% operator fee on the pool</span>
+        <span className="text-sm text-muted-foreground">Yes / No · 5% operator fee on the pool</span>
       </div>
 
       {markets === null ? (
@@ -45,7 +45,7 @@ export default function PropBoard({ match, wallets, user, onPlaced }) {
       ) : markets.length === 0 ? (
         <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-dashed border-border px-4 py-5">
           <Ticket className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             No props posted on this match yet. Operators add side markets — first blood, total maps, exact score — as
             the match gets closer.
           </p>
@@ -67,7 +67,7 @@ export default function PropBoard({ match, wallets, user, onPlaced }) {
       )}
 
       {isPlayer && (
-        <p className="mt-3 text-[11px] text-muted-foreground">
+        <p className="mt-3 text-sm text-muted-foreground">
           You are in this match, so prop betting is closed to you.
         </p>
       )}

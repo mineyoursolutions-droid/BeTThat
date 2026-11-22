@@ -177,7 +177,7 @@ export default function MfaMethodSetup({ session, method, onDone, onBack, signIn
           onComplete={confirm} hasError={Boolean(fieldError)} />
         {fieldError && <p className="text-sm text-destructive">{fieldError}</p>}
         {method === "totp"
-          ? <p className="text-xs text-muted-foreground">Codes refresh every 30 seconds.</p>
+          ? <p className="text-sm text-muted-foreground">Codes refresh every 30 seconds.</p>
           : <ResendLine cooldown={cooldown} onResend={resend} error={resendError} />}
       </div>
       <MfaNotice error={error} signInPath={signInPath} />

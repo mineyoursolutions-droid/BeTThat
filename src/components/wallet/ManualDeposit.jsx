@@ -31,7 +31,7 @@ export default function ManualDeposit({ coin, onSubmitted }) {
 
   return (
     <form onSubmit={submit} className="mt-4 space-y-3 border-t border-border/70 pt-4">
-      <p className="text-[11px] leading-relaxed text-muted-foreground">
+      <p className="text-sm leading-relaxed text-muted-foreground">
         Sent from a different network or an old quote? Send it to an operator instead — the same wallet and ledger rules
         apply once it is approved.
       </p>
@@ -44,20 +44,20 @@ export default function ManualDeposit({ coin, onSubmitted }) {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder={`Amount in ${coin}`}
-          className="nums rounded-xl border border-input bg-background px-3 py-2.5 text-[12.5px] outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+          className="nums rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
         />
         <input
           required
           value={txHash}
           onChange={(e) => setTxHash(e.target.value)}
           placeholder="Transaction hash"
-          className="rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-[11px] outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+          className="rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
         />
       </div>
       <button
         type="submit"
         disabled={busy}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
       >
         <Upload className="h-3.5 w-3.5" />
         {busy ? 'Submitting…' : 'Send for manual review'}

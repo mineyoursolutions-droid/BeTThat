@@ -45,13 +45,13 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
         <div className="flex items-center gap-2">
           <CoinMark ticker={quote.coin} size="sm" />
           <div>
-            <p className="nums text-[13px] font-semibold text-foreground">{fmtCoin(quote.amount, quote.coin)}</p>
-            <p className="text-[10.5px] text-muted-foreground">
+            <p className="nums text-sm font-semibold text-foreground">{fmtCoin(quote.amount, quote.coin)}</p>
+            <p className="text-sm text-muted-foreground">
               {network ? network.label : quote.network} · {quote.amount_usd ? `≈ ${fmtUsd(quote.amount_usd)}` : ''}
             </p>
           </div>
         </div>
-        <span className={`text-[10.5px] font-semibold uppercase tracking-[0.12em] ${TONE[status] || 'text-muted-foreground'}`}>
+        <span className={`text-sm font-semibold uppercase tracking-[0.12em] ${TONE[status] || 'text-muted-foreground'}`}>
           {LABEL[status] || status}
         </span>
       </div>
@@ -64,10 +64,10 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
             onClick={copy}
             className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-background px-3 py-2.5 text-left transition hover:border-primary/40"
           >
-            <span className="truncate font-mono text-[11px] text-foreground/90">{quote.address}</span>
+            <span className="selectable-text truncate font-mono text-sm text-foreground/90">{quote.address}</span>
             {copied ? <Check className="h-3.5 w-3.5 shrink-0 text-win" /> : <Copy className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />}
           </button>
-          <p className="mt-2 text-[10.5px] leading-relaxed text-muted-foreground">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Send exactly this amount on {network ? network.label : quote.network}. Other coins or networks are not
             credited.
             {quote.expires_at ? ` Quote expires ${new Date(quote.expires_at).toLocaleTimeString()}.` : ''}
@@ -77,7 +77,7 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
 
       {status === 'verifying' || status === 'confirmed' ? (
         <div className="mt-4">
-          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               {status === 'confirmed' ? null : <Loader2 className="h-3 w-3 animate-spin" />}
               waiting for confirmations ({Math.min(confirmations, required)}/{required})
@@ -87,7 +87,7 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
                 href={explorerUrl(quote.network, sentHash)}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 text-[10.5px] font-semibold text-primary"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-primary"
               >
                 Explorer
                 <ExternalLink className="h-3 w-3" />
@@ -108,34 +108,34 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
           }}
           className="mt-4 space-y-2"
         >
-          <label className="text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground">Transaction hash</label>
+          <label className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Transaction hash</label>
           <input
             required
             value={hash}
             onChange={(e) => setHash(e.target.value)}
             placeholder={quote.network === 'solana' ? 'Solana signature' : quote.network === 'bitcoin' ? 'Bitcoin txid' : '0x…'}
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-[11px] outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
           <button
             type="submit"
             disabled={busy}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-2.5 text-[12.5px] font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
           >
             {busy ? 'Checking the chain…' : 'I sent it — verify now'}
           </button>
         </form>
       ) : null}
 
-      {message ? <p className="mt-2 text-[10.5px] text-live">{message}</p> : null}
+      {message ? <p className="mt-2 text-sm text-live">{message}</p> : null}
 
       {status === 'confirmed' ? (
-        <p className="mt-3 rounded-xl border border-win/25 bg-win/[0.07] px-3 py-2 text-[11px] font-semibold text-win">
+        <p className="mt-3 rounded-xl border border-win/25 bg-win/[0.07] px-3 py-2 text-sm font-semibold text-win">
           Credited to your balance. The ledger entry is already posted.
         </p>
       ) : null}
 
       {status === 'expired' ? (
-        <p className="mt-3 text-[11px] text-muted-foreground">
+        <p className="mt-3 text-sm text-muted-foreground">
           Nothing was credited. Start a new request once you are ready to send.
         </p>
       ) : null}
@@ -143,7 +143,7 @@ export default function DepositInstructions({ quote, payment, busy, onSubmit, on
       <button
         type="button"
         onClick={onReset}
-        className="mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground transition hover:text-foreground"
+        className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
       >
         <RotateCcw className="h-3 w-3" />
         New payment request

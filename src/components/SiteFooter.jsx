@@ -20,7 +20,7 @@ export default function SiteFooter() {
               alt={BRAND_NAME}
               className="brand-logo h-14 w-[148px] mix-blend-screen"
             />
-            <p className="mt-4 text-[13px] leading-relaxed text-muted-foreground">
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Head-to-head wagers across console and PC titles, settled in crypto. Players stake, spectators take a side,
               every payout is recorded in the open ledger.
             </p>
@@ -28,11 +28,11 @@ export default function SiteFooter() {
 
           <div className="grid grid-cols-2 gap-10 sm:gap-16">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Play</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Play</p>
               <ul className="mt-4 space-y-2.5">
                 {LINKS.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="text-[13px] text-foreground/80 transition hover:text-primary">
+                    <Link to={l.to} className="text-sm text-foreground/80 transition hover:text-primary">
                       {l.label}
                     </Link>
                   </li>
@@ -40,8 +40,8 @@ export default function SiteFooter() {
               </ul>
             </div>
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding</p>
-              <ul className="mt-4 space-y-2.5 text-[13px] text-foreground/80">
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-muted-foreground">Funding</p>
+              <ul className="mt-4 space-y-2.5 text-sm text-foreground/80">
                 <li>Bitcoin</li>
                 <li>Tether (USDT)</li>
                 <li>USD Coin (USDC)</li>
@@ -52,13 +52,13 @@ export default function SiteFooter() {
         </div>
 
         <div className="mt-12 border-t border-border pt-6">
-          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             18+ only. Wagering involves risk of loss. Stakes are held in escrow until a match is settled and verified by
             an official result. Playing for money may be restricted or require a licence in your jurisdiction — check
             your local rules before you fund a wallet. Balances are held per-account and payouts are released by the
             operator.
           </p>
-          <p className="mt-4 text-[11px] text-muted-foreground/70">© {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.</p>
+          <p className="mt-4 text-sm text-muted-foreground/70">© {new Date().getFullYear()} {BRAND_NAME}. All rights reserved.</p>
         </div>
       </div>
     </footer>

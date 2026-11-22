@@ -10,10 +10,10 @@ export default function PlatformNotes() {
               className="inline-block h-2 w-2 rounded-full"
               style={{ backgroundColor: platform.accent }}
             />
-            <h3 className="text-[13px] font-semibold text-foreground">{platform.label}</h3>
+            <h3 className="text-sm font-semibold text-foreground">{platform.label}</h3>
           </div>
-          <p className="mt-1 text-[10.5px] font-semibold uppercase tracking-[0.12em] text-primary">{platform.method}</p>
-          <p className="mt-2 text-[11.5px] leading-relaxed text-muted-foreground">{platform.blurb}</p>
+          <p className="mt-1 text-sm font-semibold uppercase tracking-[0.12em] text-primary">{platform.method}</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{platform.blurb}</p>
         </div>
       ))}
     </div>

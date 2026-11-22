@@ -37,14 +37,14 @@ export default function WithdrawCard({ coin, available, onSubmitted }) {
         <CoinMark ticker={coin} size="sm" />
         Withdraw {coin}
       </h3>
-      <p className="mt-3 text-[11.5px] leading-relaxed text-muted-foreground">
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
         Available <span className="nums font-semibold text-foreground">{fmtCoin(available, coin)}</span>. Requests are
         reviewed before payout, and funds stay held until then.
       </p>
 
       <form onSubmit={submit} className="mt-4 space-y-3">
         <div>
-          <label className="text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground">Amount</label>
+          <label className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Amount</label>
           <input
             required
             type="number"
@@ -53,23 +53,23 @@ export default function WithdrawCard({ coin, available, onSubmitted }) {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="0.00"
-            className="nums mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13px] font-semibold outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="nums mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm font-semibold outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </div>
         <div>
-          <label className="text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground">Payout address</label>
+          <label className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Payout address</label>
           <input
             required
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder={`Your ${coin} wallet address`}
-            className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-[11.5px] outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="mt-1.5 w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </div>
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-[12.5px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50"
         >
           <ArrowUpRight className="h-3.5 w-3.5" />
           {busy ? 'Requesting…' : 'Request withdrawal'}

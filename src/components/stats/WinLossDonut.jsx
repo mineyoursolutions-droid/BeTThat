@@ -9,7 +9,7 @@ export default function WinLossDonut({ totals }) {
 
   if (!totals.matches) {
     return (
-      <p className="grid h-[220px] place-items-center text-center text-[12px] text-muted-foreground">
+      <p className="grid h-[220px] place-items-center text-center text-sm text-muted-foreground">
         No settled matches yet.
       </p>
     );
@@ -32,7 +32,7 @@ export default function WinLossDonut({ totals }) {
           <p className="nums text-[24px] font-bold leading-none tracking-[-0.03em]">
             {Math.round(totals.winRate * 100)}%
           </p>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground">won</p>
+          <p className="mt-1 text-sm uppercase tracking-[0.14em] text-muted-foreground">won</p>
         </div>
       </div>
     </div>

@@ -69,7 +69,7 @@ export default function PullToRefresh({ onRefresh, children, label = 'Pull to re
         className="flex justify-center overflow-hidden transition-all duration-150"
         style={{ height: refreshing ? 44 : pull > 0 ? Math.min(pull * 0.5, 40) : 0 }}
       >
-        <span className="flex items-center gap-2 pt-2 text-[12px] font-semibold text-muted-foreground">
+        <span className="flex items-center gap-2 pt-2 text-sm font-semibold text-muted-foreground">
           {refreshing ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" /> Refreshing…
@@ -88,7 +88,7 @@ export default function PullToRefresh({ onRefresh, children, label = 'Pull to re
           onClick={refresh}
           disabled={refreshing}
           aria-label="Refresh"
-          className="mb-1 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-[11.5px] font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50 md:min-h-9"
+          className="mb-1 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50 md:min-h-9"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? 'animate-spin' : ''}`} />
           {refreshing ? 'Refreshing…' : 'Refresh'}

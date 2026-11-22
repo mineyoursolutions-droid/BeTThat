@@ -32,7 +32,7 @@ export default function MatchFilters({
         {BUCKETS.map((b) => (
           <Chip key={b.id} active={bucket === b.id} onClick={() => onBucket(b.id)}>
             {b.label}
-            <span className={`nums ml-1.5 text-[10.5px] ${bucket === b.id ? 'text-primary/70' : 'text-muted-foreground/70'}`}>
+            <span className={`nums ml-1.5 text-sm ${bucket === b.id ? 'text-primary/70' : 'text-muted-foreground/70'}`}>
               {counts[b.id] ?? 0}
             </span>
           </Chip>
@@ -46,7 +46,7 @@ export default function MatchFilters({
             key={c.ticker}
             type="button"
             onClick={() => onCoin(c.ticker)}
-            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-[12px] font-semibold transition ${
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1.5 text-sm font-semibold transition ${
               coin === c.ticker
                 ? 'border-primary/40 bg-primary/10 text-primary'
                 : 'border-border text-muted-foreground hover:text-foreground'
@@ -72,7 +72,7 @@ export default function MatchFilters({
 
 function Label({ icon: Icon, children }) {
   return (
-    <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+    <span className="inline-flex items-center gap-1.5 text-sm uppercase tracking-[0.14em] text-muted-foreground">
       <Icon className="h-3.5 w-3.5" />
       {children}
     </span>
@@ -84,7 +84,7 @@ function Chip({ active, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition ${
+      className={`inline-flex shrink-0 items-center rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
         active ? 'border-primary/40 bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground'
       }`}
     >

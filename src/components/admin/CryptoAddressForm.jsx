@@ -46,38 +46,38 @@ export default function CryptoAddressForm({ onSaved }) {
 
   return (
     <form onSubmit={save} className="rounded-2xl border border-border bg-card p-4">
-      <h2 className="text-[13px] font-semibold text-foreground">Add an address</h2>
-      <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+      <h2 className="text-sm font-semibold text-foreground">Add an address</h2>
+      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
         One address per coin and network. Only active addresses can create payment requests.
       </p>
 
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <label className="block">
-          <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Coin</span>
+          <span className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Coin</span>
           <MobileSelect label="Coin" value={coin} onValueChange={changeCoin} options={COINS.map((c) => ({ value: c.ticker, label: c.ticker }))} className="mt-1" />
         </label>
 
         <label className="block">
-          <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">Network</span>
+          <span className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Network</span>
           <MobileSelect label="Network" value={network} onValueChange={setNetwork} options={options.map((n) => ({ value: n.id, label: n.label }))} className="mt-1" />
         </label>
       </div>
 
       {networkById(network)?.hint ? (
-        <p className="mt-2 text-[10.5px] text-muted-foreground">{networkById(network).hint}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{networkById(network).hint}</p>
       ) : null}
 
       <input
         value={address}
         onChange={(e) => setAddress(e.target.value)}
         placeholder="Deposit address"
-        className="mt-2 w-full rounded-xl border border-input bg-background px-3 py-2 font-mono text-[11px] outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+        className="mt-2 w-full rounded-xl border border-input bg-background px-3 py-2 font-mono text-sm outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
       />
 
       <button
         type="submit"
         disabled={busy || !network}
-        className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-[11.5px] font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
+        className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3.5 py-1.5 text-sm font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
       >
         <Plus className="h-3 w-3" />
         {busy ? 'Saving…' : 'Add address'}

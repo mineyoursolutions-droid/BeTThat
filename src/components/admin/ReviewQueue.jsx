@@ -41,7 +41,7 @@ export default function ReviewQueue({ signal = 0 }) {
 
   if (items === null) return <div className="h-24 animate-pulse rounded-xl border border-border bg-card" />;
   if (items.length === 0) {
-    return <p className="rounded-xl border border-dashed border-border px-5 py-10 text-center text-[12.5px] text-muted-foreground">No transfers waiting on you.</p>;
+    return <p className="rounded-xl border border-dashed border-border px-5 py-10 text-center text-sm text-muted-foreground">No transfers waiting on you.</p>;
   }
 
   return (
@@ -50,15 +50,15 @@ export default function ReviewQueue({ signal = 0 }) {
         <div key={tx.id} className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3.5">
           <CoinMark ticker={tx.coin} size="sm" />
           <div className="min-w-0 flex-1">
-            <p className="text-[12.5px] font-semibold capitalize text-foreground">
+            <p className="text-sm font-semibold capitalize text-foreground">
               {tx.kind} · {fmtCoin(tx.amount, tx.coin)}
               {tx.status !== 'pending' ? (
-                <span className="ml-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-live">
+                <span className="ml-2 text-sm font-semibold uppercase tracking-[0.12em] text-live">
                   {String(tx.status).replace('_', ' ')}
                 </span>
               ) : null}
             </p>
-            <p className="truncate text-[10.5px] text-muted-foreground">
+            <p className="truncate text-sm text-muted-foreground">
               {tx.user_handle} · {tx.kind === 'deposit' ? tx.tx_hash : tx.address}
             </p>
           </div>
@@ -67,7 +67,7 @@ export default function ReviewQueue({ signal = 0 }) {
               type="button"
               disabled={busyId === tx.id}
               onClick={() => review(tx, 'approve')}
-              className="inline-flex items-center gap-1.5 rounded-full bg-win/15 px-3 py-1.5 text-[11.5px] font-semibold text-win transition hover:bg-win/25 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-full bg-win/15 px-3 py-1.5 text-sm font-semibold text-win transition hover:bg-win/25 disabled:opacity-50"
             >
               {busyId === tx.id ? <Loader2 className="h-3 w-3 animate-spin" /> : <Check className="h-3 w-3" />}
               {tx.kind === 'deposit' ? 'Confirm' : 'Release'}
@@ -76,7 +76,7 @@ export default function ReviewQueue({ signal = 0 }) {
               type="button"
               disabled={busyId === tx.id}
               onClick={() => review(tx, 'reject')}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-[11.5px] font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-sm font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
             >
               <X className="h-3 w-3" />
               Reject

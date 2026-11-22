@@ -54,14 +54,14 @@ export default function MatchChat({ match, user }) {
         {heading}
         <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-border/80 bg-background/60 p-3.5">
           <Lock className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             {user
               ? 'Private player comms. Only the two players in this match can read or post here.'
               : 'Private player comms. Sign in as a player in this match to coordinate.'}
           </p>
         </div>
         {!user ? (
-          <Link to="/login" className="mt-3 inline-block text-[11.5px] font-semibold text-primary hover:underline">
+          <Link to="/login" className="mt-3 inline-block text-sm font-semibold text-primary hover:underline">
             Sign in
           </Link>
         ) : null}
@@ -75,7 +75,7 @@ export default function MatchChat({ match, user }) {
     <div className="mt-3 overflow-hidden rounded-2xl border border-border bg-card">
       <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
         {heading}
-        <span className="text-[10px] uppercase tracking-[0.12em] text-muted-foreground">P2P</span>
+        <span className="text-sm uppercase tracking-[0.12em] text-muted-foreground">P2P</span>
       </div>
 
       <div className="max-h-[320px] min-h-[140px] space-y-2.5 overflow-y-auto p-3.5">
@@ -85,7 +85,7 @@ export default function MatchChat({ match, user }) {
             <div className="ml-auto h-9 w-1/2 animate-pulse rounded-xl bg-secondary" />
           </>
         ) : messages.length === 0 ? (
-          <p className="py-6 text-center text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="py-6 text-center text-sm leading-relaxed text-muted-foreground">
             No messages yet. Lock in the lobbies, swap gamertags and confirm the ruleset here.
           </p>
         ) : (
@@ -97,7 +97,7 @@ export default function MatchChat({ match, user }) {
       </div>
 
       {closed ? (
-        <div className="border-t border-border px-4 py-3 text-[11px] text-muted-foreground">
+        <div className="border-t border-border px-4 py-3 text-sm text-muted-foreground">
           This match is closed — the thread is read-only.
         </div>
       ) : (

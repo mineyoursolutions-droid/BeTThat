@@ -91,7 +91,7 @@ export default function MatchDetail() {
       <div className="mx-auto max-w-3xl px-5 py-24 text-center">
         <h1 className="text-[26px] font-extrabold">This match is no longer listed</h1>
         <p className="mt-3 text-[14px] text-muted-foreground">It may have been cancelled or removed.</p>
-        <Link to="/lobby" className="mt-6 inline-block rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground">
+        <Link to="/lobby" className="mt-6 inline-block rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">
           Back to the lobby
         </Link>
       </div>
@@ -117,7 +117,7 @@ export default function MatchDetail() {
     <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-12">
       <MobileBackBar to="/lobby" label="Lobby" className="-mt-8 sm:-mt-12" />
-      <Link to="/lobby" className="hidden items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
+      <Link to="/lobby" className="hidden items-center gap-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
         <ArrowLeft className="h-3.5 w-3.5" />
         Back to the lobby
       </Link>
@@ -129,10 +129,10 @@ export default function MatchDetail() {
             <div className="p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground">
+                  <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-sm tracking-[0.12em] text-muted-foreground">
                     {game.monogram}
                   </span>
-                  <span className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{game.name}</span>
+                  <span className="text-sm uppercase tracking-[0.16em] text-muted-foreground">{game.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CopyLinkButton matchId={match.id} />
@@ -144,10 +144,10 @@ export default function MatchDetail() {
                 {match.title}
               </h1>
               {match.ruleset ? (
-                <p className="mt-2 text-[13.5px] leading-relaxed text-muted-foreground">{match.ruleset}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{match.ruleset}</p>
               ) : null}
 
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[12px] text-muted-foreground">
+              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
                   <Monitor className="h-3.5 w-3.5" />
                   {match.platform}
@@ -181,7 +181,7 @@ export default function MatchDetail() {
               </div>
 
               <div className="mt-6 rounded-xl border border-border/80 bg-background/60 p-4">
-                <div className="flex items-center justify-between text-[11.5px] text-muted-foreground">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span>Spectator pool</span>
                   <span className="nums">
                     {fmtCoin(total, match.coin)} · ≈ {fmtUsd(toUsd(total, match.coin))}
@@ -191,7 +191,7 @@ export default function MatchDetail() {
                   <div className="h-full bg-primary" style={{ width: `${split}%` }} />
                   <div className="h-full bg-win" style={{ width: `${100 - split}%` }} />
                 </div>
-                <div className="mt-1.5 flex items-center justify-between text-[10.5px] font-semibold">
+                <div className="mt-1.5 flex items-center justify-between text-sm font-semibold">
                   <span className="text-primary">{split}% creator</span>
                   <span className="text-win">{100 - split}% challenger</span>
                 </div>
@@ -204,7 +204,7 @@ export default function MatchDetail() {
           <div className="rounded-2xl border border-border bg-card p-6">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-[14px] font-semibold">Player form</h2>
-              <span className="text-[10.5px] text-muted-foreground">
+              <span className="text-sm text-muted-foreground">
                 Recent settled matches · bars are net results
               </span>
             </div>
@@ -248,7 +248,7 @@ export default function MatchDetail() {
 
           <div className="flex items-start gap-2.5 rounded-2xl border border-primary/20 bg-primary/[0.05] p-4">
             <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-            <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Both stakes stay locked in escrow until a result is confirmed. If a match is cancelled, every stake and
               spectator wager is refunded in full.
             </p>
@@ -271,9 +271,9 @@ export default function MatchDetail() {
           <div className="mt-3 flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3">
             <div className="flex items-center gap-2">
               <CoinMark ticker={match.coin} size="sm" />
-              <span className="nums text-[12.5px] font-semibold">{fmtCoin(match.stake, match.coin)}</span>
+              <span className="nums text-sm font-semibold">{fmtCoin(match.stake, match.coin)}</span>
             </div>
-            <span className="nums text-[11px] text-muted-foreground">≈ {fmtUsd(toUsd(match.stake, match.coin))}</span>
+            <span className="nums text-sm text-muted-foreground">≈ {fmtUsd(toUsd(match.stake, match.coin))}</span>
           </div>
           <MatchChat match={match} user={user} />
         </div>
@@ -287,8 +287,8 @@ function SideCard({ label, handle, odds, profile, active, empty }) {
   return (
     <div className={`rounded-xl border p-4 ${active ? 'border-win/40 bg-win/[0.06]' : 'border-border bg-background/60'}`}>
       <div className="flex items-center justify-between">
-        <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
-        {active ? <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-win">Winner</span> : null}
+        <p className="text-sm uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+        {active ? <span className="text-sm font-bold uppercase tracking-[0.12em] text-win">Winner</span> : null}
       </div>
       <p className={`mt-1.5 truncate text-[14px] font-semibold ${empty ? 'text-muted-foreground' : 'text-foreground'}`}>
         {handle || 'Seat open'}
@@ -307,8 +307,8 @@ function SideCard({ label, handle, odds, profile, active, empty }) {
 function Row({ label, value }) {
   return (
     <div className="flex items-start justify-between gap-6 py-2.5">
-      <dt className="text-[12px] text-muted-foreground">{label}</dt>
-      <dd className="max-w-[60%] text-right text-[12.5px] font-medium text-foreground">{value}</dd>
+      <dt className="text-sm text-muted-foreground">{label}</dt>
+      <dd className="max-w-[60%] text-right text-sm font-medium text-foreground">{value}</dd>
     </div>
   );
 }

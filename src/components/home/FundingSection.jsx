@@ -22,18 +22,18 @@ export default function FundingSection() {
               >
                 <CoinMark ticker={coin.ticker} size="lg" />
                 <div className="min-w-0">
-                  <p className="text-[13.5px] font-semibold text-foreground">
+                  <p className="text-sm font-semibold text-foreground">
                     {coin.name} <span className="text-muted-foreground">·</span>{' '}
                     <span className="nums text-muted-foreground">{coin.ticker}</span>
                   </p>
-                  <p className="mt-0.5 truncate text-[11px] text-muted-foreground">{coin.network}</p>
+                  <p className="mt-0.5 truncate text-sm text-muted-foreground">{coin.network}</p>
                 </div>
               </div>
             ))}
 
             <div className="flex items-start gap-2.5 rounded-xl border border-primary/25 bg-primary/[0.06] px-4 py-3.5 sm:col-span-2">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              <p className="text-[12px] leading-relaxed text-muted-foreground">
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 Deposits credit only after on-chain confirmation and a hash check. Withdrawals are reviewed and released
                 by the operator to the address you nominate.
               </p>

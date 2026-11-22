@@ -62,7 +62,7 @@ export default function WalletPage() {
   return (
     <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Wallet</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Wallet</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">Balances</h1>
       <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-muted-foreground">
         One balance per coin. Stakes move into escrow when you wager and return with winnings on settlement.
@@ -82,12 +82,12 @@ export default function WalletPage() {
             >
               <div className="flex items-center justify-between">
                 <CoinMark ticker={c.ticker} size="sm" />
-                <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{c.ticker}</span>
+                <span className="text-sm uppercase tracking-[0.14em] text-muted-foreground">{c.ticker}</span>
               </div>
               <p className="nums mt-3 text-[17px] font-semibold text-foreground">{fmtCoin(b.available, c.ticker)}</p>
-              <p className="mt-0.5 text-[11px] text-muted-foreground">≈ {fmtUsd(toUsd(b.available, c.ticker))}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">≈ {fmtUsd(toUsd(b.available, c.ticker))}</p>
               {Number(b.locked) > 0 ? (
-                <p className="nums mt-2 inline-flex items-center gap-1 text-[10.5px] text-primary">
+                <p className="nums mt-2 inline-flex items-center gap-1 text-sm text-primary">
                   <Lock className="h-2.5 w-2.5" />
                   {fmtCoin(b.locked, c.ticker)} held
                 </p>
@@ -97,7 +97,7 @@ export default function WalletPage() {
         })}
       </div>
 
-      <p className="mt-4 text-[12px] text-muted-foreground">
+      <p className="mt-4 text-sm text-muted-foreground">
         Total available ≈ <span className="nums font-semibold text-foreground">{fmtUsd(totalUsd)}</span>
       </p>
 
@@ -110,21 +110,21 @@ export default function WalletPage() {
         <section className="rounded-2xl border border-border bg-card">
           <h2 className="border-b border-border px-5 py-4 text-[14px] font-semibold">Deposits & withdrawals</h2>
           {transactions.length === 0 ? (
-            <p className="px-5 py-8 text-[12.5px] text-muted-foreground">No crypto transfers yet.</p>
+            <p className="px-5 py-8 text-sm text-muted-foreground">No crypto transfers yet.</p>
           ) : (
             <ul className="divide-y divide-border/70">
               {transactions.map((t) => (
                 <li key={t.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                   <div className="min-w-0">
-                    <p className="text-[12.5px] font-medium capitalize text-foreground">{t.kind}</p>
-                    <p className="nums truncate text-[10.5px] text-muted-foreground">
+                    <p className="text-sm font-medium capitalize text-foreground">{t.kind}</p>
+                    <p className="nums truncate text-sm text-muted-foreground">
                       {t.tx_hash ? t.tx_hash.slice(0, 18) + '…' : t.address ? t.address.slice(0, 18) + '…' : '—'}
                     </p>
                   </div>
                   <div className="shrink-0 text-right">
-                    <p className="nums text-[12.5px] font-semibold text-foreground">{fmtCoin(t.amount, t.coin)}</p>
+                    <p className="nums text-sm font-semibold text-foreground">{fmtCoin(t.amount, t.coin)}</p>
                     <p
-                      className={`text-[10px] font-semibold uppercase tracking-[0.12em] ${TX_TONE[t.status] || 'text-muted-foreground'}`}
+                      className={`text-sm font-semibold uppercase tracking-[0.12em] ${TX_TONE[t.status] || 'text-muted-foreground'}`}
                     >
                       {String(t.status).replace('_', ' ')}
                     </p>
@@ -138,17 +138,17 @@ export default function WalletPage() {
         <section className="rounded-2xl border border-border bg-card">
           <h2 className="border-b border-border px-5 py-4 text-[14px] font-semibold">Ledger</h2>
           {ledger.length === 0 ? (
-            <p className="px-5 py-8 text-[12.5px] text-muted-foreground">Every stake and payout will appear here.</p>
+            <p className="px-5 py-8 text-sm text-muted-foreground">Every stake and payout will appear here.</p>
           ) : (
             <ul className="divide-y divide-border/70">
               {ledger.map((entry) => (
                 <li key={entry.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                   <div className="min-w-0">
-                    <p className="text-[12.5px] font-medium text-foreground">{KIND_LABEL[entry.kind] || entry.kind}</p>
-                    <p className="truncate text-[10.5px] text-muted-foreground">{entry.description}</p>
+                    <p className="text-sm font-medium text-foreground">{KIND_LABEL[entry.kind] || entry.kind}</p>
+                    <p className="truncate text-sm text-muted-foreground">{entry.description}</p>
                   </div>
                   <p
-                    className={`nums shrink-0 text-[12.5px] font-semibold ${
+                    className={`nums shrink-0 text-sm font-semibold ${
                       Number(entry.amount) < 0 ? 'text-foreground' : 'text-win'
                     }`}
                   >

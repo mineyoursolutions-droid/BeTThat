@@ -43,7 +43,7 @@ export default function PlayerDashboard() {
     <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">My dashboard</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">My dashboard</p>
           <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
             {handle}
           </h1>
@@ -52,7 +52,7 @@ export default function PlayerDashboard() {
               <ReputationBadge profile={data.reputation} />
               <RecordLine profile={data.reputation} />
               {data.spectator.won + data.spectator.lost > 0 ? (
-                <span className="text-[10.5px] text-muted-foreground">
+                <span className="text-sm text-muted-foreground">
                   Spectator bets: {data.spectator.won}W · {data.spectator.lost}L
                 </span>
               ) : null}
@@ -62,7 +62,7 @@ export default function PlayerDashboard() {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             to="/bets"
-            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
           >
             All my wagers
           </Link>
@@ -71,7 +71,7 @@ export default function PlayerDashboard() {
       </div>
 
       {error ? (
-        <div className="mt-8 rounded-2xl border border-live/30 bg-live/[0.06] px-5 py-4 text-[13px] text-live">
+        <div className="mt-8 rounded-2xl border border-live/30 bg-live/[0.06] px-5 py-4 text-sm text-live">
           {error}
         </div>
       ) : !data ? (
@@ -108,12 +108,12 @@ export default function PlayerDashboard() {
           {data.totals.matches === 0 ? (
             <div className="rounded-2xl border border-dashed border-border px-6 py-10 text-center">
               <p className="text-[14px] font-semibold text-foreground">No settled matches yet</p>
-              <p className="mx-auto mt-2 max-w-sm text-[12.5px] leading-relaxed text-muted-foreground">
+              <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
                 Your charts fill in automatically as matches settle.
               </p>
               <Link
                 to="/lobby"
-                className="mt-5 inline-block rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground"
+                className="mt-5 inline-block rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
               >
                 Find a match
               </Link>
@@ -131,9 +131,9 @@ function Panel({ title, hint, children }) {
     <div className="rounded-2xl border border-border bg-card p-5">
       <div className="mb-3 flex items-center gap-2">
         <Activity className="h-3.5 w-3.5 text-primary" />
-        <h2 className="text-[13px] font-semibold">{title}</h2>
+        <h2 className="text-sm font-semibold">{title}</h2>
       </div>
-      {hint ? <p className="mb-3 text-[10.5px] text-muted-foreground">{hint}</p> : null}
+      {hint ? <p className="mb-3 text-sm text-muted-foreground">{hint}</p> : null}
       {children}
     </div>
   );
@@ -141,7 +141,7 @@ function Panel({ title, hint, children }) {
 
 function EmptyChart() {
   return (
-    <p className="grid h-[200px] place-items-center text-center text-[12px] text-muted-foreground">
+    <p className="grid h-[200px] place-items-center text-center text-sm text-muted-foreground">
       Nothing to chart yet.
     </p>
   );

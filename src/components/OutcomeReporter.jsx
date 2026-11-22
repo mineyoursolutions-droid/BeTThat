@@ -46,14 +46,14 @@ export default function OutcomeReporter({ match, user, onChanged }) {
       {match.result_disputed ? (
         <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-live/30 bg-live/[0.06] p-3.5">
           <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-live" />
-          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             You and your opponent reported different winners. An operator will review the evidence and settle manually.
           </p>
         </div>
       ) : match.reported_winner && reportedByMe ? (
         <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-primary/25 bg-primary/[0.05] p-3.5">
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             You reported <span className="font-semibold text-foreground">{nameOf(match.reported_winner)}</span> won. Waiting
             for your opponent to confirm before the pot is released.
           </p>
@@ -61,7 +61,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
       ) : match.reported_winner ? (
         <div className="mt-3">
           <div className="rounded-xl border border-primary/25 bg-primary/[0.05] p-3.5">
-            <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               {match.reported_by_handle || 'Your opponent'} reported{' '}
               <span className="font-semibold text-foreground">{nameOf(match.reported_winner)}</span> won.
             </p>
@@ -71,7 +71,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
               type="button"
               disabled={busy}
               onClick={() => send({ action: 'confirm' })}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-win/10 px-3 py-2 text-[11.5px] font-semibold text-win transition hover:bg-win/20 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-win/10 px-3 py-2 text-sm font-semibold text-win transition hover:bg-win/20 disabled:opacity-50"
             >
               {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
               Confirm and settle
@@ -80,7 +80,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
               type="button"
               disabled={busy}
               onClick={() => send({ action: 'dispute' })}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-[11.5px] font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
             >
               Dispute
             </button>
@@ -88,7 +88,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
         </div>
       ) : (
         <>
-          <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
             Name the winner. If you both report the same player the pot pays out instantly — otherwise an operator settles it.
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2">
@@ -96,7 +96,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
               type="button"
               disabled={busy}
               onClick={() => send({ action: 'report', winner: side })}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-[11.5px] font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-sm font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
             >
               {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
               I won
@@ -105,7 +105,7 @@ export default function OutcomeReporter({ match, user, onChanged }) {
               type="button"
               disabled={busy}
               onClick={() => send({ action: 'report', winner: other })}
-              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-[11.5px] font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
+              className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
             >
               Opponent won
             </button>

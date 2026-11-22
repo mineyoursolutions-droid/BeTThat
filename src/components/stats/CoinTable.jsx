@@ -6,7 +6,7 @@ export default function CoinTable({ byCoin }) {
 
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="grid grid-cols-[1.1fr_repeat(3,1fr)] gap-2 border-b border-border px-4 py-2.5 text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:grid-cols-[1.1fr_repeat(4,1fr)]">
+      <div className="grid grid-cols-[1.1fr_repeat(3,1fr)] gap-2 border-b border-border px-4 py-2.5 text-sm uppercase tracking-[0.14em] text-muted-foreground sm:grid-cols-[1.1fr_repeat(4,1fr)]">
         <span>Coin</span>
         <span className="text-right">Record</span>
         <span className="text-right">Staked</span>
@@ -22,17 +22,17 @@ export default function CoinTable({ byCoin }) {
           >
             <div className="flex items-center gap-2">
               <CoinMark ticker={c.coin} size="sm" />
-              <span className="text-[12px] font-semibold text-foreground">{c.coin}</span>
+              <span className="text-sm font-semibold text-foreground">{c.coin}</span>
             </div>
-            <span className="nums text-right text-[11.5px] text-foreground">
+            <span className="nums text-right text-sm text-foreground">
               {c.wins}W · {c.matches - c.wins}L
             </span>
-            <span className="nums text-right text-[11.5px] text-foreground">{fmtCoin(c.staked, c.coin)}</span>
-            <span className="nums text-right text-[11.5px] text-muted-foreground">
+            <span className="nums text-right text-sm text-foreground">{fmtCoin(c.staked, c.coin)}</span>
+            <span className="nums text-right text-sm text-muted-foreground">
               {c.spectator_staked ? fmtCoin(c.spectator_staked, c.coin) : '—'}
             </span>
             <span
-              className={`nums hidden text-right text-[11.5px] font-semibold sm:block ${
+              className={`nums hidden text-right text-sm font-semibold sm:block ${
                 net >= 0 ? 'text-win' : 'text-live'
               }`}
             >

@@ -62,7 +62,7 @@ function Tab({ to, label, icon: Icon, family, onTap }) {
       to={to}
       onClick={(event) => onTap(event, { to, label, family })}
       aria-current={isActive ? 'page' : undefined}
-      className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg py-2 text-[10px] font-semibold uppercase tracking-[0.1em] transition ${
+      className={`flex min-h-12 flex-col items-center justify-center gap-0.5 rounded-lg py-2 text-sm font-semibold uppercase tracking-[0.05em] transition ${
         isActive ? 'text-primary' : 'text-muted-foreground'
       }`}
     >

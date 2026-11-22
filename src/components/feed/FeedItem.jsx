@@ -41,17 +41,17 @@ export default function FeedItem({ item, index = 0 }) {
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[12.5px] leading-snug text-foreground/90">
+        <span className="block truncate text-sm leading-snug text-foreground/90">
           <span className="font-semibold text-foreground">{lead}</span>
           {rest}
         </span>
-        <span className="mt-0.5 block truncate text-[10.5px] text-muted-foreground">
+        <span className="mt-0.5 block truncate text-sm text-muted-foreground">
           {[item.game, when].filter(Boolean).join(' · ')}
         </span>
       </span>
 
       <span
-        className={`nums shrink-0 pt-0.5 text-[11.5px] font-semibold ${
+        className={`nums shrink-0 pt-0.5 text-sm font-semibold ${
           kind.amount === 'primary' ? 'text-primary' : kind.amount === 'live' ? 'text-live' : 'text-win'
         }`}
       >

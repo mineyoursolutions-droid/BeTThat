@@ -24,7 +24,7 @@ const buttonVariants = cva(
         // Touch targets are at least 44px on mobile (Google Play
         // accessibility), desktop sizes unchanged.
         default: "h-11 px-4 py-2 md:h-9",
-        sm: "h-11 rounded-md px-3 text-xs md:h-8",
+        sm: "h-11 rounded-md px-3 text-sm md:h-8",
         lg: "h-11 rounded-md px-8 md:h-10",
         icon: "h-11 w-11 md:h-9 md:w-9",
       },

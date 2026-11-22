@@ -77,7 +77,7 @@ export default function PropDesk({ signal = 0 }) {
     <div className="space-y-6">
       <div className="rounded-2xl border border-border bg-card p-5">
         <h2 className="text-[14px] font-semibold">Open a prop market</h2>
-        <p className="mt-1 text-[11.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
           Frame the prop as a yes / no question. Spectator stakes are escrowed and settle from the pool.
         </p>
 
@@ -97,14 +97,14 @@ export default function PropDesk({ signal = 0 }) {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="Will the match go the distance? (yes / no)"
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13px] text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
 
           <button
             type="button"
             disabled={busy || !matchId || question.trim().length < 6}
             onClick={create}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[12.5px] font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-50"
           >
             <Plus className="h-3.5 w-3.5" strokeWidth={2.6} />
             Post market
@@ -121,9 +121,9 @@ export default function PropDesk({ signal = 0 }) {
 function MarketGroup({ title, markets, busy, onResolve, resolving }) {
   return (
     <div>
-      <h2 className="text-[11px] uppercase tracking-[0.16em] text-muted-foreground">{title}</h2>
+      <h2 className="text-sm uppercase tracking-[0.16em] text-muted-foreground">{title}</h2>
       {markets.length === 0 ? (
-        <p className="mt-3 rounded-xl border border-dashed border-border px-4 py-6 text-center text-[12px] text-muted-foreground">
+        <p className="mt-3 rounded-xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
           Nothing here yet.
         </p>
       ) : (
@@ -134,13 +134,13 @@ function MarketGroup({ title, markets, busy, onResolve, resolving }) {
               <div key={m.id} className="rounded-xl border border-border bg-card p-4">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold leading-snug text-foreground">{m.question}</p>
-                    <p className="mt-1 truncate text-[11px] text-muted-foreground">
+                    <p className="text-sm font-semibold leading-snug text-foreground">{m.question}</p>
+                    <p className="mt-1 truncate text-sm text-muted-foreground">
                       {m.match_title} · {m.coin} · Yes {fmtCoin(m.yes_pool, m.coin)} / No {fmtCoin(m.no_pool, m.coin)} ·{' '}
                       {m.bettor_count || 0} backers
                     </p>
                   </div>
-                  <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                  <span className="rounded-full border border-border px-2 py-0.5 text-sm font-semibold uppercase tracking-[0.1em] text-muted-foreground">
                     {state.label}
                   </span>
                 </div>
@@ -151,7 +151,7 @@ function MarketGroup({ title, markets, busy, onResolve, resolving }) {
                       type="button"
                       disabled={busy}
                       onClick={() => onResolve(m, 'yes')}
-                      className="rounded-full border border-win/40 bg-win/[0.08] px-3 py-1.5 text-[11.5px] font-semibold text-win transition hover:bg-win/[0.14] disabled:opacity-50"
+                      className="rounded-full border border-win/40 bg-win/[0.08] px-3 py-1.5 text-sm font-semibold text-win transition hover:bg-win/[0.14] disabled:opacity-50"
                     >
                       Pay Yes
                     </button>
@@ -159,7 +159,7 @@ function MarketGroup({ title, markets, busy, onResolve, resolving }) {
                       type="button"
                       disabled={busy}
                       onClick={() => onResolve(m, 'no')}
-                      className="rounded-full border border-live/40 bg-live/[0.08] px-3 py-1.5 text-[11.5px] font-semibold text-live transition hover:bg-live/[0.14] disabled:opacity-50"
+                      className="rounded-full border border-live/40 bg-live/[0.08] px-3 py-1.5 text-sm font-semibold text-live transition hover:bg-live/[0.14] disabled:opacity-50"
                     >
                       Pay No
                     </button>
@@ -167,7 +167,7 @@ function MarketGroup({ title, markets, busy, onResolve, resolving }) {
                       type="button"
                       disabled={busy}
                       onClick={() => onResolve(m, 'void')}
-                      className="rounded-full border border-border px-3 py-1.5 text-[11.5px] font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
+                      className="rounded-full border border-border px-3 py-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground disabled:opacity-50"
                     >
                       Void · refund
                     </button>

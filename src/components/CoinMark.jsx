@@ -22,7 +22,7 @@ export default function CoinMark({ ticker, size = 'md', className = '' }) {
       {ticker === 'BTC' ? (
         <Bitcoin className="h-[60%] w-[60%]" strokeWidth={2.4} />
       ) : (
-        <span className="font-mono text-[13px] font-bold leading-none">{GLYPHS[ticker] || ticker[0]}</span>
+        <span className="font-mono text-sm font-bold leading-none">{GLYPHS[ticker] || ticker[0]}</span>
       )}
     </span>
   );

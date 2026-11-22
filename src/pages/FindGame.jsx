@@ -116,7 +116,7 @@ export default function FindGame() {
       <MobileBackBar to="/lobby" label="Lobby" />
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Matchmaking</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Matchmaking</p>
           <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[40px]">
             Find a game
           </h1>
@@ -127,7 +127,7 @@ export default function FindGame() {
         </div>
         <Link
           to="/lobby"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
+          className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
         >
           Browse the lobby
         </Link>
@@ -137,12 +137,12 @@ export default function FindGame() {
         {!user ? (
           <div className="rounded-2xl border border-dashed border-border px-6 py-10 text-center">
             <p className="text-[14px] font-semibold text-foreground">Sign in to list yourself for a game</p>
-            <p className="mx-auto mt-2 max-w-sm text-[12.5px] leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Anyone can browse who is looking. You need an account to post a stake and share a challenge link.
             </p>
             <Link
               to="/login"
-              className="mt-5 inline-flex rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground"
+              className="mt-5 inline-flex rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
             >
               Sign in
             </Link>
@@ -159,7 +159,7 @@ export default function FindGame() {
           <Swords className="h-4 w-4 text-primary" />
           <h2 className="text-[15px] font-semibold">Looking right now</h2>
           {others.length ? (
-            <span className="nums rounded-full bg-secondary px-2 py-0.5 text-[10.5px] font-semibold text-muted-foreground">
+            <span className="nums rounded-full bg-secondary px-2 py-0.5 text-sm font-semibold text-muted-foreground">
               {others.length}
             </span>
           ) : null}

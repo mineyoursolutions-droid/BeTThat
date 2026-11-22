@@ -11,7 +11,7 @@ export default function TrashTalkComposer({ match, user, onPosted }) {
 
   if (!user) {
     return (
-      <div className="mt-3 rounded-xl border border-dashed border-border px-3.5 py-3 text-[11.5px] text-muted-foreground">
+      <div className="mt-3 rounded-xl border border-dashed border-border px-3.5 py-3 text-sm text-muted-foreground">
         <Link to="/login" className="font-semibold text-primary hover:underline">
           Sign in
         </Link>{' '}
@@ -65,7 +65,7 @@ export default function TrashTalkComposer({ match, user, onPosted }) {
         }}
         maxLength={400}
         placeholder="Talk your talk…"
-        className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-[12.5px] outline-none transition focus:border-primary/50"
+        className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition focus:border-primary/50"
       />
       <button
         type="button"

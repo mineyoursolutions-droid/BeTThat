@@ -33,15 +33,15 @@ export default function GameGrid({ counts }) {
               </div>
 
               <div className="mt-12 sm:mt-14">
-                <p className="truncate text-[13.5px] font-semibold text-foreground">{game.name}</p>
-                <p className="truncate text-[11.5px] text-muted-foreground">{game.subtitle}</p>
+                <p className="truncate text-sm font-semibold text-foreground">{game.name}</p>
+                <p className="truncate text-sm text-muted-foreground">{game.subtitle}</p>
               </div>
 
               <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2.5">
-                <span className="truncate text-[10.5px] uppercase tracking-[0.1em] text-muted-foreground">
+                <span className="truncate text-sm uppercase tracking-[0.1em] text-muted-foreground">
                   {game.platforms.join(' · ')}
                 </span>
-                <span className="nums shrink-0 text-[10.5px] font-semibold text-foreground/80">
+                <span className="nums shrink-0 text-sm font-semibold text-foreground/80">
                   {(counts && counts[game.slug]) || 0}
                 </span>
               </div>

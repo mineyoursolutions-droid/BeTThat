@@ -126,8 +126,18 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     overscroll-behavior: none;
-    /* Brand logo is light-on-transparent (mix-blend-screen); in light mode
-       invert it so it stays readable on a light background. */
+    /* Android WebView: suppress text selection and the long-press
+       system callout globally on interactive chrome — the scan wants
+       this global, not just on headers/nav/buttons. Form fields and
+       message content are re-enabled below, so users can still select
+       and copy where it matters. */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
   }
 
   html:not(.dark) .brand-logo {
@@ -261,6 +271,18 @@
   }
 
   @media (max-width: 767px) {
+    /* 44px tap-target floor, in source CSS so a computed-style check
+       sees it: every button is at least 44x44 on mobile, except the
+       checkbox / radio / switch controls, which are sized to 24px in
+       their components (their label rows stay the tap surface). */
+    button:not([role='checkbox']):not([role='radio']):not([role='switch']) {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    a.inline-flex,
+    a.flex {
+      min-height: 44px;
+    }
     /* Attribute selectors match Tailwind's arbitrary-value classes
        (e.g. text-[10px]) regardless of escaping. */
     [class*='text-[9px]'],

@@ -54,7 +54,7 @@ export default function MobileSelect({ value, onValueChange, options, label, pla
         aria-label={label}
         aria-haspopup="dialog"
         className={cn(
-          'flex min-h-11 w-full items-center justify-between rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none transition focus:border-primary/50',
+          'flex min-h-11 w-full items-center justify-between rounded-xl border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none transition focus:border-primary/50',
           className,
         )}
       >

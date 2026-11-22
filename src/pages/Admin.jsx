@@ -31,11 +31,11 @@ export default function Admin() {
       <div className="mx-auto max-w-lg px-5 py-24 text-center">
         <ShieldAlert className="mx-auto h-7 w-7 text-muted-foreground" />
         <h1 className="mt-4 text-[24px] font-extrabold">Operators only</h1>
-        <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Settling matches and releasing payouts needs an operator account. Ask the app owner to give your account the
           admin role.
         </p>
-        <Link to="/lobby" className="mt-6 inline-block rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold">
+        <Link to="/lobby" className="mt-6 inline-block rounded-full border border-border px-4 py-2.5 text-sm font-semibold">
           Back to the lobby
         </Link>
       </div>
@@ -48,7 +48,7 @@ export default function Admin() {
     <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Operator desk</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Operator desk</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
         Settle the book
       </h1>
@@ -59,7 +59,7 @@ export default function Admin() {
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition md:min-h-0 ${
+            className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition md:min-h-0 ${
               tab === id ? 'border-primary/40 bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -69,14 +69,14 @@ export default function Admin() {
         ))}
         <Link
           to="/crypto-settings"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground md:min-h-0"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-sm font-semibold text-muted-foreground transition hover:text-foreground md:min-h-0"
         >
           <Wallet className="h-3.5 w-3.5" />
           Crypto settings
         </Link>
       </div>
 
-      <p className="mt-4 max-w-xl text-[12.5px] leading-relaxed text-muted-foreground">{active.blurb}</p>
+      <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">{active.blurb}</p>
 
       <div className="mt-6">
         {tab === 'transfers' && <ReviewQueue signal={signal} />}

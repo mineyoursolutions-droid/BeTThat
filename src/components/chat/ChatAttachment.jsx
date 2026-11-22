@@ -20,7 +20,7 @@ export default function ChatAttachment({ uri, kind }) {
     };
   }, [uri]);
 
-  if (failed) return <p className="text-[10.5px] italic text-muted-foreground">Attachment unavailable</p>;
+  if (failed) return <p className="text-sm italic text-muted-foreground">Attachment unavailable</p>;
 
   if (!url) return <div className="h-24 w-40 animate-pulse rounded-lg bg-secondary" />;
 

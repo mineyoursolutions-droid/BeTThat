@@ -29,11 +29,11 @@ export default function StatCards({ totals, stakedUsd, netUsd }) {
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {cards.map((c) => (
         <div key={c.label} className="rounded-2xl border border-border bg-card p-4">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">{c.label}</p>
+          <p className="text-sm uppercase tracking-[0.16em] text-muted-foreground">{c.label}</p>
           <p className={`nums mt-2 text-[22px] font-bold tracking-[-0.03em] ${c.tone || 'text-foreground'}`}>
             {c.value}
           </p>
-          <p className="mt-1 text-[10.5px] text-muted-foreground">{c.hint}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{c.hint}</p>
         </div>
       ))}
     </div>

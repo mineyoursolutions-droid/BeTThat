@@ -94,8 +94,8 @@ export default function RoomBoard({ user, signal }) {
         ) : (
           <div className="rounded-2xl border border-dashed border-border bg-card/60 p-8 text-center">
             <Radio className="mx-auto h-5 w-5 text-muted-foreground" />
-            <p className="mt-3 text-[13px] font-semibold text-foreground">No rooms on this console yet</p>
-            <p className="mt-1 text-[11.5px] text-muted-foreground">
+            <p className="mt-3 text-sm font-semibold text-foreground">No rooms on this console yet</p>
+            <p className="mt-1 text-sm text-muted-foreground">
               Open one and your opponent can take the seat in seconds.
             </p>
           </div>
@@ -110,7 +110,7 @@ function Chip({ active, onClick, children }) {
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full border px-3 py-1.5 text-[11.5px] font-semibold transition ${
+      className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition ${
         active ? 'border-primary/50 bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground'
       }`}
     >

@@ -14,7 +14,7 @@ export default function StatsStrip() {
         {STATS.map((stat, i) => (
           <div key={stat.label} className={`px-1 py-7 md:px-6 ${i > 1 ? 'border-t border-border md:border-t-0' : ''}`}>
             <p className="nums text-[19px] font-semibold text-foreground sm:text-[22px]">{stat.value}</p>
-            <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</p>
+            <p className="mt-1 text-sm uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</p>
           </div>
         ))}
       </div>

@@ -59,13 +59,13 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
     return (
       <div className="rounded-2xl border border-border bg-card p-6">
         <h3 className="text-[15px] font-semibold">Take a side</h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Sign in to accept the challenge or back a player from the sideline.
         </p>
         <button
           type="button"
           onClick={() => navigateToLogin()}
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-[13px] font-semibold text-primary-foreground transition hover:brightness-105"
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105"
         >
           Sign in to wager
           <ArrowRight className="h-4 w-4" />
@@ -81,12 +81,12 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
         <h3 className="text-[15px] font-semibold">
           {match.status === 'cancelled' ? 'Match cancelled' : won ? 'You took this one' : 'Match settled'}
         </h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           {match.settle_note || 'The result has been verified and every stake released.'}
         </p>
         <Link
           to="/bets"
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-3 text-[13px] font-semibold transition hover:border-primary/40 hover:text-primary"
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-4 py-3 text-sm font-semibold transition hover:border-primary/40 hover:text-primary"
         >
           Review my wagers
         </Link>
@@ -98,7 +98,7 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
     <div className="rounded-2xl border border-border bg-card">
       <div className="border-b border-border px-5 py-4">
         <h3 className="text-[15px] font-semibold">Take a side</h3>
-        <p className="mt-1 text-[12px] text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           Balance available <span className="nums font-semibold text-foreground">{fmtCoin(balance, match.coin)}</span>
         </p>
       </div>
@@ -106,10 +106,10 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
       <div className="space-y-4 p-5">
         {pending ? (
           <div className="rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-3" aria-live="polite">
-            <p className="text-[12px] font-semibold text-primary">
+            <p className="text-sm font-semibold text-primary">
               Locking your {pending.kind === 'player' ? 'challenge stake' : 'wager'}…
             </p>
-            <p className="mt-0.5 text-[11.5px] text-muted-foreground">
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {fmtCoin(pending.amount, pending.coin)} on the {pending.side} side — confirming with the escrow.
             </p>
           </div>
@@ -119,7 +119,7 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
             type="button"
             disabled={busy}
             onClick={() => place({ kind: 'player', side: 'challenger' })}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-[13px] font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
           >
             <Swords className="h-4 w-4" />
             {busy ? 'Locking stake…' : `Accept · ${fmtCoin(match.stake, match.coin)}`}
@@ -127,15 +127,15 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
         )}
 
         {match.status === 'open' && !match.challenger_id && !isCreator && (
-          <p className="text-center text-[11.5px] text-muted-foreground">
+          <p className="text-center text-sm text-muted-foreground">
             Accepting matches the creator's stake exactly.
           </p>
         )}
 
         {match.status === 'open' && !match.challenger_id && isCreator && (
           <div className="rounded-xl border border-border/80 bg-background/60 px-4 py-3">
-            <p className="text-[12px] font-semibold text-foreground">Waiting for a challenger</p>
-            <p className="mt-1 text-[11.5px] leading-relaxed text-muted-foreground">
+            <p className="text-sm font-semibold text-foreground">Waiting for a challenger</p>
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
               Your {fmtCoin(match.stake, match.coin)} is escrowed until someone accepts.
             </p>
           </div>
@@ -158,17 +158,17 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
                       : 'border-border hover:border-border/80'
                   }`}
                 >
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                  <p className="text-sm uppercase tracking-[0.14em] text-muted-foreground">
                     {s.id === 'creator' ? 'Creator' : 'Challenger'}
                   </p>
-                  <p className="mt-1 truncate text-[12px] font-semibold text-foreground">{s.label}</p>
-                  <p className="nums mt-1 text-[13px] font-semibold text-primary">{odds[s.id].toFixed(2)}</p>
+                  <p className="mt-1 truncate text-sm font-semibold text-foreground">{s.label}</p>
+                  <p className="nums mt-1 text-sm font-semibold text-primary">{odds[s.id].toFixed(2)}</p>
                 </button>
               ))}
             </div>
 
             <div>
-              <label className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Amount</label>
+              <label className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Amount</label>
               <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-input bg-background px-3 py-2.5">
                 <CoinMark ticker={match.coin} size="sm" />
                 <input
@@ -180,13 +180,13 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
                   placeholder="0.00"
                   className="nums w-full bg-transparent text-[14px] font-semibold text-foreground outline-none placeholder:text-muted-foreground/60"
                 />
-                <span className="text-[11px] font-semibold text-muted-foreground">{match.coin}</span>
+                <span className="text-sm font-semibold text-muted-foreground">{match.coin}</span>
               </div>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/60 px-3 py-2.5">
-              <span className="text-[11.5px] text-muted-foreground">Projected return</span>
-              <span className="nums text-[12.5px] font-semibold text-win">
+              <span className="text-sm text-muted-foreground">Projected return</span>
+              <span className="nums text-sm font-semibold text-win">
                 {fmtCoin(projectedPayout(match, side, amount), match.coin)}
               </span>
             </div>
@@ -195,13 +195,13 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
               type="button"
               disabled={busy || !(Number(amount) > 0)}
               onClick={() => place({ kind: 'spectator', side, amount: Number(amount), coin: match.coin })}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-3 text-[13px] font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-primary/40 bg-primary/[0.08] px-4 py-3 text-sm font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
             >
               <Lock className="h-4 w-4" />
               {busy ? 'Locking wager…' : 'Back this side'}
             </button>
 
-            <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
+            <p className="text-center text-sm leading-relaxed text-muted-foreground">
               Spectator pool settles in {match.coin} · 5% operator fee on the pool
             </p>
           </div>
@@ -209,7 +209,7 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
 
         {!canSpectate && !canAccept && (
           <div className="rounded-xl border border-border/80 bg-background/60 px-4 py-3">
-            <p className="flex items-center gap-2 text-[12px] text-muted-foreground">
+            <p className="flex items-center gap-2 text-sm text-muted-foreground">
               <Wallet className="h-3.5 w-3.5" />
               Wagering is closed on this match.
             </p>

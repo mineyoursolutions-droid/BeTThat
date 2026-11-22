@@ -51,8 +51,8 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
   return (
     <div className="no-select rounded-xl border border-border bg-background/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <p className="max-w-[85%] text-[13px] font-semibold leading-snug text-foreground">{market.question}</p>
-        <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${TONES[state.tone]}`}>
+        <p className="max-w-[85%] text-sm font-semibold leading-snug text-foreground">{market.question}</p>
+        <span className={`rounded-full border px-2 py-0.5 text-sm font-semibold uppercase tracking-[0.1em] ${TONES[state.tone]}`}>
           {state.label}
         </span>
       </div>
@@ -61,7 +61,7 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
         <div className="h-full bg-win" style={{ width: `${split}%` }} />
         <div className="h-full bg-live/70" style={{ width: `${100 - split}%` }} />
       </div>
-      <div className="mt-1.5 flex items-center justify-between text-[10.5px] font-semibold">
+      <div className="mt-1.5 flex items-center justify-between text-sm font-semibold">
         <span className="text-win">Yes · {fmtCoin(yes, market.coin)}</span>
         <span className="text-live/90">No · {fmtCoin(no, market.coin)}</span>
       </div>
@@ -71,7 +71,7 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
           {bets.map((b) => (
             <span
               key={b.id}
-              className="rounded-md border border-border bg-card px-2 py-1 text-[10.5px] text-muted-foreground"
+              className="rounded-md border border-border bg-card px-2 py-1 text-sm text-muted-foreground"
             >
               <span className="nums font-semibold text-foreground">{fmtCoin(b.amount, market.coin)}</span> on{' '}
               {b.side === 'yes' ? 'Yes' : 'No'} · {b.status}
@@ -93,8 +93,8 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
                   side === s ? 'border-primary/50 bg-primary/[0.08]' : 'border-border hover:border-border/80'
                 }`}
               >
-                <p className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{s === 'yes' ? 'Yes' : 'No'}</p>
-                <p className="nums text-[13px] font-semibold text-primary">{odds[s].toFixed(2)}</p>
+                <p className="text-sm uppercase tracking-[0.14em] text-muted-foreground">{s === 'yes' ? 'Yes' : 'No'}</p>
+                <p className="nums text-sm font-semibold text-primary">{odds[s].toFixed(2)}</p>
               </button>
             ))}
           </div>
@@ -108,12 +108,12 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
-              className="nums w-full bg-transparent text-[13px] font-semibold text-foreground outline-none placeholder:text-muted-foreground/60"
+              className="nums w-full bg-transparent text-sm font-semibold text-foreground outline-none placeholder:text-muted-foreground/60"
             />
-            <span className="text-[10.5px] font-semibold text-muted-foreground">{market.coin}</span>
+            <span className="text-sm font-semibold text-muted-foreground">{market.coin}</span>
           </div>
 
-          <div className="flex items-center justify-between text-[10.5px] text-muted-foreground">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
             <span>Available {fmtCoin(balance, market.coin)}</span>
             <span>{market.bettor_count || 0} backers</span>
           </div>
@@ -122,7 +122,7 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
             type="button"
             disabled={busy || !(Number(amount) > 0)}
             onClick={place}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/[0.08] px-3 py-2 text-[12px] font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/[0.08] px-3 py-2 text-sm font-semibold text-primary transition hover:bg-primary/[0.14] disabled:opacity-50"
           >
             <Lock className="h-3.5 w-3.5" />
             {busy ? 'Locking…' : `Back ${side === 'yes' ? 'Yes' : 'No'}`}

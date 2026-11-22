@@ -40,7 +40,7 @@ export default function TrashTalk({ match, user }) {
           <Flame className="h-4 w-4 text-live" />
           <h2 className="text-[14px] font-semibold">Trash talk</h2>
         </div>
-        <span className="text-[10.5px] text-muted-foreground">Players and spectators · keep it about the match</span>
+        <span className="text-sm text-muted-foreground">Players and spectators · keep it about the match</span>
       </div>
 
       <div className="mt-4 max-h-[280px] space-y-2 overflow-y-auto">
@@ -50,7 +50,7 @@ export default function TrashTalk({ match, user }) {
             <div className="h-12 w-3/4 animate-pulse rounded-xl bg-secondary" />
           </>
         ) : posts.length === 0 ? (
-          <p className="py-6 text-center text-[12px] leading-relaxed text-muted-foreground">
+          <p className="py-6 text-center text-sm leading-relaxed text-muted-foreground">
             No banter yet. Set the tone before the first round drops.
           </p>
         ) : (

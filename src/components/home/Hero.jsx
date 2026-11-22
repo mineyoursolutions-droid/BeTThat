@@ -36,7 +36,7 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-live opacity-60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-live" />
             </span>
-            <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            <span className="text-sm font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               PS5 · Xbox · Switch · 46 regions
             </span>
           </div>
@@ -70,7 +70,7 @@ export default function Hero() {
 
           <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3">
             {TRUST.map(({ icon: Icon, label }) => (
-              <li key={label} className="inline-flex items-center gap-2 text-[12.5px] text-muted-foreground">
+              <li key={label} className="inline-flex items-center gap-2 text-sm text-muted-foreground">
                 <Icon className="h-3.5 w-3.5 text-primary" />
                 {label}
               </li>

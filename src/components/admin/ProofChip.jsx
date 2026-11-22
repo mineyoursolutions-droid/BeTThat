@@ -9,7 +9,7 @@ export default function ProofChip({ label, uri, kind }) {
 
   if (!uri) {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5 text-[10.5px] text-muted-foreground">
+      <span className="inline-flex items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5 text-sm text-muted-foreground">
         {label || '—'}: no proof
       </span>
     );
@@ -33,7 +33,7 @@ export default function ProofChip({ label, uri, kind }) {
       type="button"
       onClick={open}
       disabled={busy}
-      className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[10.5px] font-semibold text-foreground transition hover:border-primary/40 disabled:opacity-50"
+      className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-sm font-semibold text-foreground transition hover:border-primary/40 disabled:opacity-50"
     >
       {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : kind === 'video' ? <FileVideo className="h-3 w-3" /> : <FileImage className="h-3 w-3" />}
       {label || '—'}: view {kind || 'proof'}

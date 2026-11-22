@@ -7,7 +7,7 @@ export default function ReputationBadge({ profile, className = '' }) {
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] ${styles} ${className}`}
+      className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-sm font-bold uppercase tracking-[0.08em] ${styles} ${className}`}
       title={
         stats.matches
           ? `${stats.won}W · ${stats.lost}L · ${stats.disputes} disputed of ${stats.matches} settled`
@@ -24,7 +24,7 @@ export function RecordLine({ profile, className = '' }) {
   const stats = reputationSummary(profile);
   if (!stats.matches) return null;
   return (
-    <p className={`text-[10.5px] text-muted-foreground ${className}`}>
+    <p className={`text-sm text-muted-foreground ${className}`}>
       <span className="nums font-semibold text-foreground">{stats.won}W</span>
       <span className="mx-1 text-border">·</span>
       <span className="nums font-semibold text-foreground">{stats.lost}L</span>

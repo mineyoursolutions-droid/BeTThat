@@ -52,7 +52,7 @@ export default function SettlementQueue({ signal = 0 }) {
 
   if (matches === null) return <div className="h-24 animate-pulse rounded-xl border border-border bg-card" />;
   if (matches.length === 0) {
-    return <p className="rounded-xl border border-dashed border-border px-5 py-10 text-center text-[12.5px] text-muted-foreground">Nothing to settle right now.</p>;
+    return <p className="rounded-xl border border-dashed border-border px-5 py-10 text-center text-sm text-muted-foreground">Nothing to settle right now.</p>;
   }
 
   return (
@@ -63,13 +63,13 @@ export default function SettlementQueue({ signal = 0 }) {
           <div key={m.id} className="rounded-xl border border-border bg-card px-4 py-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <Link to={`/match/${m.id}`} className="min-w-0">
-                <p className="truncate text-[12.5px] font-semibold text-foreground">
-                  <span className="mr-2 rounded border border-border px-1 py-0.5 font-mono text-[9px] text-muted-foreground">
+                <p className="truncate text-sm font-semibold text-foreground">
+                  <span className="mr-2 rounded border border-border px-1 py-0.5 font-mono text-sm text-muted-foreground">
                     {game.monogram}
                   </span>
                   {m.title}
                 </p>
-                <p className="mt-1 text-[10.5px] text-muted-foreground">
+                <p className="mt-1 text-sm text-muted-foreground">
                   {m.creator_handle} vs {m.challenger_handle || 'open seat'} · {fmtCoin(m.stake, m.coin)}
                 </p>
               </Link>
@@ -77,7 +77,7 @@ export default function SettlementQueue({ signal = 0 }) {
                 type="button"
                 disabled={busyId === m.id}
                 onClick={() => cancel(m)}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-sm font-semibold text-muted-foreground transition hover:text-live disabled:opacity-50"
               >
                 <RotateCcw className="h-3 w-3" />
                 Refund
@@ -90,7 +90,7 @@ export default function SettlementQueue({ signal = 0 }) {
             </div>
 
             {m.reported_winner ? (
-              <p className={`mt-2 text-[10.5px] ${m.result_disputed ? 'text-live' : 'text-primary'}`}>
+              <p className={`mt-2 text-sm ${m.result_disputed ? 'text-live' : 'text-primary'}`}>
                 {m.reported_by_handle || 'A player'} reported{' '}
                 {m.reported_winner === 'creator' ? m.creator_handle : m.challenger_handle} won
                 {m.result_disputed ? ' · disputed' : ' · awaiting confirmation'}
@@ -103,7 +103,7 @@ export default function SettlementQueue({ signal = 0 }) {
                   type="button"
                   disabled={busyId === m.id}
                   onClick={() => settle(m, 'creator')}
-                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-[11.5px] font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary/10 px-3 py-2 text-sm font-semibold text-primary transition hover:bg-primary/20 disabled:opacity-50"
                 >
                   {busyId === m.id ? <Loader2 className="h-3 w-3 animate-spin" /> : null}
                   {m.creator_handle} won
@@ -112,13 +112,13 @@ export default function SettlementQueue({ signal = 0 }) {
                   type="button"
                   disabled={busyId === m.id}
                   onClick={() => settle(m, 'challenger')}
-                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-win/10 px-3 py-2 text-[11.5px] font-semibold text-win transition hover:bg-win/20 disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-win/10 px-3 py-2 text-sm font-semibold text-win transition hover:bg-win/20 disabled:opacity-50"
                 >
                   {m.challenger_handle} won
                 </button>
               </div>
             ) : (
-              <p className="mt-3 text-[11px] text-muted-foreground">Waiting for a challenger — only a refund applies.</p>
+              <p className="mt-3 text-sm text-muted-foreground">Waiting for a challenger — only a refund applies.</p>
             )}
           </div>
         );

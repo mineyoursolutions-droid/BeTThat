@@ -32,10 +32,10 @@ export default function ActivityFeed() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-win opacity-75" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-win" />
               </span>
-              <span className="text-[9.5px] font-bold uppercase tracking-[0.12em] text-win">Live</span>
+              <span className="text-sm font-bold uppercase tracking-[0.12em] text-win">Live</span>
             </span>
           </div>
-          <p className="mt-2.5 text-[11.5px] leading-relaxed text-muted-foreground">
+          <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">
             Every result, open challenge and spectator wager, as it lands.
           </p>
         </div>
@@ -55,8 +55,8 @@ export default function ActivityFeed() {
             </div>
           ) : items.length === 0 ? (
             <div className="px-5 py-10 text-center">
-              <p className="text-[13px] font-semibold text-foreground">The wire is quiet.</p>
-              <p className="mt-1.5 text-[11.5px] leading-relaxed text-muted-foreground">
+              <p className="text-sm font-semibold text-foreground">The wire is quiet.</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 Post a challenge or back a side and it shows up here.
               </p>
             </div>

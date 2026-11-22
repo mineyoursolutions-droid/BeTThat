@@ -141,7 +141,7 @@ export default function DepositCard({ addresses = [], preferredCoin, onSubmitted
       </h3>
 
       {!pairs.length ? (
-        <p className="mt-3 text-[11.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           No deposit address is active yet. Payments cannot be created until an operator publishes a coin and network in
           crypto settings.
         </p>

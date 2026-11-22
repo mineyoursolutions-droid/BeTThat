@@ -70,7 +70,7 @@ export default function DeleteAccount({ className }) {
           aria-label="Delete my account"
           className={
             className ||
-            'inline-flex min-h-9 items-center gap-1.5 rounded-full border border-destructive/40 px-3 py-1.5 text-[12px] font-semibold text-destructive transition hover:bg-destructive/10'
+            'inline-flex min-h-9 items-center gap-1.5 rounded-full border border-destructive/40 px-3 py-1.5 text-sm font-semibold text-destructive transition hover:bg-destructive/10'
           }
         >
           <Trash2 className="h-3.5 w-3.5" />
@@ -88,13 +88,13 @@ export default function DeleteAccount({ className }) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="space-y-2">
-          <p className="text-[12px] leading-relaxed text-muted-foreground">
+          <p className="text-sm leading-relaxed text-muted-foreground">
             If you still have open wagers, locked escrow funds or an unsettled match, deletion is
             blocked until those are settled or withdrawn — the app will tell you what is still open.
             Your platform sign-in itself is removed by signing out here; to erase the underlying
             Base44 identity, contact support after this step.
           </p>
-          <label className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          <label className="block text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             Type DELETE to confirm
           </label>
           <input
@@ -102,7 +102,7 @@ export default function DeleteAccount({ className }) {
             onChange={(e) => setConfirm(e.target.value)}
             placeholder="DELETE"
             autoComplete="off"
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] font-semibold tracking-widest text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-destructive/60"
+            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm font-semibold tracking-widest text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-destructive/60"
           />
         </div>
         <AlertDialogFooter>

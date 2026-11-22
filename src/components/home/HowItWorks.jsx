@@ -39,10 +39,10 @@ export default function HowItWorks() {
                 <span className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-background/70 text-primary">
                   <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
                 </span>
-                <span className="nums text-[11px] font-semibold tracking-[0.2em] text-muted-foreground/60">{step}</span>
+                <span className="nums text-sm font-semibold tracking-[0.2em] text-muted-foreground/60">{step}</span>
               </div>
               <h3 className="mt-6 text-[16px] font-semibold text-foreground">{title}</h3>
-              <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{body}</p>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
             </div>
           ))}
         </div>

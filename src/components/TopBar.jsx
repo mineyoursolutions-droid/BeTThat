@@ -60,7 +60,7 @@ export default function TopBar() {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `rounded-lg px-3 py-2 text-[13px] font-medium transition ${
+                `rounded-lg px-3 py-2 text-sm font-medium transition ${
                   isActive ? 'bg-secondary text-foreground' : 'text-muted-foreground hover:text-foreground'
                 }`
               }
@@ -72,7 +72,7 @@ export default function TopBar() {
             <NavLink
               to="/admin"
               className={({ isActive }) =>
-                `inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[13px] font-medium transition ${
+                `inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition ${
                   isActive ? 'bg-secondary text-primary' : 'text-muted-foreground hover:text-primary'
                 }`
               }
@@ -91,20 +91,20 @@ export default function TopBar() {
                 className="hidden items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 transition hover:border-primary/40 sm:flex"
               >
                 <CoinMark ticker="USDT" size="sm" />
-                <span className="nums text-[12.5px] font-semibold text-foreground">{fmtUsd(total)}</span>
+                <span className="nums text-sm font-semibold text-foreground">{fmtUsd(total)}</span>
                 <span className="h-3.5 w-px bg-border" />
-                <span className="text-[12px] font-semibold text-primary">Fund</span>
+                <span className="text-sm font-semibold text-primary">Fund</span>
               </Link>
 
               <Link
                 to="/create"
-                className="hidden items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-[12.5px] font-semibold text-primary-foreground transition hover:brightness-105 sm:flex"
+                className="hidden items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-105 sm:flex"
               >
                 <Plus className="h-3.5 w-3.5" strokeWidth={2.6} />
                 Post
               </Link>
 
-              <span className="hidden max-w-[110px] truncate text-[12.5px] font-semibold text-foreground lg:block">
+              <span className="hidden max-w-[110px] truncate text-sm font-semibold text-foreground lg:block">
                 {handle}
               </span>
               <button
@@ -116,7 +116,7 @@ export default function TopBar() {
               >
                 {theme === 'light' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
               </button>
-              <DeleteAccount className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-[11px] font-semibold text-destructive transition hover:bg-destructive/10 md:min-h-0 md:h-8" />
+              <DeleteAccount className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-destructive/40 px-2.5 text-sm font-semibold text-destructive transition hover:bg-destructive/10 md:min-h-0 md:h-8" />
               <button
                 type="button"
                 onClick={() => logout()}
@@ -130,14 +130,14 @@ export default function TopBar() {
             <>
               <Link
                 to="/create"
-                className="hidden items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-[12.5px] font-semibold text-primary-foreground transition hover:brightness-105 sm:flex"
+                className="hidden items-center gap-1.5 rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground transition hover:brightness-105 sm:flex"
               >
                 <Plus className="h-3.5 w-3.5" strokeWidth={2.6} />
                 Post a challenge
               </Link>
               <Link
                 to="/login"
-                className="rounded-full border border-border px-3.5 py-2 text-[12.5px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
+                className="rounded-full border border-border px-3.5 py-2 text-sm font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
               >
                 Sign in
               </Link>

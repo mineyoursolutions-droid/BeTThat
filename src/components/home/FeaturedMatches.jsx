@@ -31,7 +31,7 @@ export default function FeaturedMatches({ matches }) {
             key={f.id}
             type="button"
             onClick={() => setFilter(f.id)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition ${
+            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
               filter === f.id
                 ? 'border-primary/40 bg-primary/10 text-primary'
                 : 'border-border text-muted-foreground hover:text-foreground'
@@ -51,12 +51,12 @@ export default function FeaturedMatches({ matches }) {
       ) : shown.length === 0 ? (
         <div className="mt-5 rounded-2xl border border-dashed border-border px-6 py-14 text-center">
           <p className="text-[15px] font-semibold text-foreground">The book is empty in this filter.</p>
-          <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
             Post the first challenge and set the stake yourself.
           </p>
           <Link
             to="/create"
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground"
+            className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
           >
             <Plus className="h-4 w-4" strokeWidth={2.6} />
             Post a challenge
@@ -70,7 +70,7 @@ export default function FeaturedMatches({ matches }) {
         </div>
       )}
 
-      <Link to="/lobby" className="group mt-8 inline-flex items-center gap-2 text-[13px] font-semibold text-primary">
+      <Link to="/lobby" className="group mt-8 inline-flex items-center gap-2 text-sm font-semibold text-primary">
         See all matches
         <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
       </Link>

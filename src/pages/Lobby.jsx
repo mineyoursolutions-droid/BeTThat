@@ -36,7 +36,7 @@ export default function Lobby() {
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">The lobby</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">The lobby</p>
           <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[40px]">
             Open stakes
           </h1>
@@ -47,13 +47,13 @@ export default function Lobby() {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             to="/find"
-            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
+            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-semibold text-foreground transition hover:border-primary/40 hover:text-primary"
           >
             Find a game
           </Link>
           <Link
             to="/create"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground transition hover:brightness-105"
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition hover:brightness-105"
           >
             <Plus className="h-4 w-4" strokeWidth={2.6} />
             Post a challenge
@@ -84,12 +84,12 @@ export default function Lobby() {
           ) : shown.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border px-6 py-16 text-center">
               <p className="text-[15px] font-semibold text-foreground">No matches in this filter yet.</p>
-              <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted-foreground">
+              <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
                 Be the first to post a challenge for this title and set the stake yourself.
               </p>
               <Link
                 to="/create"
-                className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
               >
                 <Plus className="h-4 w-4" strokeWidth={2.6} />
                 Post a challenge

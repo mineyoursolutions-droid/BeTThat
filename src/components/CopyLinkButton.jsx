@@ -19,7 +19,7 @@ export default function CopyLinkButton({ matchId, label = 'Copy invite link' }) 
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+      className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-sm font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
     >
       {copied ? <Check className="h-3 w-3" /> : <Link2 className="h-3 w-3" />}
       {copied ? 'Copied' : label}

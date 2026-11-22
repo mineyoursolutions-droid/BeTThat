@@ -7,7 +7,7 @@ export default function MatchSide({ player, label, odds }) {
         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-dashed border-border">
           <Plus className="h-3.5 w-3.5" />
         </span>
-        <span className="truncate text-[12px] font-medium">{label || 'Challenger open'}</span>
+        <span className="truncate text-sm font-medium">{label || 'Challenger open'}</span>
       </div>
     );
   }
@@ -18,10 +18,10 @@ export default function MatchSide({ player, label, odds }) {
         <UserRound className="h-3.5 w-3.5" />
       </span>
       <span className="min-w-0">
-        <span className="block truncate text-[12px] font-semibold text-foreground">{player.handle}</span>
-        <span className="nums block text-[10px] text-muted-foreground">{player.record}</span>
+        <span className="block truncate text-sm font-semibold text-foreground">{player.handle}</span>
+        <span className="nums block text-sm text-muted-foreground">{player.record}</span>
       </span>
-      {odds ? <span className="nums ml-auto text-[11px] font-semibold text-primary">{odds.toFixed(2)}</span> : null}
+      {odds ? <span className="nums ml-auto text-sm font-semibold text-primary">{odds.toFixed(2)}</span> : null}
     </div>
   );
 }

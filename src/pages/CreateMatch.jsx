@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
 import MobileSelect from '@/components/mobile/MobileSelect';
+import MobileDateTimePicker from '@/components/mobile/MobileDateTimePicker';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
 import { COINS, GAMES, fmtCoin } from '@/lib/demo';
 
@@ -60,7 +61,7 @@ export default function CreateMatch() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">New challenge</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">New challenge</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
         Set your terms
       </h1>
@@ -84,7 +85,7 @@ export default function CreateMatch() {
             value={form.title}
             onChange={set('title')}
             placeholder="Search & Destroy · Best of 7"
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </Field>
 
@@ -94,7 +95,7 @@ export default function CreateMatch() {
             value={form.ruleset}
             onChange={set('ruleset')}
             placeholder="CDL ruleset, no restricted weapons, host decided by coin flip."
-            className="w-full resize-none rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="w-full resize-none rounded-xl border border-input bg-background px-3 py-2.5 text-sm leading-relaxed text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </Field>
 
@@ -125,7 +126,7 @@ export default function CreateMatch() {
                   key={c.ticker}
                   type="button"
                   onClick={() => setForm((f) => ({ ...f, coin: c.ticker }))}
-                  className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-[11px] font-semibold transition ${
+                  className={`flex flex-col items-center gap-1 rounded-xl border px-2 py-2.5 text-sm font-semibold transition ${
                     form.coin === c.ticker
                       ? 'border-primary/50 bg-primary/10 text-primary'
                       : 'border-border text-muted-foreground hover:text-foreground'
@@ -149,29 +150,28 @@ export default function CreateMatch() {
                 value={form.stake}
                 onChange={set('stake')}
                 placeholder="0.00"
-                className="nums w-full bg-transparent text-[13.5px] font-semibold text-foreground outline-none placeholder:text-muted-foreground/60"
+                className="nums w-full bg-transparent text-sm font-semibold text-foreground outline-none placeholder:text-muted-foreground/60"
               />
-              <span className="text-[11px] font-semibold text-muted-foreground">{form.coin}</span>
+              <span className="text-sm font-semibold text-muted-foreground">{form.coin}</span>
             </div>
-            <p className="mt-1.5 text-[11px] text-muted-foreground">
+            <p className="mt-1.5 text-sm text-muted-foreground">
               Available {fmtCoin(balance, form.coin)}
             </p>
           </Field>
         </div>
 
         <Field label="Scheduled start (optional)">
-          <input
-            type="datetime-local"
+          <MobileDateTimePicker
+            label="Scheduled start"
             value={form.starts_at}
-            onChange={set('starts_at')}
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
+            onChange={(v) => setForm((f) => ({ ...f, starts_at: v }))}
           />
         </Field>
 
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-[13.5px] font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
         >
           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" strokeWidth={2.6} />}
           {busy ? 'Locking stake…' : 'Post challenge'}
@@ -184,7 +184,7 @@ export default function CreateMatch() {
 function Field({ label, children }) {
   return (
     <div>
-      <label className="mb-1.5 block text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</label>
+      <label className="mb-1.5 block text-sm uppercase tracking-[0.14em] text-muted-foreground">{label}</label>
       {children}
     </div>
   );

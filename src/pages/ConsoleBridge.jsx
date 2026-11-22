@@ -27,7 +27,7 @@ export default function ConsoleBridge() {
     <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
-      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Console bridge</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Console bridge</p>
       <h1 className="mt-2.5 max-w-2xl text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[40px]">
         Both cues, one room
       </h1>
@@ -38,7 +38,7 @@ export default function ConsoleBridge() {
 
       <div className="mt-5 flex items-start gap-2.5 rounded-2xl border border-primary/20 bg-primary/[0.05] p-4">
         <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-        <p className="text-[11.5px] leading-relaxed text-muted-foreground">
+        <p className="text-sm leading-relaxed text-muted-foreground">
           Nintendo's Wii online services were retired in 2014 and Wii Play Pool never had an online mode, so no Wii can
           sign in here. A Wii room is a couch session: two players on one console, a photo of the scoreboard for proof,
           and the pot settled through the match page like any other result.
@@ -61,7 +61,7 @@ export default function ConsoleBridge() {
 
       <section className="mt-12">
         <h2 className="text-[18px] font-extrabold tracking-[-0.02em]">Billiards we can bridge</h2>
-        <p className="mt-1.5 max-w-2xl text-[12.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Each title exposes a different way in — a private lobby, a friend invite, a room code or a direct address.
           Pick one and the room form is filled in for you. Confirm the title still supports private play on both
           consoles before you stake.
@@ -78,7 +78,7 @@ export default function ConsoleBridge() {
         </div>
       </section>
 
-      <p className="mt-8 text-[11px] leading-relaxed text-muted-foreground/80">
+      <p className="mt-8 text-sm leading-relaxed text-muted-foreground/80">
         BetThat is not affiliated with Nintendo, Sony, Microsoft or any game publisher. Rooms are a coordination tool:
         the console connection happens inside the game you own.
       </p>

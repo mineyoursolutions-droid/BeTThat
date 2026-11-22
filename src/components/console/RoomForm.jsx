@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useToast } from '@/components/ui/use-toast';
 import { PLATFORMS, gamesFor, handleOf, newRoomCode, platformById } from '@/lib/console';
 import MobileSelect from '@/components/mobile/MobileSelect';
+import MobileDateTimePicker from '@/components/mobile/MobileDateTimePicker';
 
 const REGIONS = ['Global', 'US East', 'US West', 'EU West', 'EU North', 'Asia Pacific', 'South America', 'Oceania'];
 
@@ -90,12 +91,12 @@ export default function RoomForm({ user, preset, onCreated }) {
           <Radio className="h-4 w-4 text-primary" />
           <h2 className="text-[15px] font-semibold">Open a console room</h2>
         </div>
-        <p className="mt-2 text-[12.5px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Sign in to claim a seat, generate a room code and lock the stake before either player picks up a cue.
         </p>
         <Link
           to="/login"
-          className="mt-4 inline-flex rounded-full bg-primary px-4 py-2.5 text-[12.5px] font-semibold text-primary-foreground"
+          className="mt-4 inline-flex rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
         >
           Sign in to open a room
         </Link>
@@ -106,30 +107,30 @@ export default function RoomForm({ user, preset, onCreated }) {
   if (created) {
     return (
       <div className="rounded-2xl border border-primary/30 bg-primary/[0.06] p-6">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">Room is live</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Room is live</p>
         <p className="mt-2 text-[26px] font-extrabold tracking-[-0.02em]">{created.room_code}</p>
-        <p className="mt-1 text-[12px] text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           {created.game_name} · {platformById(created.platform).label} · {created.region}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={copy}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-[12px] font-semibold transition hover:border-primary/40"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3.5 py-2 text-sm font-semibold transition hover:border-primary/40"
           >
             {copied ? <Check className="h-3.5 w-3.5 text-win" /> : <Copy className="h-3.5 w-3.5" />}
             {copied ? 'Copied' : 'Copy room code'}
           </button>
           <Link
             to="/create"
-            className="inline-flex items-center rounded-full bg-primary px-3.5 py-2 text-[12px] font-semibold text-primary-foreground"
+            className="inline-flex items-center rounded-full bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground"
           >
             Post the wager
           </Link>
           <button
             type="button"
             onClick={() => setCreated(null)}
-            className="inline-flex items-center rounded-full px-3.5 py-2 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground"
+            className="inline-flex items-center rounded-full px-3.5 py-2 text-sm font-semibold text-muted-foreground transition hover:text-foreground"
           >
             Open another
           </button>
@@ -152,7 +153,7 @@ export default function RoomForm({ user, preset, onCreated }) {
               key={p.id}
               type="button"
               onClick={() => pickPlatform(p.id)}
-              className={`rounded-xl border px-2 py-2 text-[11.5px] font-semibold transition ${
+              className={`rounded-xl border px-2 py-2 text-sm font-semibold transition ${
                 form.platform === p.id
                   ? 'border-primary/50 bg-primary/10 text-primary'
                   : 'border-border text-muted-foreground hover:text-foreground'
@@ -179,7 +180,7 @@ export default function RoomForm({ user, preset, onCreated }) {
             value={form.title}
             onChange={set('title')}
             placeholder="8-ball · race to 3"
-            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+            className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
           />
         </Field>
         <Field label="Region">
@@ -197,26 +198,25 @@ export default function RoomForm({ user, preset, onCreated }) {
           value={form.lobby_code}
           onChange={set('lobby_code')}
           placeholder="Lobby code, room id or direct IP"
-          className="w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-[12.5px] text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
+          className="w-full rounded-xl border border-input bg-background px-3 py-2.5 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-primary/50"
         />
-        <p className="mt-1.5 text-[11px] text-muted-foreground">
+        <p className="mt-1.5 text-sm text-muted-foreground">
           Only you and the player who takes the seat can see this.
         </p>
       </Field>
 
       <Field label="Scheduled break (optional)">
-        <input
-          type="datetime-local"
+        <MobileDateTimePicker
+          label="Scheduled break"
           value={form.starts_at}
-          onChange={set('starts_at')}
-          className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-[13.5px] text-foreground outline-none focus:border-primary/50"
+          onChange={(v) => setForm((f) => ({ ...f, starts_at: v }))}
         />
       </Field>
 
       <button
         type="submit"
         disabled={busy}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-[13.5px] font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-60"
       >
         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Radio className="h-4 w-4" />}
         {busy ? 'Opening room…' : 'Open room'}
@@ -228,7 +228,7 @@ export default function RoomForm({ user, preset, onCreated }) {
 function Field({ label, children }) {
   return (
     <div>
-      <label className="mb-1.5 block text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{label}</label>
+      <label className="mb-1.5 block text-sm uppercase tracking-[0.14em] text-muted-foreground">{label}</label>
       {children}
     </div>
   );

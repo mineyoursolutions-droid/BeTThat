@@ -14,7 +14,7 @@ export default function StatusPill({ status, label }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${style.ring} ${style.text}`}
+      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold uppercase tracking-[0.14em] ring-1 ring-inset ${style.ring} ${style.text}`}
     >
       <span className="relative flex h-1.5 w-1.5">
         {pulsing && <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${style.dot}`} />}

@@ -46,6 +46,14 @@ export default function Register() {
       if (result?.access_token) {
         base44.auth.setToken(result.access_token);
       }
+      // New account: claim the $25 sign-up bonus in USDT (wager-only,
+      // one per account). Best-effort — the Wallet page offers the same
+      // claim if this call fails or the user signed up another way.
+      try {
+        await base44.functions.invoke('signupBonus', { action: 'claim' });
+      } catch {
+        // Bonus can still be claimed from the Wallet page.
+      }
       window.location.href = safeReturnTo();
     } catch (err) {
       setError(err.message || "Invalid verification code");
@@ -129,7 +137,7 @@ export default function Register() {
     <AuthLayout
       icon={UserPlus}
       title="Create your account"
-      subtitle="Sign up to get started"
+      subtitle="Sign up to get started — new accounts get a $25 sign-up bonus in USDT, wager-once to unlock withdrawals"
       footer={
         <>
           Already have an account?{" "}

@@ -31,7 +31,7 @@ export default function FeaturedMatches({ matches }) {
             key={f.id}
             type="button"
             onClick={() => setFilter(f.id)}
-            className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
+            className={`pressable shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold ${
               filter === f.id
                 ? 'border-primary/40 bg-primary/10 text-primary'
                 : 'border-border text-muted-foreground hover:text-foreground'
@@ -63,7 +63,7 @@ export default function FeaturedMatches({ matches }) {
           </Link>
         </div>
       ) : (
-        <div className="mt-5 grid gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="stagger-children mt-5 grid gap-3.5 sm:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {shown.slice(0, 6).map((match) => (
             <MatchCard key={match.id} match={match} />
           ))}

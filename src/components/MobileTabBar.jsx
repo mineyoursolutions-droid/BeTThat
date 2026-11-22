@@ -39,7 +39,7 @@ export default function MobileTabBar() {
         ))}
         <NavLink
           to="/create"
-          className="mx-auto -mt-5 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-primary via-primary to-win text-primary-foreground shadow-[0_12px_28px_-10px_hsl(187_88%_55%/0.9)]"
+          className="mx-auto -mt-5 grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-primary via-primary to-win text-primary-foreground shadow-[0_12px_28px_-10px_hsl(96_90%_55%/0.85)]"
           aria-label="Post a challenge"
         >
           <Plus className="h-5 w-5" strokeWidth={2.6} />

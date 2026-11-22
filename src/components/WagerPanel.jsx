@@ -182,6 +182,9 @@ export default function WagerPanel({ match, wallets, onPlaced }) {
                 />
                 <span className="text-sm font-semibold text-muted-foreground">{match.coin}</span>
               </div>
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                <span className="font-semibold text-foreground">No limit</span> — back any amount your balance covers
+              </p>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/60 px-3 py-2.5">

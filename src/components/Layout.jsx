@@ -2,10 +2,12 @@ import { Outlet } from 'react-router-dom';
 import TopBar from '@/components/TopBar';
 import MobileTabBar from '@/components/MobileTabBar';
 import SiteFooter from '@/components/SiteFooter';
+import StreetBackdrop from '@/components/motion/StreetBackdrop';
 
 export default function Layout() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="relative flex min-h-screen flex-col bg-background">
+      <StreetBackdrop />
       <TopBar />
       {/* Bottom padding accounts for the fixed mobile tab bar plus the
           Android gesture bar (safe-area-inset-bottom). */}

@@ -1,5 +1,15 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { COINS, round, handleFor, requireUser, moveFunds, recordLedger } from '../../shared/wallet.ts';
+import {
+  COINS,
+  round,
+  handleFor,
+  requireUser,
+  moveFunds,
+  recordLedger,
+  getSignupBonusState,
+  withdrawableBalance,
+  SIGNUP_BONUS_COIN,
+} from '../../shared/wallet.ts';
 
 export default async function (req) {
   try {
@@ -16,6 +26,29 @@ export default async function (req) {
     if (!(amount > 0)) return Response.json({ error: 'Enter an amount to withdraw.' }, { status: 400 });
     if (address.length < 12) {
       return Response.json({ error: 'Enter the wallet address to pay out to.' }, { status: 400 });
+    }
+
+    // Wager-only sign-up bonus: while the $25 USDT bonus is un-wagered,
+    // the bonus amount itself cannot be withdrawn (the rest of the
+    // balance can). The bonus unlocks for withdrawal after the player
+    // places at least one wager after claiming it.
+    if (coin === SIGNUP_BONUS_COIN) {
+      const bonus = await getSignupBonusState(base44, user.id);
+      if (bonus.claimed && !bonus.wagered) {
+        const walletRow = await base44.asServiceRole.entities.Wallet.filter({
+          user_id: user.id,
+          coin,
+        }).then((res) => (Array.isArray(res) ? res[0] : (res.items || [])[0]));
+        const withdrawable = withdrawableBalance(walletRow ? walletRow.available : 0, bonus);
+        if (amount > withdrawable) {
+          return Response.json(
+            {
+              error: `Your $25 sign-up bonus is wager-only. Place a wager first to unlock it for withdrawal — you can withdraw up to ${withdrawable} ${coin} right now.`,
+            },
+            { status: 400 },
+          );
+        }
+      }
     }
 
     let wallet;

@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/AuthContext';
 import CoinMark from '@/components/CoinMark';
 import DepositCard from '@/components/wallet/DepositCard';
 import WithdrawCard from '@/components/wallet/WithdrawCard';
+import SignupBonusCard from '@/components/wallet/SignupBonusCard';
 import PullToRefresh from '@/components/mobile/PullToRefresh';
 import { COINS, fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
 
@@ -101,6 +102,10 @@ export default function WalletPage() {
         Total available ≈ <span className="nums font-semibold text-foreground">{fmtUsd(totalUsd)}</span>
       </p>
 
+      <div className="mt-6">
+        <SignupBonusCard onClaimed={load} />
+      </div>
+
       <div className="mt-8 grid gap-4 lg:grid-cols-2">
         <DepositCard addresses={addresses} preferredCoin={coin} onSubmitted={load} />
         <WithdrawCard coin={coin} available={active.available} onSubmitted={load} />
@@ -144,7 +149,11 @@ export default function WalletPage() {
               {ledger.map((entry) => (
                 <li key={entry.id} className="flex items-center justify-between gap-3 px-5 py-3.5">
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground">{KIND_LABEL[entry.kind] || entry.kind}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {String(entry.description || '').startsWith('Sign-up bonus')
+                        ? 'Sign-up bonus'
+                        : KIND_LABEL[entry.kind] || entry.kind}
+                    </p>
                     <p className="truncate text-sm text-muted-foreground">{entry.description}</p>
                   </div>
                   <p

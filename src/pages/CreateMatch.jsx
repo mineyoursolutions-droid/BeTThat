@@ -155,7 +155,7 @@ export default function CreateMatch() {
               <span className="text-sm font-semibold text-muted-foreground">{form.coin}</span>
             </div>
             <p className="mt-1.5 text-sm text-muted-foreground">
-              Available {fmtCoin(balance, form.coin)}
+              Available {fmtCoin(balance, form.coin)} · <span className="font-semibold text-foreground">No limit</span> — stake as much as your balance allows
             </p>
           </Field>
         </div>

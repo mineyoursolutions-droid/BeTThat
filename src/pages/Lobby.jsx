@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import MatchCard from '@/components/MatchCard';
 import MatchFilters from '@/components/lobby/MatchFilters';
 import ActivityFeed from '@/components/feed/ActivityFeed';
+import LiveStrip from '@/components/feed/LiveStrip';
 import { toCardView } from '@/lib/matches';
 import { applyLobbyView, countBuckets } from '@/lib/lobby';
 import PullToRefresh from '@/components/mobile/PullToRefresh';
@@ -59,6 +60,10 @@ export default function Lobby() {
             Post a challenge
           </Link>
         </div>
+      </div>
+
+      <div className="mt-6">
+        <LiveStrip />
       </div>
 
       <MatchFilters

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Permanent+Marker&family=Rubik+Spray+Paint&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 220 10% 96%;
     --foreground: 200 30% 8%;
 
     --card: 0 0% 100%;
@@ -15,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 200 30% 8%;
 
-    --primary: 187 88% 38%;
+    --primary: 8 72% 42%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 200 18% 92%;
@@ -32,9 +32,9 @@
 
     --border: 200 18% 85%;
     --input: 200 18% 82%;
-    --ring: 187 88% 38%;
+    --ring: 8 72% 42%;
 
-    --win: 110 70% 38%;
+    --win: 96 75% 34%;
     --win-foreground: 0 0% 100%;
 
     --live: 4 90% 48%;
@@ -42,72 +42,86 @@
 
     --ink: 200 20% 94%;
 
-    --chart-1: 187 88% 38%;
-    --chart-2: 110 70% 38%;
-    --chart-3: 262 84% 55%;
-    --chart-4: 330 82% 50%;
-    --chart-5: 4 84% 50%;
+    --chart-1: 96 80% 40%;
+    --chart-2: 322 85% 55%;
+    --chart-3: 187 90% 45%;
+    --chart-4: 46 100% 45%;
+    --chart-5: 8 72% 48%;
 
     --radius: 0.85rem;
 
-    --font-heading: 'Bricolage Grotesque', 'Inter', sans-serif;
+    --neon-pink: 322 90% 52%;
+    --neon-cyan: 187 95% 42%;
+    --neon-yellow: 46 100% 42%;
+    --neon-lime: 96 85% 38%;
+    --brick: 8 72% 42%;
+
+    --font-heading: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
     --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-display: 'Bricolage Grotesque', 'Inter', sans-serif;
+    --font-display: 'Anton', 'Bricolage Grotesque', 'Inter', sans-serif;
+    --font-graffiti: 'Rubik Spray Paint', 'Anton', cursive;
+    --font-tag: 'Permanent Marker', 'Inter', cursive;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 200 30% 8%;
-    --sidebar-primary: 187 88% 38%;
+    --sidebar-primary: 8 72% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 200 18% 92%;
     --sidebar-accent-foreground: 200 30% 8%;
     --sidebar-border: 200 18% 85%;
-    --sidebar-ring: 187 88% 38%;
+    --sidebar-ring: 8 72% 42%;
   }
 
   .dark {
-    --background: 200 30% 4%;
-    --foreground: 192 18% 96%;
-    --card: 200 25% 7%;
-    --card-foreground: 192 18% 96%;
-    --popover: 200 27% 8%;
-    --popover-foreground: 192 18% 96%;
-    --primary: 187 88% 55%;
-    --primary-foreground: 200 44% 5%;
-    --secondary: 200 18% 12%;
-    --secondary-foreground: 192 18% 96%;
-    --muted: 200 18% 12%;
+    --background: 222 16% 4.5%;
+    --foreground: 220 10% 94%;
+    --card: 222 13% 8%;
+    --card-foreground: 220 10% 94%;
+    --popover: 222 14% 9%;
+    --popover-foreground: 220 10% 94%;
+    --primary: 96 90% 55%;
+    --primary-foreground: 100 60% 6%;
+    --secondary: 222 12% 13%;
+    --secondary-foreground: 220 10% 94%;
+    --muted: 222 12% 13%;
     --muted-foreground: 196 12% 62%;
-    --accent: 200 18% 15%;
-    --accent-foreground: 192 18% 96%;
+    --accent: 222 12% 16%;
+    --accent-foreground: 220 10% 94%;
     --destructive: 4 84% 58%;
     --destructive-foreground: 0 0% 100%;
-    --border: 198 20% 17%;
-    --input: 198 20% 20%;
-    --ring: 187 88% 55%;
+    --border: 222 12% 16%;
+    --input: 222 12% 19%;
+    --ring: 96 90% 55%;
 
-    --win: 110 86% 56%;
+    --win: 110 80% 52%;
     --win-foreground: 120 62% 6%;
 
     --live: 4 96% 64%;
     --live-foreground: 0 0% 100%;
 
-    --ink: 200 34% 2.5%;
+    --ink: 222 18% 3%;
 
-    --chart-1: 187 88% 55%;
-    --chart-2: 110 86% 56%;
-    --chart-3: 262 84% 68%;
-    --chart-4: 330 82% 66%;
-    --chart-5: 4 84% 62%;
+    --chart-1: 96 90% 55%;
+    --chart-2: 322 90% 62%;
+    --chart-3: 187 100% 55%;
+    --chart-4: 46 100% 55%;
+    --chart-5: 8 70% 55%;
 
-    --sidebar-background: 200 28% 5%;
-    --sidebar-foreground: 192 18% 96%;
-    --sidebar-primary: 187 88% 55%;
-    --sidebar-primary-foreground: 200 44% 5%;
-    --sidebar-accent: 200 18% 12%;
-    --sidebar-accent-foreground: 192 18% 96%;
-    --sidebar-border: 198 20% 17%;
-    --sidebar-ring: 187 88% 55%;
+    --neon-pink: 322 95% 62%;
+    --neon-cyan: 187 100% 55%;
+    --neon-yellow: 46 100% 55%;
+    --neon-lime: 96 90% 55%;
+    --brick: 8 70% 55%;
+
+    --sidebar-background: 222 16% 5%;
+    --sidebar-foreground: 220 10% 94%;
+    --sidebar-primary: 96 90% 55%;
+    --sidebar-primary-foreground: 100 60% 6%;
+    --sidebar-accent: 222 12% 13%;
+    --sidebar-accent-foreground: 220 10% 94%;
+    --sidebar-border: 222 12% 16%;
+    --sidebar-ring: 96 90% 55%;
   }
 
   * {
@@ -451,5 +465,359 @@
   }
   50% {
     transform: translate(1px, -2px) rotate(6deg);
+  }
+}
+/* ================================================================
+   BetThat street-corner art direction + 4D depth system
+   Grim back-alley gambling house: asphalt, brick, spray-paint neon.
+   All motion is pure CSS; every animation below is switched off
+   under prefers-reduced-motion (see the block at the end).
+   ================================================================ */
+
+/* --- Display type: spray-paint graffiti + marker tag + stencil --- */
+.font-graffiti {
+  font-family: var(--font-graffiti);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.font-tag {
+  font-family: var(--font-tag);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* --- Neon-sign glow on display words (flicker is subtle: two brief
+       dips per 7s cycle, never a strobe) --- */
+.neon-sign-lime {
+  color: hsl(var(--neon-lime));
+  text-shadow:
+    0 0 6px hsl(var(--neon-lime) / 0.75),
+    0 0 22px hsl(var(--neon-lime) / 0.45),
+    0 0 48px hsl(var(--neon-lime) / 0.28);
+}
+
+.neon-sign-pink {
+  color: hsl(var(--neon-pink));
+  text-shadow:
+    0 0 6px hsl(var(--neon-pink) / 0.75),
+    0 0 22px hsl(var(--neon-pink) / 0.45),
+    0 0 48px hsl(var(--neon-pink) / 0.28);
+}
+
+.neon-sign-cyan {
+  color: hsl(var(--neon-cyan));
+  text-shadow:
+    0 0 6px hsl(var(--neon-cyan) / 0.75),
+    0 0 22px hsl(var(--neon-cyan) / 0.45),
+    0 0 48px hsl(var(--neon-cyan) / 0.28);
+}
+
+.neon-flicker {
+  animation: neon-flicker 7s linear infinite;
+}
+
+@keyframes neon-flicker {
+  0%, 88%, 92%, 100% { opacity: 1; }
+  90% { opacity: 0.72; }
+}
+
+/* --- Sprayed tag sticker (eyebrows, badges): marker type, slight
+       tilt, neon edge, like a tag on a wall --- */
+.tag-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-tag);
+  letter-spacing: 0.05em;
+  transform: rotate(-1.5deg);
+  border: 1.5px solid hsl(var(--neon-lime) / 0.55);
+  background: hsl(var(--background) / 0.72);
+  color: hsl(var(--neon-lime));
+  box-shadow:
+    0 0 0 1px hsl(var(--background) / 0.6),
+    0 0 18px hsl(var(--neon-lime) / 0.22),
+    0 10px 30px -18px hsl(0 0% 0% / 0.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.tag-sticker-pink {
+  border-color: hsl(var(--neon-pink) / 0.55);
+  color: hsl(var(--neon-pink));
+  box-shadow:
+    0 0 0 1px hsl(var(--background) / 0.6),
+    0 0 18px hsl(var(--neon-pink) / 0.22),
+    0 10px 30px -18px hsl(0 0% 0% / 0.9);
+}
+
+/* Section eyebrow as a small sprayed tag */
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-tag);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: hsl(var(--neon-pink));
+  text-shadow: 0 0 14px hsl(var(--neon-pink) / 0.4);
+  transform: rotate(-1deg);
+}
+
+/* --- Brick wall: subtle mortar courses, used as a low-opacity
+       layer inside hero / CTA panels (never under body copy) --- */
+.brick-wall {
+  background-image:
+    linear-gradient(hsl(var(--brick) / 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--brick) / 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--brick) / 0.13) 1px, transparent 1px);
+  background-size: 96px 30px, 48px 30px, 48px 30px;
+  background-position: 0 0, 0 0, 24px 15px;
+}
+
+/* --- Fixed street backdrop: asphalt gradient, neon alley glows,
+       vignette and a faint grunge grain. Rendered once by Layout,
+       pointer-events none, sits behind page content. --- */
+.street-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, hsl(222 14% 8%) 0%, hsl(222 16% 4.5%) 55%, hsl(222 18% 2.5%) 100%);
+}
+
+html:not(.dark) .street-backdrop {
+  background:
+    radial-gradient(120% 90% at 50% 0%, hsl(220 12% 98%) 0%, hsl(220 10% 94%) 60%, hsl(220 10% 90%) 100%);
+}
+
+.street-backdrop .alley-glow {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.16;
+}
+
+.street-backdrop .alley-glow-pink {
+  width: 34rem;
+  height: 34rem;
+  left: -10rem;
+  top: -12rem;
+  background: hsl(var(--neon-pink));
+  animation: orb-drift 26s ease-in-out infinite alternate;
+}
+
+.street-backdrop .alley-glow-cyan {
+  width: 30rem;
+  height: 30rem;
+  right: -8rem;
+  top: 22%;
+  background: hsl(var(--neon-cyan));
+  opacity: 0.12;
+  animation: orb-drift 32s ease-in-out infinite alternate-reverse;
+}
+
+.street-backdrop .alley-glow-lime {
+  width: 26rem;
+  height: 26rem;
+  left: 38%;
+  bottom: -14rem;
+  background: hsl(var(--neon-lime));
+  opacity: 0.1;
+  animation: orb-drift 38s ease-in-out infinite alternate;
+}
+
+.street-backdrop .alley-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 75% at 50% 42%, transparent 55%, hsl(0 0% 0% / 0.42) 100%);
+}
+
+html:not(.dark) .street-backdrop .alley-vignette {
+  background: radial-gradient(90% 75% at 50% 42%, transparent 62%, hsl(220 15% 20% / 0.14) 100%);
+}
+
+.street-backdrop .alley-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes orb-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(4rem, 2.5rem, 0) scale(1.12); }
+}
+
+/* --- 3D tilt cards: pointer sets --rx / --ry (useTilt hook).
+       Desktop hover only; touch devices never get tilt values. --- */
+.tilt {
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transform-style: preserve-3d;
+  transition: transform 180ms ease-out, box-shadow 300ms ease, border-color 300ms ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .tilt:hover {
+    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-4px);
+  }
+}
+
+/* Lift the card face off its shadow so the tilt reads as depth */
+.tilt-lift {
+  transform: translateZ(28px);
+}
+
+/* --- Glass-concrete panel: blurred, layered borders, top sheen --- */
+.glass-concrete {
+  background:
+    linear-gradient(160deg, hsl(0 0% 100% / 0.06), transparent 45%),
+    hsl(var(--card) / 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid hsl(var(--border));
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.08),
+    inset 0 -1px 0 hsl(0 0% 0% / 0.35),
+    0 30px 70px -30px hsl(0 0% 0% / 0.85);
+}
+
+/* --- Depth button: gradient face, inner top light, bottom edge,
+       glow shadow, press-down, animated shine sweep on hover --- */
+.btn-depth {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, hsl(var(--primary) / 1) 0%, hsl(var(--primary) / 0.82) 100%);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.35),
+    inset 0 -2px 0 hsl(0 0% 0% / 0.28),
+    0 12px 28px -10px hsl(var(--primary) / 0.6);
+  transition: transform 150ms ease, box-shadow 250ms ease, filter 200ms ease;
+}
+
+.btn-depth:hover {
+  filter: brightness(1.07);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.4),
+    inset 0 -2px 0 hsl(0 0% 0% / 0.28),
+    0 16px 34px -10px hsl(var(--primary) / 0.75);
+}
+
+.btn-depth:active {
+  transform: translateY(1px) scale(0.99);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.25),
+    inset 0 2px 6px hsl(0 0% 0% / 0.3),
+    0 6px 16px -8px hsl(var(--primary) / 0.5);
+}
+
+.btn-depth::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, hsl(0 0% 100% / 0.35) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 600ms ease;
+  pointer-events: none;
+}
+
+.btn-depth:hover::after {
+  transform: translateX(120%);
+}
+
+/* --- Staggered entrance: children rise in sequence --- */
+.stagger-children > * {
+  animation: reveal-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+.stagger-children > *:nth-child(n + 9) { animation-delay: 480ms; }
+
+/* Single staggered row (leaderboard): delay comes from inline style */
+.stagger-row {
+  animation: reveal-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Parallax layers (Hero): pointer sets --px / --py (-1..1) on the
+       section; each layer drifts at its own rate --- */
+.plx {
+  transition: transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.plx-slow { transform: translate3d(calc(var(--px, 0) * 8px), calc(var(--py, 0) * 6px), 0); }
+.plx-mid { transform: translate3d(calc(var(--px, 0) * 16px), calc(var(--py, 0) * 12px), 0); }
+.plx-fast { transform: translate3d(calc(var(--px, 0) * -22px), calc(var(--py, 0) * -14px), 0); }
+
+/* --- Floating neon orbs (hero) --- */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  pointer-events: none;
+  animation: orb-float 9s ease-in-out infinite;
+}
+
+.orb-2 { animation-delay: -3s; }
+.orb-3 { animation-delay: -6s; }
+
+@keyframes orb-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -18px, 0); }
+}
+
+/* --- Pressable chips / tabs: springy press --- */
+.pressable {
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.2, 1), background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.pressable:active {
+  transform: scale(0.96);
+}
+
+/* --- Motion off switch: parallax, tilt, shine, flicker, orbs,
+       stagger and drift all stop under prefers-reduced-motion --- */
+@media (prefers-reduced-motion: reduce) {
+  .neon-flicker,
+  .orb,
+  .street-backdrop .alley-glow,
+  .stagger-children > *,
+  .stagger-row,
+  .drip,
+  .animate-drift {
+    animation: none;
+  }
+
+  .tilt,
+  .plx,
+  .btn-depth,
+  .btn-depth::after,
+  .pressable {
+    transition: none;
+  }
+
+  .tilt,
+  .plx-slow,
+  .plx-mid,
+  .plx-fast {
+    transform: none;
+  }
+
+  .btn-depth::after {
+    display: none;
   }
 }

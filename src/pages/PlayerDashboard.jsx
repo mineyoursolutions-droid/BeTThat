@@ -13,6 +13,8 @@ import ResultList from '@/components/stats/ResultList';
 import CoinTable from '@/components/stats/CoinTable';
 import PullToRefresh from '@/components/mobile/PullToRefresh';
 import DeleteAccount from '@/components/DeleteAccount';
+import LiveStrip from '@/components/feed/LiveStrip';
+import SignupBonusCard from '@/components/wallet/SignupBonusCard';
 
 export default function PlayerDashboard() {
   const { user } = useAuth();
@@ -68,6 +70,11 @@ export default function PlayerDashboard() {
           </Link>
           <DeleteAccount />
         </div>
+      </div>
+
+      <div className="mt-6 space-y-4">
+        <LiveStrip />
+        <SignupBonusCard />
       </div>
 
       {error ? (

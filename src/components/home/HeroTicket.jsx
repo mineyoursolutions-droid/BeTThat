@@ -1,6 +1,7 @@
 import { Users, Radio } from 'lucide-react';
 import CoinMark from '@/components/CoinMark';
 import { gameBySlug, fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
+import { useTilt } from '@/hooks/useTilt';
 
 const MATCH = {
   game: 'cod',
@@ -16,12 +17,17 @@ const MATCH = {
 export default function HeroTicket() {
   const game = gameBySlug(MATCH.game);
   const usd = toUsd(MATCH.stake.amount, MATCH.stake.ticker);
+  // 3D pointer tilt (desktop hover only, off under reduced motion).
+  const tilt = useTilt(5);
 
   return (
     <div className="relative">
       <div className="pointer-events-none absolute -inset-8 rounded-[2.5rem] bg-gradient-to-br from-primary/12 via-transparent to-win/10 blur-3xl" />
 
-      <div className="relative overflow-hidden rounded-[1.5rem] border border-border bg-card/85 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.95)] backdrop-blur-xl">
+      <div
+        {...tilt}
+        className="tilt glass-concrete relative overflow-hidden rounded-[1.5rem] shadow-[0_40px_100px_-40px_rgba(0,0,0,0.95)]"
+      >
         <div className={`h-[3px] w-full bg-gradient-to-r ${game.gradient}`} />
         <div className="p-5 sm:p-6">
           <div className="flex items-center justify-between">
@@ -83,8 +89,8 @@ export default function HeroTicket() {
         </div>
       </div>
 
-      <div className="absolute -bottom-5 -left-3 hidden rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl sm:block">
-        <p className="text-sm uppercase tracking-[0.16em] text-muted-foreground">Settled</p>
+      <div className="tilt-lift absolute -bottom-5 -left-3 hidden rounded-xl border border-border bg-card px-3.5 py-2.5 shadow-xl sm:block">
+        <p className="font-tag text-sm uppercase tracking-[0.16em] text-muted-foreground">Settled</p>
         <p className="nums mt-0.5 text-sm font-semibold text-win">+0.0084 BTC paid</p>
       </div>
     </div>

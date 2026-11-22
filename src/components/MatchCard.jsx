@@ -5,18 +5,22 @@ import MatchSide from '@/components/MatchSide';
 import StatusPill from '@/components/StatusPill';
 import { fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
 import { gameLook } from '@/lib/matches';
+import { useTilt } from '@/hooks/useTilt';
 
 export default function MatchCard({ match }) {
   const game = gameLook(match.game);
   const stakeUsd = toUsd(match.stake.amount, match.stake.ticker);
+  // 3D pointer tilt (desktop hover only, off under reduced motion).
+  const tilt = useTilt(6);
 
   return (
     <Link
       to={`/match/${match.id}`}
-      className="no-select group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]"
+      {...tilt}
+      className="tilt no-select group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:border-primary/50 hover:shadow-[0_24px_60px_-24px_hsl(var(--primary)/0.45),0_24px_60px_-30px_rgba(0,0,0,0.9)]"
     >
       <div className={`h-[3px] w-full bg-gradient-to-r ${game.gradient}`} />
-      <div className="flex flex-1 flex-col gap-4 p-5">
+      <div className="tilt-lift flex flex-1 flex-col gap-4 p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2">
             <span className="rounded-md border border-border px-1.5 py-0.5 font-mono text-sm tracking-[0.12em] text-muted-foreground">

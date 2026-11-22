@@ -46,7 +46,8 @@ export default function LeaderboardPreview() {
           {players.slice(0, 5).map((p, i) => (
             <div
               key={p.user_id}
-              className="grid grid-cols-[36px_1fr_auto] items-center gap-4 border-b border-border/60 px-5 py-4 last:border-0 md:grid-cols-[48px_1.6fr_1fr_0.8fr_1fr]"
+              className="stagger-row grid grid-cols-[36px_1fr_auto] items-center gap-4 border-b border-border/60 px-5 py-4 transition last:border-0 hover:bg-accent/40 md:grid-cols-[48px_1.6fr_1fr_0.8fr_1fr]"
+              style={{ animationDelay: `${i * 70}ms` }}
             >
               <span className={`nums text-sm font-semibold ${i === 0 ? 'text-primary' : 'text-muted-foreground'}`}>
                 {String(i + 1).padStart(2, '0')}

@@ -1,10 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import GraffitiTitle from '@/components/feed/GraffitiTitle';
 import FeedItem from '@/components/feed/FeedItem';
 
+// The Wire: live activity feed. Refreshes every 20s (paused while the
+// tab is hidden) plus on every Match change, so it stays live without
+// a full page reload.
+const POLL_MS = 20000;
+
 export default function ActivityFeed() {
   const [items, setItems] = useState(null);
+  const timerRef = useRef(null);
 
   const load = useCallback(() => {
     base44.functions
@@ -15,6 +21,15 @@ export default function ActivityFeed() {
 
   useEffect(() => {
     load();
+    const tick = () => {
+      if (!document.hidden) load();
+    };
+    timerRef.current = window.setInterval(tick, POLL_MS);
+    document.addEventListener('visibilitychange', tick);
+    return () => {
+      window.clearInterval(timerRef.current);
+      document.removeEventListener('visibilitychange', tick);
+    };
   }, [load]);
 
   useEffect(() => base44.entities.Match.subscribe(() => load()), [load]);

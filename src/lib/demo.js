@@ -120,8 +120,8 @@ export const GAMES = [
     subtitle: 'FC 27',
     monogram: 'FC',
     platforms: ['PS5', 'Xbox', 'PC'],
-    gradient: 'from-emerald-500/40 via-teal-600/15 to-transparent',
-    accent: '#34D399',
+    gradient: 'from-pink-500/40 via-fuchsia-600/15 to-transparent',
+    accent: '#EC4899',
     openMatches: 47,
   },
   {
@@ -230,8 +230,8 @@ export const GAMES = [
     subtitle: '501 · Best of 5',
     monogram: '501',
     platforms: ['Cross-play', 'PC', 'Mobile'],
-    gradient: 'from-teal-500/40 via-emerald-600/15 to-transparent',
-    accent: '#2DD4BF',
+    gradient: 'from-yellow-400/40 via-amber-600/15 to-transparent',
+    accent: '#FACC15',
     openMatches: 16,
   },
   {
@@ -260,8 +260,8 @@ export const GAMES = [
     subtitle: 'Private match',
     monogram: 'S19',
     platforms: ['PS5', 'Xbox', 'Switch', 'PC'],
-    gradient: 'from-emerald-400/40 via-teal-600/15 to-transparent',
-    accent: '#34D399',
+    gradient: 'from-cyan-400/40 via-sky-600/15 to-transparent',
+    accent: '#22D3EE',
     openMatches: 11,
   },
   {

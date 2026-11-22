@@ -53,6 +53,13 @@ module.exports = {
   				foreground: 'hsl(var(--live-foreground))'
   			},
   			ink: 'hsl(var(--ink))',
+  			neon: {
+  				pink: 'hsl(var(--neon-pink))',
+  				cyan: 'hsl(var(--neon-cyan))',
+  				yellow: 'hsl(var(--neon-yellow))',
+  				lime: 'hsl(var(--neon-lime))',
+  			},
+  			brick: 'hsl(var(--brick))',
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
@@ -75,6 +82,8 @@ module.exports = {
   			heading: ['var(--font-heading)'],
   			body: ['var(--font-body)'],
   			display: ['var(--font-display)'],
+  			graffiti: ['var(--font-graffiti)'],
+  			tag: ['var(--font-tag)'],
   			mono: ['var(--font-mono)']
   		},
   		keyframes: {

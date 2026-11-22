@@ -7,6 +7,7 @@ import CryptoAddressForm from '@/components/admin/CryptoAddressForm';
 import CryptoAddressRow from '@/components/admin/CryptoAddressRow';
 import { NETWORKS } from '@/lib/crypto';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function CryptoSettings() {
   const { user } = useAuth();
@@ -48,6 +49,7 @@ export default function CryptoSettings() {
   );
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/admin" label="Operator desk" />
       <Link to="/admin" className="hidden items-center gap-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
@@ -93,5 +95,6 @@ export default function CryptoSettings() {
         </p>
       </div>
     </div>
+    </PullToRefresh>
   );
 }

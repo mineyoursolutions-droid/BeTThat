@@ -49,7 +49,7 @@ export default function PropMarketCard({ market, balance, bets, canBet, closed, 
   };
 
   return (
-    <div className="rounded-xl border border-border bg-background/60 p-4">
+    <div className="no-select rounded-xl border border-border bg-background/60 p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <p className="max-w-[85%] text-[13px] font-semibold leading-snug text-foreground">{market.question}</p>
         <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] ${TONES[state.tone]}`}>

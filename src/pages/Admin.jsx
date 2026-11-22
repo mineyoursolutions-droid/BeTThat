@@ -6,6 +6,7 @@ import ReviewQueue from '@/components/admin/ReviewQueue';
 import SettlementQueue from '@/components/admin/SettlementQueue';
 import PropDesk from '@/components/admin/PropDesk';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 const TABS = [
   { id: 'transfers', label: 'Transfers', icon: ArrowLeftRight, blurb: 'Confirm deposits and release withdrawals once you have verified the transfer on chain.' },
@@ -16,6 +17,12 @@ const TABS = [
 export default function Admin() {
   const { user } = useAuth();
   const [tab, setTab] = useState('transfers');
+  const [signal, setSignal] = useState(0);
+
+  const refresh = async () => {
+    // The queues reload whenever `signal` changes.
+    setSignal((n) => n + 1);
+  };
 
   if (!user) return null;
 
@@ -38,6 +45,7 @@ export default function Admin() {
   const active = TABS.find((t) => t.id === tab);
 
   return (
+    <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Operator desk</p>
@@ -51,7 +59,7 @@ export default function Admin() {
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition ${
+            className={`inline-flex min-h-11 items-center gap-2 rounded-full border px-3.5 py-1.5 text-[12px] font-semibold transition md:min-h-0 ${
               tab === id ? 'border-primary/40 bg-primary/10 text-primary' : 'border-border text-muted-foreground hover:text-foreground'
             }`}
           >
@@ -61,7 +69,7 @@ export default function Admin() {
         ))}
         <Link
           to="/crypto-settings"
-          className="inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-[12px] font-semibold text-muted-foreground transition hover:text-foreground md:min-h-0"
         >
           <Wallet className="h-3.5 w-3.5" />
           Crypto settings
@@ -71,10 +79,11 @@ export default function Admin() {
       <p className="mt-4 max-w-xl text-[12.5px] leading-relaxed text-muted-foreground">{active.blurb}</p>
 
       <div className="mt-6">
-        {tab === 'transfers' && <ReviewQueue />}
-        {tab === 'settlement' && <SettlementQueue />}
-        {tab === 'props' && <PropDesk />}
+        {tab === 'transfers' && <ReviewQueue signal={signal} />}
+        {tab === 'settlement' && <SettlementQueue signal={signal} />}
+        {tab === 'props' && <PropDesk signal={signal} />}
       </div>
     </div>
+    </PullToRefresh>
   );
 }

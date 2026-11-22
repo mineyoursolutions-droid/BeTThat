@@ -88,7 +88,7 @@ export default function PullToRefresh({ onRefresh, children, label = 'Pull to re
           onClick={refresh}
           disabled={refreshing}
           aria-label="Refresh"
-          className="mb-1 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-border px-3 text-[11.5px] font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50"
+          className="mb-1 inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-[11.5px] font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary disabled:opacity-50 md:min-h-9"
         >
           <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? 'animate-spin' : ''}`} />
           {refreshing ? 'Refreshing…' : 'Refresh'}

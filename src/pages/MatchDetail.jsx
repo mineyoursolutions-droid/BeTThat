@@ -17,6 +17,7 @@ import PropBoard from '@/components/props/PropBoard';
 import { fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
 import { gameLook, oddsFor, statusLabel } from '@/lib/matches';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function MatchDetail() {
   const { id } = useParams();
@@ -61,6 +62,12 @@ export default function MatchDetail() {
     const page = await base44.entities.Wallet.filter({ user_id: user.id }, { limit: 20 });
     setWallets(page.items || []);
   }, [user]);
+
+  // Defined here, before the early returns below, so hook order is stable.
+  const refresh = useCallback(async () => {
+    await load();
+    await loadWallet();
+  }, [load, loadWallet]);
 
   useEffect(() => {
     load();
@@ -107,6 +114,7 @@ export default function MatchDetail() {
   const split = total > 0 ? Math.round((pc / total) * 100) : 50;
 
   return (
+    <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-12">
       <MobileBackBar to="/lobby" label="Lobby" className="-mt-8 sm:-mt-12" />
       <Link to="/lobby" className="hidden items-center gap-1.5 text-[12.5px] font-semibold text-muted-foreground transition hover:text-foreground md:inline-flex">
@@ -271,6 +279,7 @@ export default function MatchDetail() {
         </div>
       </div>
     </div>
+    </PullToRefresh>
   );
 }
 

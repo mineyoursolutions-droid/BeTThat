@@ -6,7 +6,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { fmtCoin, gameBySlug } from '@/lib/demo';
 import { propState } from '@/lib/props';
 
-export default function PropDesk() {
+export default function PropDesk({ signal = 0 }) {
   const { toast } = useToast();
   const [matches, setMatches] = useState([]);
   const [markets, setMarkets] = useState(null);
@@ -30,7 +30,7 @@ export default function PropDesk() {
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, [load, signal]);
 
   const create = async () => {
     setBusy(true);

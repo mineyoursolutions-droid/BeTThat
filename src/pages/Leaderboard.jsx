@@ -1,19 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Trophy } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { fmtCoin } from '@/lib/demo';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function Leaderboard() {
   const [players, setPlayers] = useState(null);
 
-  useEffect(() => {
-    base44.functions
-      .invoke('getLeaderboard', {})
-      .then((res) => setPlayers(res.data.players || []))
-      .catch(() => setPlayers([]));
+  const load = useCallback(async () => {
+    try {
+      const res = await base44.functions.invoke('getLeaderboard', {});
+      setPlayers(res.data.players || []);
+    } catch {
+      setPlayers([]);
+    }
   }, []);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 sm:py-14">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Season standings</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">
@@ -69,5 +77,6 @@ export default function Leaderboard() {
         </div>
       )}
     </div>
+    </PullToRefresh>
   );
 }

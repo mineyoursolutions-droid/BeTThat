@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/AuthContext';
 import CoinMark from '@/components/CoinMark';
 import DepositCard from '@/components/wallet/DepositCard';
 import WithdrawCard from '@/components/wallet/WithdrawCard';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 import { COINS, fmtCoin, fmtUsd, toUsd } from '@/lib/demo';
 
 const TX_TONE = {
@@ -59,6 +60,7 @@ export default function WalletPage() {
   const totalUsd = (wallets || []).reduce((sum, w) => sum + toUsd(w.available, w.coin), 0);
 
   return (
+    <PullToRefresh onRefresh={load}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Wallet</p>
       <h1 className="mt-2.5 text-[30px] font-extrabold leading-tight tracking-[-0.035em] sm:text-[38px]">Balances</h1>
@@ -160,5 +162,6 @@ export default function WalletPage() {
         </section>
       </div>
     </div>
+    </PullToRefresh>
   );
 }

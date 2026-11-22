@@ -7,7 +7,7 @@ import { fmtCoin } from '@/lib/demo';
 import { gameLook } from '@/lib/matches';
 import ProofChip from '@/components/admin/ProofChip';
 
-export default function SettlementQueue() {
+export default function SettlementQueue({ signal = 0 }) {
   const { toast } = useToast();
   const [matches, setMatches] = useState(null);
   const [busyId, setBusyId] = useState(null);
@@ -22,7 +22,7 @@ export default function SettlementQueue() {
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, [load, signal]);
 
   const settle = async (match, winner) => {
     setBusyId(match.id);

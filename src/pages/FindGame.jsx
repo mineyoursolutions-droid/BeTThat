@@ -9,6 +9,7 @@ import MyPresence from '@/components/lounge/MyPresence';
 import LookingPlayers from '@/components/lounge/LookingPlayers';
 import { gameBySlug } from '@/lib/demo';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 const ONLINE_WINDOW_MS = 10 * 60 * 1000;
 
@@ -103,9 +104,14 @@ export default function FindGame() {
     }
   };
 
+  const refresh = useCallback(async () => {
+    await Promise.all([loadMe(), loadPlayers()]);
+  }, [loadMe, loadPlayers]);
+
   const others = (players || []).filter((p) => p.user_id !== user?.id);
 
   return (
+    <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -163,5 +169,6 @@ export default function FindGame() {
         </div>
       </div>
     </div>
+    </PullToRefresh>
   );
 }

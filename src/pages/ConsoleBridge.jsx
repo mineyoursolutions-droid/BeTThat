@@ -6,11 +6,17 @@ import RoomBoard from '@/components/console/RoomBoard';
 import BilliardsBook from '@/components/console/BilliardsBook';
 import PlatformNotes from '@/components/console/PlatformNotes';
 import MobileBackBar from '@/components/mobile/MobileBackBar';
+import PullToRefresh from '@/components/mobile/PullToRefresh';
 
 export default function ConsoleBridge() {
   const { user } = useAuth();
   const [preset, setPreset] = useState(null);
   const [signal, setSignal] = useState(0);
+
+  const refresh = async () => {
+    // RoomBoard reloads its rooms whenever `signal` changes.
+    setSignal((n) => n + 1);
+  };
 
   const pick = (value) => {
     setPreset(value);
@@ -18,6 +24,7 @@ export default function ConsoleBridge() {
   };
 
   return (
+    <PullToRefresh onRefresh={refresh}>
     <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 sm:py-14">
       <MobileBackBar to="/lobby" label="Lobby" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">Console bridge</p>
@@ -76,5 +83,6 @@ export default function ConsoleBridge() {
         the console connection happens inside the game you own.
       </p>
     </div>
+    </PullToRefresh>
   );
 }

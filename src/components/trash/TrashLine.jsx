@@ -19,7 +19,7 @@ export default function TrashLine({ post }) {
         </p>
         <span className="nums shrink-0 text-[9.5px] text-muted-foreground">{time}</span>
       </div>
-      <p className="mt-1 whitespace-pre-wrap break-words text-[12.5px] leading-relaxed text-muted-foreground">{post.body}</p>
+      <p className="selectable-text mt-1 whitespace-pre-wrap break-words text-[12.5px] leading-relaxed text-muted-foreground">{post.body}</p>
     </div>
   );
 }

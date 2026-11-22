@@ -5,7 +5,7 @@ import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
 import { fmtCoin } from '@/lib/demo';
 
-export default function ReviewQueue() {
+export default function ReviewQueue({ signal = 0 }) {
   const { toast } = useToast();
   const [items, setItems] = useState(null);
   const [busyId, setBusyId] = useState(null);
@@ -20,7 +20,7 @@ export default function ReviewQueue() {
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, [load, signal]);
 
   const review = async (tx, action) => {
     setBusyId(tx.id);

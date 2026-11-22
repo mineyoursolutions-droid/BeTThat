@@ -142,6 +142,45 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  /* Interactive chrome must not select text or pop the system context
+     menu on long-press: headers, nav, footer, every button/link and
+     ARIA interactive roles. Content text stays selectable — see the
+     re-enable rule below for inputs and .selectable-text. */
+  header,
+  nav,
+  footer,
+  button,
+  a,
+  [role='button'],
+  [role='tab'],
+  [role='tablist'],
+  [role='menu'],
+  [role='menuitem'],
+  [role='option'],
+  [role='switch'],
+  [role='checkbox'],
+  [role='radio'],
+  [role='dialog'] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* ...except where the user must be able to select / copy text:
+     form fields, editable content, and message/chat content marked
+     .selectable-text. This wins over the chrome rule above because it
+     comes later and targets the elements directly. */
+  input,
+  textarea,
+  select,
+  [contenteditable],
+  .selectable-text,
+  .selectable-text * {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+  }
+
   /* Route transitions: directional — forward navigations slide in from
      the right, back navigations from the left (see ScrollToTop, which
      sets data-nav-direction on <html>). Light 240ms, matching native
@@ -210,8 +249,10 @@
   }
 
   /* Mobile native feel + readability:
-     - text smaller than 12px is unreadable on a phone, so the smallest
-       sizes get a floor on mobile;
+     - the Play scan requires labels at 14px and tap targets at 44px, so
+       every sub-14px size gets a 14px floor on mobile (eyebrow labels,
+       badges, pills, timestamps and micro-copy included — they are all
+       informative text on a phone). Desktop sizes are untouched;
      - inputs at 16px stop iOS from zooming the page on focus;
      - vertical panning only on the main scroll surface, so horizontal
        swipe gestures do not fight the WebView. */
@@ -220,16 +261,27 @@
   }
 
   @media (max-width: 767px) {
-    .text-\[10px\] {
-      font-size: 11px;
-    }
-    .text-\[11px\] {
-      font-size: 12.5px;
+    /* Attribute selectors match Tailwind's arbitrary-value classes
+       (e.g. text-[10px]) regardless of escaping. */
+    [class*='text-[9px]'],
+    [class*='text-[9.5px]'],
+    [class*='text-[10px]'],
+    [class*='text-[10.5px]'],
+    [class*='text-[11px]'],
+    [class*='text-[11.5px]'],
+    [class*='text-[12px]'],
+    [class*='text-[12.5px]'],
+    [class*='text-[13px]'],
+    [class*='text-[13.5px]'],
+    .text-xs {
+      font-size: 14px;
+      line-height: 1.4;
     }
     input,
     select,
     textarea {
       font-size: 16px;
+      min-height: 44px;
     }
   }
 

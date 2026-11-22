@@ -20,7 +20,7 @@ export default function RoomCard({ room, user, busy, onJoin, onClose }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card">
+    <div className="no-select overflow-hidden rounded-2xl border border-border bg-card">
       <div className={`h-[3px] w-full bg-gradient-to-r ${game.gradient}`} />
       <div className="p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">

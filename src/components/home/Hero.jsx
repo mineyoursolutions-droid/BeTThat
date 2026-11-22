@@ -60,10 +60,10 @@ export default function Hero() {
             </span>
           </div>
 
-          <h1 className="mt-6 text-[2.6rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-[3.6rem] lg:text-[4.1rem]">
+          <h1 className="hero-headline mt-6 text-[2.6rem] font-extrabold leading-[0.95] tracking-[-0.04em] sm:text-[3.6rem] lg:text-[4.1rem]">
             <span className="neon-sign-cyan">Stake the match.</span>
             <br />
-            <span className="font-graffiti neon-sign-lime neon-flicker">Own the outcome.</span>
+            <span className="font-graffiti neon-sign-lime">Own the outcome.</span>
           </h1>
 
           <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-[16px]">

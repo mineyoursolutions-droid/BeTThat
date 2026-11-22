@@ -516,12 +516,16 @@
 }
 
 .neon-sign-cyan {
+  /* Tight glow: this class is only used on the hero headline, where
+     the old 4-layer wide glow (up to 96px blur) bled into the
+     letterforms and read as blurry. Same cyan, crisper edge, plus a
+     dark backing shadow for contrast against the brick/grid backdrop. */
   color: hsl(var(--neon-cyan));
   text-shadow:
-    0 0 6px hsl(var(--neon-cyan) / 0.85),
-    0 0 22px hsl(var(--neon-cyan) / 0.6),
-    0 0 48px hsl(var(--neon-cyan) / 0.4),
-    0 0 96px hsl(var(--neon-cyan) / 0.25);
+    0 0 2px hsl(var(--neon-cyan) / 0.9),
+    0 0 10px hsl(var(--neon-cyan) / 0.55),
+    0 0 28px hsl(var(--neon-cyan) / 0.3),
+    0 2px 4px hsl(222 18% 2% / 0.6);
 }
 
 .neon-sign-yellow {
@@ -531,6 +535,18 @@
     0 0 22px hsl(var(--neon-yellow) / 0.6),
     0 0 48px hsl(var(--neon-yellow) / 0.4),
     0 0 96px hsl(var(--neon-yellow) / 0.25);
+}
+
+/* --- Hero headline only: same neon colors, tighter glow so the big
+       letterforms stay crisp. .neon-sign-lime is shared with the
+       smaller section headings (where the wide glow is fine), so the
+       hero gets a scoped override instead of a global change. --- */
+.hero-headline .neon-sign-lime {
+  text-shadow:
+    0 0 2px hsl(var(--neon-lime) / 0.9),
+    0 0 10px hsl(var(--neon-lime) / 0.55),
+    0 0 28px hsl(var(--neon-lime) / 0.3),
+    0 2px 4px hsl(222 18% 2% / 0.6);
 }
 
 /* --- Neon key numbers: mono figures in glowing lime, for live

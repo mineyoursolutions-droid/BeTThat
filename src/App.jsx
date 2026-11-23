@@ -40,6 +40,8 @@ const LowballLobby = lazy(() => import('@/pages/LowballLobby'));
 const LowballTable = lazy(() => import('@/pages/LowballTable'));
 const PadukiLobby = lazy(() => import('@/pages/PadukiLobby'));
 const PadukiTable = lazy(() => import('@/pages/PadukiTable'));
+const DeadSevenLobby = lazy(() => import('@/pages/DeadSevenLobby'));
+const DeadSevenTable = lazy(() => import('@/pages/DeadSevenTable'));
 
 function RouteLoading() {
   return (
@@ -98,6 +100,8 @@ const AuthenticatedApp = () => {
             <Route path="/poker/lowball/:id" element={<LowballTable />} />
             <Route path="/poker/paduki" element={<PadukiLobby />} />
             <Route path="/poker/paduki/:id" element={<PadukiTable />} />
+            <Route path="/poker/dead-seven" element={<DeadSevenLobby />} />
+            <Route path="/poker/dead-seven/:id" element={<DeadSevenTable />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bets" element={<MyWagers />} />
             <Route path="/dashboard" element={<PlayerDashboard />} />

@@ -36,6 +36,8 @@ const TicTacToeLobby = lazy(() => import('@/pages/TicTacToeLobby'));
 const TicTacToeTable = lazy(() => import('@/pages/TicTacToeTable'));
 const StraightHighLobby = lazy(() => import('@/pages/StraightHighLobby'));
 const StraightHighTable = lazy(() => import('@/pages/StraightHighTable'));
+const LowballLobby = lazy(() => import('@/pages/LowballLobby'));
+const LowballTable = lazy(() => import('@/pages/LowballTable'));
 
 function RouteLoading() {
   return (
@@ -90,6 +92,8 @@ const AuthenticatedApp = () => {
             <Route path="/poker/tic-tac-toe/:id" element={<TicTacToeTable />} />
             <Route path="/poker/straight-high" element={<StraightHighLobby />} />
             <Route path="/poker/straight-high/:id" element={<StraightHighTable />} />
+            <Route path="/poker/lowball" element={<LowballLobby />} />
+            <Route path="/poker/lowball/:id" element={<LowballTable />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bets" element={<MyWagers />} />
             <Route path="/dashboard" element={<PlayerDashboard />} />

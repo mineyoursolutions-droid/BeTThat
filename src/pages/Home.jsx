@@ -7,6 +7,7 @@ import StatsStrip from '@/components/home/StatsStrip';
 import LiveStrip from '@/components/feed/LiveStrip';
 import FeaturedMatches from '@/components/home/FeaturedMatches';
 import GameGrid from '@/components/home/GameGrid';
+import ChangGangPoker from '@/components/home/ChangGangPoker';
 import HowItWorks from '@/components/home/HowItWorks';
 import LeaderboardPreview from '@/components/home/LeaderboardPreview';
 import FundingSection from '@/components/home/FundingSection';
@@ -46,6 +47,7 @@ export default function Home() {
       </div>
       <FeaturedMatches matches={matches} />
       <GameGrid counts={counts} />
+      <ChangGangPoker />
       <HowItWorks />
       <LeaderboardPreview />
       <FundingSection />

@@ -32,6 +32,7 @@ const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
+const PokerHub = lazy(() => import('@/pages/PokerHub'));
 const TicTacToeLobby = lazy(() => import('@/pages/TicTacToeLobby'));
 const TicTacToeTable = lazy(() => import('@/pages/TicTacToeTable'));
 const StraightHighLobby = lazy(() => import('@/pages/StraightHighLobby'));
@@ -87,6 +88,7 @@ const AuthenticatedApp = () => {
           <Route path="/console" element={<ConsoleBridge />} />
           <Route path="/match/:id" element={<MatchDetail />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/poker" element={<PokerHub />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/account-deletion" element={<AccountDeletion />} />
 

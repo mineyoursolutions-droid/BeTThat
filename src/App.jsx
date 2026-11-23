@@ -42,6 +42,8 @@ const PadukiLobby = lazy(() => import('@/pages/PadukiLobby'));
 const PadukiTable = lazy(() => import('@/pages/PadukiTable'));
 const DeadSevenLobby = lazy(() => import('@/pages/DeadSevenLobby'));
 const DeadSevenTable = lazy(() => import('@/pages/DeadSevenTable'));
+const BoneCrusherLobby = lazy(() => import('@/pages/BoneCrusherLobby'));
+const BoneCrusherTable = lazy(() => import('@/pages/BoneCrusherTable'));
 
 function RouteLoading() {
   return (

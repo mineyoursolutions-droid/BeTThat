@@ -1,0 +1,113 @@
+{
+  "name": "PokerTable",
+  "properties": {
+    "bet_unit": {
+      "type": "number"
+    },
+    "coin": {
+      "enum": [
+        "BTC",
+        "ETH",
+        "USDT",
+        "USDC"
+      ],
+      "type": "string"
+    },
+    "creator_handle": {
+      "type": "string"
+    },
+    "creator_id": {
+      "type": "string"
+    },
+    "current_bet": {
+      "default": 0,
+      "type": "number"
+    },
+    "dealer_seat": {
+      "default": 0,
+      "type": "number"
+    },
+    "game_slug": {
+      "type": "string"
+    },
+    "phase": {
+      "default": "betting",
+      "enum": [
+        "betting",
+        "declare",
+        "showdown"
+      ],
+      "type": "string"
+    },
+    "players_json": {
+      "type": "string"
+    },
+    "pot": {
+      "default": 0,
+      "type": "number"
+    },
+    "result_json": {
+      "type": "string"
+    },
+    "reveal_round": {
+      "default": 0,
+      "type": "number"
+    },
+    "settle_note": {
+      "type": "string"
+    },
+    "stake": {
+      "type": "number"
+    },
+    "status": {
+      "default": "lobby",
+      "enum": [
+        "lobby",
+        "in_play",
+        "settled",
+        "cancelled"
+      ],
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "turn_expires_at": {
+      "type": "string"
+    },
+    "turn_user_id": {
+      "type": "string"
+    },
+    "version": {
+      "default": 1,
+      "type": "number"
+    }
+  },
+  "required": [
+    "title",
+    "game_slug",
+    "coin",
+    "stake",
+    "status",
+    "creator_id"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  },
+  "type": "object"
+}

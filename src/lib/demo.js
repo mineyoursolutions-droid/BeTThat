@@ -35,6 +35,16 @@ export const fmtUsd = (value) =>
 
 export const GAMES = [
   {
+    slug: 'bone-crusher',
+    name: 'Bone Crusher',
+    subtitle: 'Chang Gang poker',
+    monogram: 'BC',
+    platforms: ['BetThat'],
+    gradient: 'from-emerald-500/40 via-green-600/15 to-transparent',
+    accent: '#34D399',
+    openMatches: 0,
+  },
+  {
     slug: 'cod',
     name: 'Call of Duty',
     subtitle: 'Black Ops 7',

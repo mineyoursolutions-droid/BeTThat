@@ -32,6 +32,8 @@ const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('@/pages/ResetPassword'));
 const PrivacyPolicy = lazy(() => import('@/pages/PrivacyPolicy'));
 const AccountDeletion = lazy(() => import('@/pages/AccountDeletion'));
+const BoneCrusherLobby = lazy(() => import('@/pages/BoneCrusherLobby'));
+const BoneCrusherTable = lazy(() => import('@/pages/BoneCrusherTable'));
 
 function RouteLoading() {
   return (
@@ -80,6 +82,8 @@ const AuthenticatedApp = () => {
 
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
             <Route path="/create" element={<CreateMatch />} />
+            <Route path="/poker/bone-crusher" element={<BoneCrusherLobby />} />
+            <Route path="/poker/bone-crusher/:id" element={<BoneCrusherTable />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bets" element={<MyWagers />} />
             <Route path="/dashboard" element={<PlayerDashboard />} />

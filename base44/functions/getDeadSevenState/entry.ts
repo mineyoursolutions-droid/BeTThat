@@ -5,10 +5,10 @@ import {
   advanceTimeoutsDeadSeven,
   settleDeadSeven,
 } from '../../shared/deadSeven.ts';
-import { bestHigh4of7, bestLow4of7 } from '../../shared/paduki.ts';
+import { bestHigh4of5, bestLow4of5, hasDeadSeven } from '../../shared/paduki.ts';
 
 // The table's live read: returns the public table state plus the
-// caller's own 7 cards (they live on the PokerHand row only its owner
+// caller's own 5 cards (they live on the PokerHand row only its owner
 // can read). This is also the poll endpoint: an expired turn is swept
 // here, so a stalled player cannot freeze the table. The sweep writes
 // only when the table has not changed since this call read it
@@ -75,11 +75,15 @@ export default async function (req) {
     const handsByUser = await getTableHands(base44, table.id);
     const myHand = mySeat >= 0 ? handsByUser[user.id] || null : null;
     // Your hand evaluated right now — computed server-side so the
-    // table can show it live, both the best high and the best low
-    // 4-card line out of your seven.
+    // table can show it live: the best high and the best low 4-card
+    // line out of your five, plus whether a 7 kills your hand.
     const myBest =
-      myHand && myHand.length === 7
-        ? { high: bestHigh4of7(myHand), low: bestLow4of7(myHand) }
+      myHand && myHand.length === 5
+        ? {
+            high: hasDeadSeven(myHand) ? null : bestHigh4of5(myHand),
+            low: hasDeadSeven(myHand) ? null : bestLow4of5(myHand),
+            dead: hasDeadSeven(myHand),
+          }
         : null;
 
     return Response.json({

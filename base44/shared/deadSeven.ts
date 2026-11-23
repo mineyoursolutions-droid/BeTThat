@@ -1,16 +1,20 @@
-// Dead Seven — Chang Gang poker. Seven cards each, no draws: one
+// Dead Seven — Chang Gang poker. Five cards each, no draws: one
 // betting round, then showdown. The object is to make one of each
-// suit — each player's best 4-card one-of-each-suit hand is read
-// both ways (cards speak), and the pot splits between the best high
-// hand and the best low hand. K-Q-J-T one of each suit is the best
-// high hand; A-2-3-4 one of each suit is the best low hand.
+// suit — each player's best 4-card one-of-each-suit hand from the
+// five dealt is read both ways (cards speak), and the pot splits
+// between the best high hand and the best low hand. K-Q-J-T one of
+// each suit is the best high hand; A-2-3-4 one of each suit is the
+// best low hand.
 //
-// NOTE (builder default, flagged to the user): the user said Dead
-// Seven is dealt "five cards or seven cards" but never said when it
-// is five or when it is seven, or the final hand size. This build is
-// the 7-card version with a best 4-card one-of-each-suit hand. The
-// "eight or higher is high" stipulation is not implemented — the user
-// never said what it gates.
+// Rules clarified by the user (2026-11-22):
+// - 5 cards dealt. A 7 in your hand kills your hand — any 7 among
+//   the five dealt cards and the hand is dead, it cannot win
+//   anything, even if the best four would not include the 7.
+// - Rank bands: A-6 (ranks 1-6) play lowball / low Paduki; ranks
+//   8-K (8 and above) play highball / high Paduki.
+// - Builder default: a made 4-card hand must be all-low to qualify
+//   as low or all-high to qualify as high; a made hand mixing low
+//   and high cards qualifies as neither and cannot win.
 //
 // Card codes are two characters: rank + suit, e.g. "As", "Kd", "Qh".
 
@@ -24,19 +28,19 @@ import {
   nextActorSeat,
   shuffleDeck,
 } from './poker.ts';
-import { bestHigh4of7, bestLow4of7, compareHigh4, compareLow4 } from './paduki.ts';
+import { bestHigh4of5, bestLow4of5, compareHigh4, compareLow4, hasDeadSeven } from './paduki.ts';
 
 // ---------------------------------------------------------------------------
 // Deal
 // ---------------------------------------------------------------------------
 
-// Deal 7-card Dead Seven hands: shuffle a fresh deck, deal 7 to each
+// Deal 5-card Dead Seven hands: shuffle a fresh deck, deal 5 to each
 // player. There are no draws, so no deck row is stashed.
 export async function dealDeadSevenHands(base44, table, players) {
   const deck = shuffleDeck(newDeck());
   const handsByUser = {};
   for (let i = 0; i < players.length; i++) {
-    const hand = deck.slice(i * 7, i * 7 + 7);
+    const hand = deck.slice(i * 5, i * 5 + 5);
     handsByUser[players[i].user_id] = hand;
     await base44.asServiceRole.entities.PokerHand.create({
       table_id: table.id,
@@ -44,7 +48,7 @@ export async function dealDeadSevenHands(base44, table, players) {
       cards_json: JSON.stringify(hand),
     });
   }
-  return { handsByUser, deck: deck.slice(players.length * 7) };
+  return { handsByUser, deck: deck.slice(players.length * 5) };
 }
 
 // ---------------------------------------------------------------------------
@@ -149,8 +153,9 @@ export function advanceTimeoutsDeadSeven(table, players) {
 // ---------------------------------------------------------------------------
 
 // Settle a Dead Seven hand: every active player's best 4-card
-// one-of-each-suit hand is read both ways (cards speak) and the pot
-// splits between the best high hand and the best low hand. 5% house
+// one-of-each-suit hand from the five dealt is read both ways (cards
+// speak) and the pot splits between the best high hand and the best
+// low hand. A hand holding a 7 is dead and wins nothing. 5% house
 // fee, unspent stacks returned — the same payout path as the other
 // Chang Gang games.
 export async function settleDeadSeven(base44, table, players, mode, lastStandingUserId) {
@@ -160,9 +165,19 @@ export async function settleDeadSeven(base44, table, players, mode, lastStanding
 
   for (const p of players) {
     const hand = handsByUser[p.user_id] || [];
-    if (hand.length === 7 && !p.folded) {
-      p.best_high = bestHigh4of7(hand);
-      p.best_low = bestLow4of7(hand);
+    if (hand.length === 5 && !p.folded) {
+      if (hasDeadSeven(hand)) {
+        // A 7 anywhere in the five dealt cards kills the hand — it
+        // cannot win either half, even if the best four would not
+        // include the 7.
+        p.dead = true;
+        p.best_high = null;
+        p.best_low = null;
+      } else {
+        p.dead = false;
+        p.best_high = bestHigh4of5(hand);
+        p.best_low = bestLow4of5(hand);
+      }
     }
   }
 
@@ -274,6 +289,7 @@ export async function settleDeadSeven(base44, table, players, mode, lastStanding
             handle: p.handle,
             best_high: p.best_high,
             best_low: p.best_low,
+            dead: !!p.dead,
             folded: p.folded,
           },
         ]),

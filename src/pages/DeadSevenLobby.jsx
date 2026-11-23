@@ -113,10 +113,10 @@ export default function DeadSevenLobby() {
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Chang Gang poker</p>
           <h1 className="mt-1 font-graffiti text-4xl leading-none text-foreground sm:text-5xl">Dead Seven</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Seven cards each, no draws, one betting round — then showdown. The object is to make one of
-            each suit: your best 4-card one-of-each-suit hand is read both ways, and the pot splits between the best
-            high hand (K-Q-J-T, one of each suit — the high wheel) and the best low hand (A-2-3-4, one of each suit —
-            the low wheel).
+            Five cards each, no draws, one betting round — then showdown. A 7 in your hand kills it: ranks
+            A-6 play low, 8 and above play high. The object is to make one of each suit: your best 4-card
+            one-of-each-suit hand is read both ways, and the pot splits between the best high hand (K-Q-J-T, one
+            of each suit — the high wheel) and the best low hand (A-2-3-4, one of each suit — the low wheel).
           </p>
         </div>
         <Link

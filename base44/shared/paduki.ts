@@ -158,8 +158,8 @@ function combinations(arr, k) {
   return out;
 }
 
-// Best 4-card high hand out of 7 (Dead Seven: best one-of-each-suit
-// four from seven cards).
+// Best 4-card high hand out of 7 (kept as a shared helper; Dead
+// Seven now deals 5 and uses bestHigh4of5 below).
 export function bestHigh4of7(cards7) {
   let best = null;
   for (const combo of combinations(cards7, 4)) {
@@ -173,6 +173,37 @@ export function bestHigh4of7(cards7) {
 export function bestLow4of7(cards7) {
   let best = null;
   for (const combo of combinations(cards7, 4)) {
+    const ev = evaluateLow4(combo);
+    if (!best || compareLow4(ev, best) > 0) best = ev;
+  }
+  return best;
+}
+
+// Dead Seven — best 4-card hand out of the 5 dealt, with the rank
+// bands the user clarified (2026-11-22): ranks A-6 play low, ranks
+// 8-K play high, and a 7 in the hand kills it. A made 4-card hand
+// must be all-low to qualify as low or all-high to qualify as high;
+// a made hand mixing low and high cards qualifies as neither
+// (builder default). Aces count as 1 for the low band and 14 for the
+// high band, as in Paduki.
+export function hasDeadSeven(cards) {
+  return cards.some((c) => rankValue(c) === 7);
+}
+
+export function bestHigh4of5(cards5) {
+  let best = null;
+  for (const combo of combinations(cards5, 4)) {
+    if (!combo.every((c) => rankValue(c) >= 8)) continue;
+    const ev = evaluateHigh4(combo);
+    if (!best || compareHigh4(ev, best) > 0) best = ev;
+  }
+  return best;
+}
+
+export function bestLow4of5(cards5) {
+  let best = null;
+  for (const combo of combinations(cards5, 4)) {
+    if (!combo.every((c) => (rankValue(c) === 14 ? 1 : rankValue(c)) <= 6)) continue;
     const ev = evaluateLow4(combo);
     if (!best || compareLow4(ev, best) > 0) best = ev;
   }

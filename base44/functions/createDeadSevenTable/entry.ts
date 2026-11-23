@@ -5,9 +5,10 @@ import { newPlayerState } from '../../shared/poker.ts';
 // Create a Dead Seven (Chang Gang poker) table. The creator's buy-in
 // is locked into escrow up front, exactly like a match stake; betting
 // during the hand moves chips inside the table, and the pot settles
-// with the usual 5% house fee. Seven cards each, no draws, one
+// with the usual 5% house fee. Five cards each, no draws, one
 // betting round, then the best 4-card one-of-each-suit hand splits
-// the pot high/low.
+// the pot high/low. A 7 in your hand kills it; A-6 play low, 8 and
+// above play high.
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);

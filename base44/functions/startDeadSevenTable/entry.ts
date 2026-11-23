@@ -5,7 +5,7 @@ import { dealDeadSevenHands } from '../../shared/deadSeven.ts';
 
 // Deal a Dead Seven hand. The creator starts the hand once 2-5
 // players are seated. The deck is shuffled server-side and each
-// player is dealt 7 cards; there are no draws, so the single betting
+// player is dealt 5 cards; there are no draws, so the single betting
 // round opens right away.
 export default async function (req) {
   try {

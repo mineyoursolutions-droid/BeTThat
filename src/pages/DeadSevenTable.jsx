@@ -8,8 +8,9 @@ import CoinMark from '@/components/CoinMark';
 import PokerCard from '@/components/PokerCard';
 import { fmtCoin } from '@/lib/demo';
 
-// Dead Seven table — Chang Gang poker. Seven cards each, no draws,
-// one betting round, then showdown. The object is to make one of
+// Dead Seven table — Chang Gang poker. Five cards each, no draws,
+// one betting round, then showdown. A 7 in your hand kills it: ranks
+// A-6 play low, 8 and above play high. The object is to make one of
 // each suit: each player's best 4-card one-of-each-suit hand is read
 // both ways (cards speak), and the pot splits between the best high
 // hand (K-Q-J-T, the high wheel) and the best low hand (A-2-3-4, the
@@ -170,8 +171,8 @@ export default function DeadSevenTable() {
       <p className="mt-2 text-sm text-muted-foreground">
         Buy-in <span className="nums font-semibold text-foreground">{fmtCoin(table.stake, coin)}</span> · Bet per
         round <span className="nums font-semibold text-foreground">{fmtCoin(table.bet_unit, coin)}</span> · 5 players
-        max · 5% house fee at showdown · Seven cards each, no draws — best 4-card one-of-each-suit hand, split
-        high/low
+        max · 5% house fee at showdown · Five cards each, no draws — best 4-card one-of-each-suit hand, split
+        high/low · A 7 kills your hand · A-6 low, 8+ high
       </p>
 
       {/* Turn banner */}
@@ -219,7 +220,7 @@ export default function DeadSevenTable() {
                 Stack {fmtCoin(p.stack, coin)} · In pot {fmtCoin(p.contributed, coin)}
               </p>
               <div className="mt-3 flex w-fit flex-wrap gap-1.5">
-                {Array.from({ length: 7 }).map((_, i) => {
+                {Array.from({ length: 5 }).map((_, i) => {
                   const card = isMe && my_hand ? my_hand[i] : null;
                   return card ? (
                     <PokerCard key={`${card}-${i}`} card={card} size="sm" dimmed={p.folded} />
@@ -270,7 +271,7 @@ export default function DeadSevenTable() {
                 type="button"
                 disabled={busy || players.length < 2}
                 onClick={() =>
-                  invoke('startDeadSevenTable', { table_id: id }, 'Cards dealt', 'Your 7 cards are dealt — one betting round, then showdown.')
+                  invoke('startDeadSevenTable', { table_id: id }, 'Cards dealt', 'Your 5 cards are dealt — a 7 kills your hand. One betting round, then showdown.')
                 }
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-50"
               >
@@ -307,22 +308,28 @@ export default function DeadSevenTable() {
           </div>
           {my_best && (
             <div className="mt-4 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-              <span className="text-muted-foreground">
-                Best high: <span className="font-semibold text-foreground">{my_best.high?.name}</span>{' '}
-                {my_best.high?.made ? (
-                  <span className="text-primary">· made</span>
-                ) : (
-                  <span className="text-rose-400">· not made</span>
-                )}
-              </span>
-              <span className="text-muted-foreground">
-                Best low: <span className="font-semibold text-foreground">{my_best.low?.name}</span>{' '}
-                {my_best.low?.made ? (
-                  <span className="text-primary">· made</span>
-                ) : (
-                  <span className="text-rose-400">· not made</span>
-                )}
-              </span>
+              {my_best.dead ? (
+                <span className="font-semibold text-rose-400">Dead — a 7 in your hand kills it, you cannot win this hand.</span>
+              ) : (
+                <>
+                  <span className="text-muted-foreground">
+                    Best high: <span className="font-semibold text-foreground">{my_best.high?.name || '—'}</span>{' '}
+                    {my_best.high?.made ? (
+                      <span className="text-primary">· made</span>
+                    ) : (
+                      <span className="text-rose-400">· not made</span>
+                    )}
+                  </span>
+                  <span className="text-muted-foreground">
+                    Best low: <span className="font-semibold text-foreground">{my_best.low?.name || '—'}</span>{' '}
+                    {my_best.low?.made ? (
+                      <span className="text-primary">· made</span>
+                    ) : (
+                      <span className="text-rose-400">· not made</span>
+                    )}
+                  </span>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -398,18 +405,24 @@ export default function DeadSevenTable() {
                     </span>
                   </div>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    High: <span className="font-semibold text-foreground">{hand?.best_high?.name || '—'}</span>{' '}
-                    {hand?.best_high?.made ? (
-                      <span className="text-primary">· made</span>
+                    {hand?.dead ? (
+                      <span className="font-semibold text-rose-400">Dead — a 7 kills this hand</span>
                     ) : (
-                      <span className="text-rose-400">· not made</span>
-                    )}
-                    {' · '}
-                    Low: <span className="font-semibold text-foreground">{hand?.best_low?.name || '—'}</span>{' '}
-                    {hand?.best_low?.made ? (
-                      <span className="text-primary">· made</span>
-                    ) : (
-                      <span className="text-rose-400">· not made</span>
+                      <>
+                        High: <span className="font-semibold text-foreground">{hand?.best_high?.name || '—'}</span>{' '}
+                        {hand?.best_high?.made ? (
+                          <span className="text-primary">· made</span>
+                        ) : (
+                          <span className="text-rose-400">· not made</span>
+                        )}
+                        {' · '}
+                        Low: <span className="font-semibold text-foreground">{hand?.best_low?.name || '—'}</span>{' '}
+                        {hand?.best_low?.made ? (
+                          <span className="text-primary">· made</span>
+                        ) : (
+                          <span className="text-rose-400">· not made</span>
+                        )}
+                      </>
                     )}
                   </p>
                 </li>

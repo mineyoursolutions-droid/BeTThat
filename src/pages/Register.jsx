@@ -129,6 +129,18 @@ export default function Register() {
             Resend
           </button>
         </p>
+        <p className="text-center text-sm text-muted-foreground mt-2">
+          Already have an account?{" "}
+          <Link
+            to={"/login" + (safeReturnTo() !== "/" ? "?returnTo=" + encodeURIComponent(safeReturnTo()) : "")}
+            className="text-primary font-medium hover:underline"
+          >
+            Log in
+          </Link>
+        </p>
+        <p className="text-center text-xs text-muted-foreground mt-4">
+          No code arriving? If this email already has an account, no new code is sent — try logging in instead.
+        </p>
       </AuthLayout>
     );
   }

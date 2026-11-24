@@ -14,6 +14,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [resent, setResent] = useState(false);
   // Post-login destination (e.g. the MCP OAuth consent page sends users here
   // with returnTo so the grant flow can resume). Same-origin paths only.
   const returnTo = safeReturnTo();
@@ -21,14 +23,33 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setNeedsVerification(false);
+    setResent(false);
     setLoading(true);
     try {
       await base44.auth.loginViaEmailPassword(email, password);
       window.location.href = returnTo;
     } catch (err) {
-      setError(err.message || "Invalid email or password");
+      // Base44 blocks password login until the email is verified (403).
+      // Point the user at the code instead of a generic "invalid" error.
+      if (err.status === 403) {
+        setNeedsVerification(true);
+        setError("This email isn't verified yet. Check your inbox for the 6-digit code, or resend it below.");
+      } else {
+        setError(err.message || "Invalid email or password");
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setError("");
+    try {
+      await base44.auth.resendOtp(email);
+      setResent(true);
+    } catch (err) {
+      setError(err.message || "Failed to resend code");
     }
   };
 
@@ -74,6 +95,17 @@ export default function Login() {
       {error && (
         <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
           {error}
+        </div>
+      )}
+      {needsVerification && (
+        <div className="mb-4 p-3 rounded-lg bg-muted text-sm">
+          <p className="text-foreground">Didn't get the code?</p>
+          <button onClick={handleResendCode} className="text-primary font-medium hover:underline mt-1" disabled={loading}>
+            Resend verification code
+          </button>
+          {resent && (
+            <p className="text-muted-foreground mt-1">Code sent — check your email.</p>
+          )}
         </div>
       )}
 

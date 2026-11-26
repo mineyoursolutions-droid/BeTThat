@@ -1,4 +1,4 @@
-// Lowball — Chang Gang poker. Standalone ace-to-five lowball:
+// Lowball — Chain Gang poker. Standalone ace-to-five lowball:
 // 5 cards each, one draw (throw back up to 5), a bet after the draw,
 // then showdown. The lowest hand wins the whole pot; tied players
 // split it. One through five (A-2-3-4-5, the wheel) is the best hand.
@@ -262,9 +262,12 @@ export function advanceTimeoutsLowball(table, players) {
 
 // Settle a Lowball hand: the best (lowest) ace-to-five hand takes the
 // whole pot; tied players split it. 5% house fee, unspent stacks
-// returned — the same payout path as the other Chang Gang games.
-export async function settleLowball(base44, table, players, mode, lastStandingUserId) {
+// returned — the same payout path as the other Chain Gang games.
+export async function settleLowball(base44, table, players, mode, lastStandingUserId, opts = {}) {
   const coin = table.coin;
+  // Play-money tables settle in chips only: no house fee, no wallet
+  // moves, no ledger entries. Real-money tables settle exactly as before.
+  const playMoney = opts.playMoney === true;
   const stake = round(Number(table.stake || 0), coin);
   const handsByUser = await getTableHands(base44, table.id);
 
@@ -279,7 +282,7 @@ export async function settleLowball(base44, table, players, mode, lastStandingUs
     players.reduce((sum, p) => sum + Number(p.contributed || 0), 0),
     coin,
   );
-  const fee = round(pot * HOUSE_FEE, coin);
+  const fee = playMoney ? 0 : round(pot * HOUSE_FEE, coin);
   const distributable = round(pot - fee, coin);
 
   const shares = {};
@@ -313,20 +316,24 @@ export async function settleLowball(base44, table, players, mode, lastStandingUs
   }
 
   // Pay out: unspent stack back + winnings. Losers' escrowed buy-in
-  // funds the pot; the 5% fee is retained by the house.
+  // funds the pot; the 5% fee is retained by the house. On a play-money
+  // table there is no escrow to move, so the chips just stay in the
+  // result — no wallet, no ledger.
   for (const p of players) {
     const win = round(shares[p.user_id] || 0, coin);
     const credit = round(Number(p.stack || 0) + win, coin);
-    const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
-    await recordLedger(base44, {
-      userId: p.user_id,
-      coin,
-      amount: credit,
-      kind: win > 0 ? 'payout' : 'refund',
-      description: win > 0 ? `Lowball win · ${table.title}` : `Lowball · ${table.title}`,
-      balanceAfter: wallet.available,
-      refId: table.id,
-    });
+    if (!playMoney) {
+      const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
+      await recordLedger(base44, {
+        userId: p.user_id,
+        coin,
+        amount: credit,
+        kind: win > 0 ? 'payout' : 'refund',
+        description: win > 0 ? `Lowball win · ${table.title}` : `Lowball · ${table.title}`,
+        balanceAfter: wallet.available,
+        refId: table.id,
+      });
+    }
     p.result = {
       won_high: false,
       won_low: winners.low.includes(p.user_id),

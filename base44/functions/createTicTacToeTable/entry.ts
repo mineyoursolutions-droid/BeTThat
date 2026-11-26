@@ -2,7 +2,7 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { COINS, round, handleFor, requireUser, moveFunds, recordLedger } from '../../shared/wallet.ts';
 import { newPlayerState } from '../../shared/poker.ts';
 
-// Create a Tic Tac Toe (Chang Gang poker) table. The creator's buy-in
+// Create a Tic Tac Toe (Chain Gang poker) table. The creator's buy-in
 // is locked into escrow up front, exactly like a match stake; betting
 // during the hand moves chips inside the table, and the pot settles
 // with the usual 5% house fee.

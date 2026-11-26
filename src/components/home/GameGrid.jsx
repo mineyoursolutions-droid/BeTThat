@@ -10,7 +10,7 @@ function GameTile({ game, count }) {
   return (
     <Link
       key={game.slug}
-      to={`/lobby?game=${game.slug}`}
+      to={game.to || `/lobby?game=${game.slug}`}
       {...tilt}
       className="tilt group relative overflow-hidden rounded-2xl border border-border bg-card p-4 transition duration-300 hover:border-primary/50 sm:p-5"
     >
@@ -19,9 +19,13 @@ function GameTile({ game, count }) {
       />
       <div className="tilt-lift relative flex h-full flex-col">
         <div className="flex items-start justify-between">
-          <span className="font-graffiti text-[22px] leading-none tracking-[-0.03em] text-foreground/90 sm:text-[26px]">
-            {game.monogram}
-          </span>
+          {game.icon ? (
+            <img src={game.icon} alt="" className="h-11 w-11 rounded-xl object-cover sm:h-12 sm:w-12" loading="lazy" />
+          ) : (
+            <span className="font-graffiti text-[22px] leading-none tracking-[-0.03em] text-foreground/90 sm:text-[26px]">
+              {game.monogram}
+            </span>
+          )}
           <ArrowUpRight className="h-4 w-4 text-foreground/60 opacity-0 transition group-hover:opacity-100" />
         </div>
 

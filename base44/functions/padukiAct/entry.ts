@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { requireUser } from '../../shared/wallet.ts';
+import { resolvePokerIdentity, isPlayMoneyTable } from '../../shared/guest.ts';
 import { playersOf, activePlayers } from '../../shared/poker.ts';
 import {
   applyDrawGameAction,
@@ -25,10 +25,13 @@ const SETTLE_OPTS = { highOnly: false, gameLabel: 'Paduki' };
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await requireUser(base44);
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-
     const body = await req.json().catch(() => ({}));
+    // Signed-in account or guest: guests only ever play the
+    // play-money tables (see the play-money guards below);
+    // real-money play still requires the signed-in account.
+    const me = await resolvePokerIdentity(base44, body);
+    if (!me) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
     const tableId = String(body.table_id || '').trim();
     const action = String(body.action || '').trim();
     const discards = Array.isArray(body.discards) ? body.discards : [];
@@ -39,12 +42,13 @@ export default async function (req) {
       e.status === 404 ? null : Promise.reject(e),
     );
     if (!table) return Response.json({ error: 'Table not found' }, { status: 404 });
+    const playMoney = isPlayMoneyTable(table);
     if (table.status !== 'in_play') {
       return Response.json({ error: 'This hand is not in play.' }, { status: 400 });
     }
 
     const players = playersOf(table);
-    const seat = players.findIndex((p) => p.user_id === user.id);
+    const seat = players.findIndex((p) => p.user_id === me.id);
     if (seat < 0) return Response.json({ error: 'You are not seated at this table.' }, { status: 400 });
 
     // Sweep any expired turn first — the game may already have moved on.
@@ -58,7 +62,7 @@ export default async function (req) {
         players,
         timedOut,
         timedOut === 'last-standing' ? last?.user_id : undefined,
-        SETTLE_OPTS,
+        { ...SETTLE_OPTS, playMoney },
       );
       return Response.json({ table: settled.table, settled: true, note: settled.note });
     }
@@ -67,7 +71,7 @@ export default async function (req) {
     let handRow = null;
     let deckRow = null;
     if (action === 'draw') {
-      handRow = await getHandRow(base44, table.id, user.id);
+      handRow = await getHandRow(base44, table.id, me.id);
       deckRow = await getDeckRow(base44, table.id);
       if (!handRow || !deckRow) {
         return Response.json({ error: 'Your cards are not ready.' }, { status: 400 });
@@ -119,7 +123,7 @@ export default async function (req) {
         players,
         result.outcome,
         result.outcome === 'last-standing' ? last?.user_id : undefined,
-        SETTLE_OPTS,
+        { ...SETTLE_OPTS, playMoney },
       );
       return Response.json({ table: settled.table, settled: true, note: settled.note });
     }

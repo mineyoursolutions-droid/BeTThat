@@ -1,4 +1,4 @@
-// Dead Seven — Chang Gang poker. Five cards each, no draws: one
+// Dead Seven — Chain Gang poker. Five cards each, no draws: one
 // betting round, then showdown. The object is to make one of each
 // suit — each player's best 4-card one-of-each-suit hand from the
 // five dealt is read both ways (cards speak), and the pot splits
@@ -157,9 +157,12 @@ export function advanceTimeoutsDeadSeven(table, players) {
 // speak) and the pot splits between the best high hand and the best
 // low hand. A hand holding a 7 is dead and wins nothing. 5% house
 // fee, unspent stacks returned — the same payout path as the other
-// Chang Gang games.
-export async function settleDeadSeven(base44, table, players, mode, lastStandingUserId) {
+// Chain Gang games.
+export async function settleDeadSeven(base44, table, players, mode, lastStandingUserId, opts = {}) {
   const coin = table.coin;
+  // Play-money tables settle in chips only: no house fee, no wallet
+  // moves, no ledger entries. Real-money tables settle exactly as before.
+  const playMoney = opts.playMoney === true;
   const stake = round(Number(table.stake || 0), coin);
   const handsByUser = await getTableHands(base44, table.id);
 
@@ -185,7 +188,7 @@ export async function settleDeadSeven(base44, table, players, mode, lastStanding
     players.reduce((sum, p) => sum + Number(p.contributed || 0), 0),
     coin,
   );
-  const fee = round(pot * HOUSE_FEE, coin);
+  const fee = playMoney ? 0 : round(pot * HOUSE_FEE, coin);
   const distributable = round(pot - fee, coin);
 
   const shares = {};
@@ -248,20 +251,24 @@ export async function settleDeadSeven(base44, table, players, mode, lastStanding
   }
 
   // Pay out: unspent stack back + winnings. Losers' escrowed buy-in
-  // funds the pot; the 5% fee is retained by the house.
+  // funds the pot; the 5% fee is retained by the house. On a play-money
+  // table there is no escrow to move, so the chips just stay in the
+  // result — no wallet, no ledger.
   for (const p of players) {
     const win = round(shares[p.user_id] || 0, coin);
     const credit = round(Number(p.stack || 0) + win, coin);
-    const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
-    await recordLedger(base44, {
-      userId: p.user_id,
-      coin,
-      amount: credit,
-      kind: win > 0 ? 'payout' : 'refund',
-      description: win > 0 ? `Dead Seven win · ${table.title}` : `Dead Seven · ${table.title}`,
-      balanceAfter: wallet.available,
-      refId: table.id,
-    });
+    if (!playMoney) {
+      const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
+      await recordLedger(base44, {
+        userId: p.user_id,
+        coin,
+        amount: credit,
+        kind: win > 0 ? 'payout' : 'refund',
+        description: win > 0 ? `Dead Seven win · ${table.title}` : `Dead Seven · ${table.title}`,
+        balanceAfter: wallet.available,
+        refId: table.id,
+      });
+    }
     p.result = {
       won_high: winners.high.includes(p.user_id),
       won_low: winners.low.includes(p.user_id),

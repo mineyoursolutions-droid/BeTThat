@@ -9,7 +9,8 @@
         "BTC",
         "ETH",
         "USDT",
-        "USDC"
+        "USDC",
+        "PLAY"
       ],
       "type": "string"
     },
@@ -28,6 +29,17 @@
       "type": "number"
     },
     "game_slug": {
+      "type": "string"
+    },
+    "is_play_money": {
+      "default": false,
+      "type": "boolean"
+    },
+    "is_private": {
+      "default": false,
+      "type": "boolean"
+    },
+    "join_code": {
       "type": "string"
     },
     "phase": {

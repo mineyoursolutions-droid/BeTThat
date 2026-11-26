@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Crown, Pause, Play, Timer, Trophy, X } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
+import { useGuest, guestPayload, pokerIdentityId } from '@/lib/guest';
+import GuestTablePanel from '@/components/poker/GuestTablePanel';
+import InviteCard from '@/components/poker/InviteCard';
 import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
 import PokerCard from '@/components/PokerCard';
 import { fmtCoin } from '@/lib/demo';
 
-// Lowball table — Chang Gang poker. Ace-to-five lowball: 5 cards
+// Lowball table — Chain Gang Poker. Ace-to-five lowball: 5 cards
 // each, one draw (throw back up to five), a bet after the draw, then
 // showdown. The lowest hand wins the whole pot; tied players split
 // it. A-2-3-4-5, the wheel, is the best hand. Live state polls every
@@ -19,6 +22,8 @@ const DRAW_LIMIT = 5;
 export default function LowballTable() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { guest, saveName } = useGuest();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
   const [state, setState] = useState(null);
   const [missing, setMissing] = useState(false);
@@ -29,12 +34,12 @@ export default function LowballTable() {
 
   const load = useCallback(async () => {
     try {
-      const res = await base44.functions.invoke('getLowballState', { table_id: id });
+      const res = await base44.functions.invoke('getLowballState', { table_id: id, ...(user ? {} : guestPayload(guest)) });
       setState(res.data);
     } catch (err) {
       setMissing(true);
     }
-  }, [id]);
+  }, [id, user, guest]);
 
   useEffect(() => {
     load();
@@ -97,7 +102,19 @@ export default function LowballTable() {
   };
 
   const act = (action, discardsToSend = []) =>
-    invoke('straightHighAct', { table_id: id, action, discards: discardsToSend });
+    invoke('lowballAct', { table_id: id, action, discards: discardsToSend });
+
+  // Joining from a private-table invite link (?code=XXXXXX) seats the
+  // guest automatically once the table has loaded.
+  const autoJoinedRef = useRef(false);
+  useEffect(() => {
+    const code = searchParams.get('code');
+    if (!code || autoJoinedRef.current) return;
+    const t = state?.table;
+    if (!t || t.status !== 'lobby' || state?.is_player || !t.is_play_money) return;
+    autoJoinedRef.current = true;
+    invoke('joinLowballTable', { table_id: id, ...(user ? {} : guestPayload(guest)) }, 'Seat taken', 'You joined with the invite code — play chips only.');
+  }, [state, searchParams, id, user, guest, invoke]);
 
   // Clear the discard picker whenever the turn moves on.
   useEffect(() => {
@@ -126,9 +143,10 @@ export default function LowballTable() {
 
   const { table, players, my_hand, my_best, my_seat, is_player } = state;
   const coin = table.coin;
+  const playMoney = coin === 'PLAY';
   const myPlayer = my_seat >= 0 ? players[my_seat] : null;
   const myTurn =
-    is_player && table.status === 'in_play' && table.turn_user_id === user?.id && myPlayer && !myPlayer.folded;
+    is_player && table.status === 'in_play' && table.turn_user_id === pokerIdentityId(user, guest) && myPlayer && !myPlayer.folded;
   const callAmount = Math.max(0, Number(table.current_bet || 0) - Number(myPlayer?.round_paid || 0));
   const canCheck = myPlayer && Number(myPlayer.round_paid || 0) >= Number(table.current_bet || 0);
   const clock = secondsLeft === null ? '0:60' : `0:${String(secondsLeft).padStart(2, '0')}`;
@@ -175,6 +193,11 @@ export default function LowballTable() {
         >
           {table.status === 'lobby' ? 'Waiting for players' : table.status === 'in_play' ? 'In play' : table.status}
         </span>
+        {playMoney && (
+          <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-cyan-300">
+            Play money
+          </span>
+        )}
         {table.status === 'in_play' && (
           <span className="rounded-full border border-border px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-muted-foreground">
             {phaseLabel}
@@ -188,9 +211,12 @@ export default function LowballTable() {
       <p className="mt-2 text-sm text-muted-foreground">
         Buy-in <span className="nums font-semibold text-foreground">{fmtCoin(table.stake, coin)}</span> · Bet per
         round <span className="nums font-semibold text-foreground">{fmtCoin(table.bet_unit, coin)}</span> · 5 players
-        max · 5% house fee at showdown · One draw: throw back up to five
+        max · {playMoney ? 'play money — no fee' : '5% house fee at showdown'} · One draw: throw back up to five
       </p>
 
+      {table.status === 'lobby' && table.is_private && table.join_code && (
+        <InviteCard gameSlug="lowball" tableId={id} joinCode={table.join_code} className="mt-4" />
+      )}
       {/* Turn banner */}
       {table.status === 'in_play' && turnPlayer && (
         <div className="mt-4 flex items-center gap-2 rounded-2xl border border-border bg-card px-4 py-3">
@@ -213,7 +239,7 @@ export default function LowballTable() {
         {players.map((p) => {
           const isTurn = table.status === 'in_play' && table.turn_user_id === p.user_id;
           const badge = seatBadge(p);
-          const isMe = p.user_id === user?.id;
+          const isMe = p.user_id === pokerIdentityId(user, guest);
           return (
             <div
               key={p.user_id}
@@ -265,15 +291,20 @@ export default function LowballTable() {
         )}
       </div>
 
+      {!user && table.status === 'lobby' && (
+        <div className="mt-6">
+          <GuestTablePanel gameSlug="lowball" gameName="Lowball" guest={guest} onNameSaved={saveName} compact />
+        </div>
+      )}
       {/* Lobby controls */}
       {table.status === 'lobby' && (
         <div className="mt-6 flex flex-wrap gap-2">
-          {!is_player && players.length < 5 && (
+          {!is_player && players.length < 5 && (playMoney || user) && (
             <button
               type="button"
               disabled={busy}
               onClick={() =>
-                invoke('joinLowballTable', { table_id: id }, 'Seat taken', 'Your buy-in is locked in escrow.')
+                invoke('joinLowballTable', { table_id: id, ...(user ? {} : guestPayload(guest)) }, 'Seat taken', playMoney ? 'Seat taken — play chips only.' : 'Your buy-in is locked in escrow.')
               }
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:brightness-105 disabled:opacity-50"
             >
@@ -281,7 +312,16 @@ export default function LowballTable() {
               {busy ? 'Joining…' : `Take a seat · ${fmtCoin(table.stake, coin)} buy-in`}
             </button>
           )}
-          {is_player && table.creator_id === user?.id && (
+          {!is_player && !playMoney && !user && table.status === 'lobby' && (
+            <p className="w-full text-sm text-muted-foreground">
+              This table is real money —{' '}
+              <Link to="/login" className="font-semibold text-primary hover:underline">
+                sign in
+              </Link>{' '}
+              to take a seat, or play a play-money table as a guest.
+            </p>
+          )}
+          {is_player && table.creator_id === pokerIdentityId(user, guest) && (
             <>
               <button
                 type="button"
@@ -298,7 +338,7 @@ export default function LowballTable() {
                 type="button"
                 disabled={busy}
                 onClick={() =>
-                  invoke('cancelLowballTable', { table_id: id }, 'Table cancelled', 'Every buy-in was refunded.')
+                  invoke('cancelLowballTable', { table_id: id }, 'Table cancelled', playMoney ? 'Table cancelled — no real money moved.' : 'Every buy-in was refunded.')
                 }
                 className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-3 text-sm font-semibold transition hover:border-primary/40 hover:text-primary disabled:opacity-50"
               >

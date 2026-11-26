@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Chain Gang Poker — neon barbed wire fence with a prison guard tower behind it">
+  <defs>
+    <linearGradient id="wire" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE" />
+      <stop offset="0.55" stop-color="#4ADE80" />
+      <stop offset="1" stop-color="#A3E635" />
+    </linearGradient>
+    <radialGradient id="towerGlow" cx="0.5" cy="0.38" r="0.55">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.45" />
+      <stop offset="0.6" stop-color="#22D3EE" stop-opacity="0.12" />
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0" />
+    </radialGradient>
+    <filter id="neon" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- near-black background -->
+  <rect width="512" height="512" rx="56" fill="#050505" />
+  <rect width="512" height="512" rx="56" fill="url(#towerGlow)" />
+
+  <!-- prison guard tower (background silhouette, cyan rim light) -->
+  <g filter="url(#neon)" stroke="#22D3EE" stroke-width="3" stroke-linejoin="round">
+    <!-- antenna -->
+    <line x1="256" y1="96" x2="256" y2="116" stroke-width="4" stroke-linecap="round" />
+    <circle cx="256" cy="92" r="6" fill="#22D3EE" stroke="none" />
+    <!-- roof -->
+    <polygon points="188,158 256,118 324,158" fill="#0B0B0B" />
+    <!-- cabin -->
+    <rect x="212" y="158" width="88" height="46" fill="#0B0B0B" />
+    <!-- cabin windows (lit) -->
+    <g fill="#22D3EE" stroke="none" opacity="0.95">
+      <rect x="222" y="166" width="14" height="30" rx="2" />
+      <rect x="249" y="166" width="14" height="30" rx="2" />
+      <rect x="276" y="166" width="14" height="30" rx="2" />
+    </g>
+    <!-- body flaring out below the cabin -->
+    <polygon points="204,204 308,204 296,252 216,252" fill="#0B0B0B" />
+    <!-- small lit window on the body -->
+    <rect x="222" y="214" width="14" height="24" rx="2" fill="#22D3EE" stroke="none" opacity="0.75" />
+    <!-- legs -->
+    <rect x="228" y="252" width="12" height="72" fill="#0B0B0B" />
+    <rect x="272" y="252" width="12" height="72" fill="#0B0B0B" />
+  </g>
+
+  <!-- neon barbed wire (foreground) -->
+  <g filter="url(#neon)" stroke="url(#wire)" stroke-linecap="round" fill="none">
+    <!-- main strand -->
+    <line x1="14" y1="386" x2="498" y2="386" stroke-width="9" />
+    <!-- barb clusters: coiled wrap + crossed spikes -->
+    <g stroke-width="8">
+      <g>
+        <line x1="88" y1="372" x2="88" y2="400" />
+        <line x1="100" y1="372" x2="100" y2="400" />
+        <line x1="112" y1="372" x2="112" y2="400" />
+        <line x1="72" y1="352" x2="128" y2="420" />
+        <line x1="128" y1="352" x2="72" y2="420" />
+      </g>
+      <g>
+        <line x1="200" y1="372" x2="200" y2="400" />
+        <line x1="212" y1="372" x2="212" y2="400" />
+        <line x1="224" y1="372" x2="224" y2="400" />
+        <line x1="184" y1="352" x2="240" y2="420" />
+        <line x1="240" y1="352" x2="184" y2="420" />
+      </g>
+      <g>
+        <line x1="312" y1="372" x2="312" y2="400" />
+        <line x1="324" y1="372" x2="324" y2="400" />
+        <line x1="336" y1="372" x2="336" y2="400" />
+        <line x1="296" y1="352" x2="352" y2="420" />
+        <line x1="352" y1="352" x2="296" y2="420" />
+      </g>
+      <g>
+        <line x1="424" y1="372" x2="424" y2="400" />
+        <line x1="436" y1="372" x2="436" y2="400" />
+        <line x1="448" y1="372" x2="448" y2="400" />
+        <line x1="408" y1="352" x2="464" y2="420" />
+        <line x1="464" y1="352" x2="408" y2="420" />
+      </g>
+    </g>
+    <!-- electric sparks -->
+    <g stroke-width="4">
+      <polyline points="150,340 162,362 152,372 168,392" />
+      <polyline points="360,344 350,364 362,374 348,394" />
+    </g>
+  </g>
+</svg>

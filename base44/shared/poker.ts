@@ -1,4 +1,4 @@
-// Bone Crusher ("Kick Two Roll One") — Chang Gang poker.
+// Bone Crusher ("Kick Two Roll One") — Chain Gang poker.
 // Shared server-side engine: deck + shuffle, 5-card hand evaluation
 // (standard high + ace-to-five low), best-5-of-7, the betting/declare
 // state machine, and settlement with the swing rule.
@@ -449,8 +449,12 @@ export async function getTableHands(base44, tableId) {
 // high and low hands, apply the swing rule, split the pot (5% house
 // fee), return unspent chips, and write the settled state. mode is
 // 'showdown' or 'last-standing' (everyone else folded).
-export async function settleBoneCrusher(base44, table, players, mode, lastStandingUserId) {
+export async function settleBoneCrusher(base44, table, players, mode, lastStandingUserId, opts = {}) {
   const coin = table.coin;
+  // Play-money tables settle in chips only: no house fee, no wallet
+  // moves, no ledger entries. Real-money tables settle exactly as
+  // before (5% fee, escrow payout).
+  const playMoney = opts.playMoney === true;
   const stake = round(Number(table.stake || 0), coin);
   const handsByUser = await getTableHands(base44, table.id);
 
@@ -467,7 +471,7 @@ export async function settleBoneCrusher(base44, table, players, mode, lastStandi
     players.reduce((sum, p) => sum + Number(p.contributed || 0), 0),
     coin,
   );
-  const fee = round(pot * HOUSE_FEE, coin);
+  const fee = playMoney ? 0 : round(pot * HOUSE_FEE, coin);
   const distributable = round(pot - fee, coin);
 
   // shares[user_id] = winnings from the pot (before unspent-stack return)
@@ -558,20 +562,24 @@ export async function settleBoneCrusher(base44, table, players, mode, lastStandi
 
   // Pay out: unspent stack back + winnings. Losers' escrowed buy-in
   // funds the pot; the 5% fee is retained by the house (same as
-  // settlePot — the fee is simply never credited out).
+  // settlePot — the fee is simply never credited out). On a play-money
+  // table there is no escrow to move, so the chips just stay in the
+  // result — no wallet, no ledger.
   for (const p of players) {
     const win = round(shares[p.user_id] || 0, coin);
     const credit = round(Number(p.stack || 0) + win, coin);
-    const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
-    await recordLedger(base44, {
-      userId: p.user_id,
-      coin,
-      amount: credit,
-      kind: win > 0 ? 'payout' : 'refund',
-      description: win > 0 ? `Bone Crusher win · ${table.title}` : `Bone Crusher · ${table.title}`,
-      balanceAfter: wallet.available,
-      refId: table.id,
-    });
+    if (!playMoney) {
+      const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
+      await recordLedger(base44, {
+        userId: p.user_id,
+        coin,
+        amount: credit,
+        kind: win > 0 ? 'payout' : 'refund',
+        description: win > 0 ? `Bone Crusher win · ${table.title}` : `Bone Crusher · ${table.title}`,
+        balanceAfter: wallet.available,
+        refId: table.id,
+      });
+    }
     p.result = {
       won_high: winners.high.includes(p.user_id),
       won_low: winners.low.includes(p.user_id),

@@ -7,7 +7,7 @@ const SIZES = {
   lg: 'h-11 w-11',
 };
 
-const GLYPHS = { BTC: null, ETH: 'Ξ', USDT: '₮', USDC: '$' };
+const GLYPHS = { BTC: null, ETH: 'Ξ', USDT: '₮', USDC: '$', PLAY: '⛓' };
 
 export default function CoinMark({ ticker, size = 'md', className = '' }) {
   const coin = coinByTicker(ticker);

@@ -1,11 +1,16 @@
 // Local sample content for the first render. Replaced by live data once the
 // lobby, wallet and match feeds are wired to the database.
 
+import chainGangIcon from '@/assets/chain-gang-poker-icon.svg';
+
 export const COINS = [
   { ticker: 'BTC', name: 'Bitcoin', network: 'Bitcoin', usd: 97400, accent: '#F7931A' },
   { ticker: 'ETH', name: 'Ethereum', network: 'ERC-20', usd: 3180, accent: '#8A9CF0' },
   { ticker: 'USDT', name: 'Tether', network: 'TRC-20 · ERC-20', usd: 1, accent: '#26A17B' },
   { ticker: 'USDC', name: 'USD Coin', network: 'ERC-20', usd: 1, accent: '#2775CA' },
+  // Virtual play chips for Chain Gang Poker guest tables — worth nothing,
+  // never a real stake.
+  { ticker: 'PLAY', name: 'Play chips', network: 'Play money', usd: 0, accent: '#22D3EE' },
 ];
 
 export const coinByTicker = (ticker) => COINS.find((c) => c.ticker === ticker);
@@ -17,6 +22,7 @@ export const toUsd = (amount, ticker) => {
 
 export const fmtCoin = (amount, ticker) => {
   const value = Number(amount || 0);
+  if (ticker === 'PLAY') return `${value.toLocaleString()} play chips`;
   const decimals = ticker === 'USDT' || ticker === 'USDC' ? 2 : value < 1 ? 4 : 2;
   return `${value.toLocaleString(undefined, {
     minimumFractionDigits: ticker === 'USDT' || ticker === 'USDC' ? 2 : 0,
@@ -35,13 +41,15 @@ export const fmtUsd = (value) =>
 
 export const GAMES = [
   {
-    slug: 'bone-crusher',
-    name: 'Bone Crusher',
-    subtitle: 'Chang Gang poker',
-    monogram: 'BC',
+    slug: 'chain-gang-poker',
+    name: 'Chain Gang Poker',
+    subtitle: 'Six house games · Play money',
+    monogram: 'CG',
+    icon: chainGangIcon,
+    to: '/poker',
     platforms: ['BetThat'],
-    gradient: 'from-emerald-500/40 via-green-600/15 to-transparent',
-    accent: '#34D399',
+    gradient: 'from-cyan-500/40 via-emerald-600/15 to-transparent',
+    accent: '#22D3EE',
     openMatches: 0,
   },
   {

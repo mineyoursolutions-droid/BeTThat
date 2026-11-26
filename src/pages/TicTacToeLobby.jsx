@@ -3,15 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Users, Plus, Spade, Eye, Play } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useAuth } from '@/lib/AuthContext';
+import { useGuest, guestPayload, pokerIdentityId } from '@/lib/guest';
+import GuestTablePanel from '@/components/poker/GuestTablePanel';
 import { useToast } from '@/components/ui/use-toast';
 import CoinMark from '@/components/CoinMark';
 import { COINS, fmtCoin } from '@/lib/demo';
 
-// Tic Tac Toe lobby — Chang Gang poker. Open a new table (5 players
+// Tic Tac Toe lobby — Chain Gang Poker. Open a new table (5 players
 // max, buy-in in the match coin) or take a seat at an open one.
 // Tables in play can be watched live.
 export default function TicTacToeLobby() {
   const { user } = useAuth();
+  const { guest, saveName } = useGuest();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [tables, setTables] = useState([]);
@@ -26,7 +29,8 @@ export default function TicTacToeLobby() {
         { game_slug: 'tic-tac-toe' },
         { sort: '-created_date', limit: 20 },
       );
-      setTables(page.items || []);
+      // Private tables never appear in the public lobby list.
+      setTables((page.items || []).filter((t) => !t.is_private));
     } catch {
       setTables([]);
     } finally {
@@ -84,7 +88,7 @@ export default function TicTacToeLobby() {
   const joinTable = async (tableId) => {
     setBusy(true);
     try {
-      await base44.functions.invoke('joinTicTacToeTable', { table_id: tableId });
+      await base44.functions.invoke('joinTicTacToeTable', { table_id: tableId, ...(user ? {} : guestPayload(guest)) });
       navigate(`/poker/tic-tac-toe/${tableId}`);
     } catch (err) {
       toast({
@@ -110,7 +114,7 @@ export default function TicTacToeLobby() {
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Chang Gang poker</p>
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-primary">Chain Gang Poker</p>
           <h1 className="mt-1 font-graffiti text-4xl leading-none text-foreground sm:text-5xl">Tic Tac Toe</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Nine cards each in a 3x3 grid — top, middle, and bottom rows of three. Your hand is your best three-card
@@ -135,6 +139,7 @@ export default function TicTacToeLobby() {
               <Plus className="h-4 w-4 text-primary" />
               Open a Tic Tac Toe table
             </h2>
+            {user ? (
             <div className="mt-4 space-y-4">
               <div>
                 <label className="text-sm uppercase tracking-[0.14em] text-muted-foreground">Table name</label>
@@ -195,6 +200,11 @@ export default function TicTacToeLobby() {
                 {busy ? 'Opening…' : 'Open table'}
               </button>
             </div>
+            ) : (
+              <div className="mt-4">
+                <GuestTablePanel gameSlug="tic-tac-toe" gameName="Tic Tac Toe" guest={guest} onNameSaved={saveName} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -220,8 +230,9 @@ export default function TicTacToeLobby() {
             <ul className="divide-y divide-border/60">
               {tables.map((table) => {
                 const seats = seatCount(table);
-                const isSeated =
-                  user && JSON.parse(table.players_json || '[]').some((p) => p.user_id === user.id);
+                const isSeated = JSON.parse(table.players_json || '[]').some(
+                  (p) => p.user_id === pokerIdentityId(user, guest),
+                );
                 return (
                   <li key={table.id} className="flex flex-wrap items-center gap-3 px-6 py-4">
                     <div className="min-w-0 flex-1">
@@ -242,7 +253,12 @@ export default function TicTacToeLobby() {
                     >
                       {table.status === 'lobby' ? 'Open' : table.status === 'in_play' ? 'In play' : table.status}
                     </span>
-                    {table.status === 'lobby' && !isSeated && seats < 5 ? (
+                    {table.coin === 'PLAY' && (
+                      <span className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-cyan-300">
+                        Play money
+                      </span>
+                    )}
+                    {table.status === 'lobby' && !isSeated && seats < 5 && (user || table.coin === 'PLAY') ? (
                       <button
                         type="button"
                         disabled={busy}

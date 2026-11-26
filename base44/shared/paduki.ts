@@ -1,5 +1,5 @@
 // Paduki (NOT Paducah — that is a city in Kentucky) and Straight High.
-// Shared 4-card draw engine for the Chang Gang poker family.
+// Shared 4-card draw engine for the Chain Gang poker family.
 //
 // Paduki rules (the user's own):
 // - 4 cards each. A made hand must have one of each suit — one diamond,
@@ -552,8 +552,11 @@ export function advanceTimeoutsDraw(table, players, opts) {
 //   the best low hand among players who declared that way (or let the
 //   cards speak). A direction with no winners gives its half to the
 //   other direction.
-export async function settleDrawGame(base44, table, players, mode, lastStandingUserId, opts) {
+export async function settleDrawGame(base44, table, players, mode, lastStandingUserId, opts = {}) {
   const coin = table.coin;
+  // Play-money tables settle in chips only: no house fee, no wallet
+  // moves, no ledger entries. Real-money tables settle exactly as before.
+  const playMoney = opts.playMoney === true;
   const stake = round(Number(table.stake || 0), coin);
   const handsByUser = await getTableHands(base44, table.id);
 
@@ -569,7 +572,7 @@ export async function settleDrawGame(base44, table, players, mode, lastStandingU
     players.reduce((sum, p) => sum + Number(p.contributed || 0), 0),
     coin,
   );
-  const fee = round(pot * HOUSE_FEE, coin);
+  const fee = playMoney ? 0 : round(pot * HOUSE_FEE, coin);
   const distributable = round(pot - fee, coin);
 
   const shares = {};
@@ -652,20 +655,24 @@ export async function settleDrawGame(base44, table, players, mode, lastStandingU
   }
 
   // Pay out: unspent stack back + winnings. Losers' escrowed buy-in
-  // funds the pot; the 5% fee is retained by the house.
+  // funds the pot; the 5% fee is retained by the house. On a play-money
+  // table there is no escrow to move, so the chips just stay in the
+  // result — no wallet, no ledger.
   for (const p of players) {
     const win = round(shares[p.user_id] || 0, coin);
     const credit = round(Number(p.stack || 0) + win, coin);
-    const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
-    await recordLedger(base44, {
-      userId: p.user_id,
-      coin,
-      amount: credit,
-      kind: win > 0 ? 'payout' : 'refund',
-      description: win > 0 ? `${opts.gameLabel} win · ${table.title}` : `${opts.gameLabel} · ${table.title}`,
-      balanceAfter: wallet.available,
-      refId: table.id,
-    });
+    if (!playMoney) {
+      const wallet = await moveFunds(base44, p.user_id, coin, { locked: -stake, available: credit });
+      await recordLedger(base44, {
+        userId: p.user_id,
+        coin,
+        amount: credit,
+        kind: win > 0 ? 'payout' : 'refund',
+        description: win > 0 ? `${opts.gameLabel} win · ${table.title}` : `${opts.gameLabel} · ${table.title}`,
+        balanceAfter: wallet.available,
+        refId: table.id,
+      });
+    }
     p.result = {
       won_high: winners.high.includes(p.user_id),
       won_low: winners.low.includes(p.user_id),

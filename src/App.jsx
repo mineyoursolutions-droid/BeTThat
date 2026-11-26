@@ -89,23 +89,27 @@ const AuthenticatedApp = () => {
           <Route path="/match/:id" element={<MatchDetail />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/poker" element={<PokerHub />} />
+          {/* Poker lobbies and tables are public: guests play the
+              play-money tables without an account. The pages themselves
+              keep guests off real-money tables — see GuestTablePanel and
+              the play-money guards in the table pages. */}
+          <Route path="/poker/bone-crusher" element={<BoneCrusherLobby />} />
+          <Route path="/poker/bone-crusher/:id" element={<BoneCrusherTable />} />
+          <Route path="/poker/tic-tac-toe" element={<TicTacToeLobby />} />
+          <Route path="/poker/tic-tac-toe/:id" element={<TicTacToeTable />} />
+          <Route path="/poker/straight-high" element={<StraightHighLobby />} />
+          <Route path="/poker/straight-high/:id" element={<StraightHighTable />} />
+          <Route path="/poker/lowball" element={<LowballLobby />} />
+          <Route path="/poker/lowball/:id" element={<LowballTable />} />
+          <Route path="/poker/paduki" element={<PadukiLobby />} />
+          <Route path="/poker/paduki/:id" element={<PadukiTable />} />
+          <Route path="/poker/dead-seven" element={<DeadSevenLobby />} />
+          <Route path="/poker/dead-seven/:id" element={<DeadSevenTable />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/account-deletion" element={<AccountDeletion />} />
 
           <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
             <Route path="/create" element={<CreateMatch />} />
-            <Route path="/poker/bone-crusher" element={<BoneCrusherLobby />} />
-            <Route path="/poker/bone-crusher/:id" element={<BoneCrusherTable />} />
-            <Route path="/poker/tic-tac-toe" element={<TicTacToeLobby />} />
-            <Route path="/poker/tic-tac-toe/:id" element={<TicTacToeTable />} />
-            <Route path="/poker/straight-high" element={<StraightHighLobby />} />
-            <Route path="/poker/straight-high/:id" element={<StraightHighTable />} />
-            <Route path="/poker/lowball" element={<LowballLobby />} />
-            <Route path="/poker/lowball/:id" element={<LowballTable />} />
-            <Route path="/poker/paduki" element={<PadukiLobby />} />
-            <Route path="/poker/paduki/:id" element={<PadukiTable />} />
-            <Route path="/poker/dead-seven" element={<DeadSevenLobby />} />
-            <Route path="/poker/dead-seven/:id" element={<DeadSevenTable />} />
             <Route path="/wallet" element={<WalletPage />} />
             <Route path="/bets" element={<MyWagers />} />
             <Route path="/dashboard" element={<PlayerDashboard />} />

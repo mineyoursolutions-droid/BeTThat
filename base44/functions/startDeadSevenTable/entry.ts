@@ -1,5 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { requireUser } from '../../shared/wallet.ts';
+import { resolvePokerIdentity } from '../../shared/guest.ts';
 import { playersOf, ACTION_TIMEOUT_MS, firstActorSeat } from '../../shared/poker.ts';
 import { dealDeadSevenHands } from '../../shared/deadSeven.ts';
 
@@ -10,10 +10,13 @@ import { dealDeadSevenHands } from '../../shared/deadSeven.ts';
 export default async function (req) {
   try {
     const base44 = createClientFromRequest(req);
-    const user = await requireUser(base44);
-    if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
-
     const body = await req.json().catch(() => ({}));
+    // Signed-in account or guest: guests only ever play the
+    // play-money tables (see the play-money guards below);
+    // real-money play still requires the signed-in account.
+    const me = await resolvePokerIdentity(base44, body);
+    if (!me) return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
     const tableId = String(body.table_id || '').trim();
     if (!tableId) return Response.json({ error: 'table_id is required' }, { status: 400 });
 
@@ -21,7 +24,7 @@ export default async function (req) {
       e.status === 404 ? null : Promise.reject(e),
     );
     if (!table) return Response.json({ error: 'Table not found' }, { status: 404 });
-    if (table.creator_id !== user.id) {
+    if (table.creator_id !== me.id) {
       return Response.json({ error: 'Only the table creator can deal the hand.' }, { status: 400 });
     }
     if (table.status !== 'lobby') {

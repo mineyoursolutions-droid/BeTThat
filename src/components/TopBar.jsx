@@ -11,7 +11,7 @@ import { BRAND_LOGO, BRAND_NAME } from '@/lib/brand';
 
 const NAV = [
   { label: 'Lobby', to: '/lobby' },
-  { label: 'Chang Gang', to: '/poker' },
+  { label: 'Chain Gang', to: '/poker' },
   { label: 'Find a game', to: '/find' },
   { label: 'Console bridge', to: '/console' },
   { label: 'Leaderboard', to: '/leaderboard' },

@@ -27,6 +27,8 @@ import { HOUSE_FEE, round, moveFunds, recordLedger } from './wallet.ts';
 import {
   ACTION_TIMEOUT_MS,
   activePlayers,
+  chooseBettingMove,
+  driveBotTurns,
   firstActorSeat,
   getTableHands,
   newDeck,
@@ -713,4 +715,132 @@ export async function settleDrawGame(base44, table, players, mode, lastStandingU
   };
   const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, patch);
   return { table: updated, winners, note };
+}
+
+// ── Bot players (play-money tables only) ──────────────────────────────
+// Same contract as Bone Crusher: bots act through
+// applyDrawGameAction, are labelled is_bot, and never touch wallets,
+// fees or ledgers. One shared implementation serves both Paduki
+// (declare) and Straight High (high only) via `opts`.
+
+// A bot's discards in a 4-card draw game: throw back every card that
+// shares a suit with a higher card (a made hand needs one of each
+// suit), lowest first, up to the round's limit. On the final draw the
+// rules demand exactly one discard, so a bot with a made hand throws
+// its lowest card.
+export function drawGameBotDiscards(hand, limit, mustDiscardOne) {
+  const bySuit = new Map();
+  hand.forEach((card, i) => {
+    const suit = suitOf(card);
+    if (!bySuit.has(suit)) bySuit.set(suit, []);
+    bySuit.get(suit).push(i);
+  });
+  const candidates = [];
+  for (const idxs of bySuit.values()) {
+    if (idxs.length > 1) {
+      const sorted = [...idxs].sort((a, b) => rankValue(hand[a]) - rankValue(hand[b]));
+      candidates.push(...sorted.slice(0, -1)); // keep the highest card of the suit
+    }
+  }
+  candidates.sort((a, b) => rankValue(hand[a]) - rankValue(hand[b]));
+  const discards = candidates.slice(0, limit);
+  if (mustDiscardOne && discards.length === 0) {
+    // No duplicate suit: throw the lowest card to satisfy the rule.
+    let lowest = 0;
+    hand.forEach((card, i) => {
+      if (rankValue(card) < rankValue(hand[lowest])) lowest = i;
+    });
+    discards.push(lowest);
+  }
+  return discards;
+}
+
+function drawGameBotHandStrong(hand, declareGame) {
+  if (!isMade4(hand)) return false;
+  const high = evaluateHigh4(hand);
+  if (high && high.category >= 1) return true;
+  if (!declareGame) return false;
+  const low = evaluateLow4(hand);
+  return !!low && low.score[0] <= 5;
+}
+
+function drawGameBotDeclare(hand) {
+  const high = evaluateHigh4(hand);
+  const low = evaluateLow4(hand);
+  const highStrong = high && high.category >= 1;
+  const lowStrong = low && low.score[0] <= 5;
+  if (highStrong && !lowStrong) return 'high';
+  if (lowStrong && !highStrong) return 'low';
+  return 'speak';
+}
+
+export function chooseBotMoveDrawGame(table, players, seat, hand, opts = {}) {
+  const player = players[seat];
+  if (table.phase === 'declare') {
+    return { action: 'declare', declare: drawGameBotDeclare(hand || []) };
+  }
+  if (drawPassActive(players)) {
+    const round = Number(table.reveal_round || 0);
+    return {
+      action: 'draw',
+      discards: drawGameBotDiscards(hand || [], DRAW_LIMITS[round] ?? 1, round === DRAW_LIMITS.length - 1),
+    };
+  }
+  return { action: chooseBettingMove(table, player, drawGameBotHandStrong(hand || [], opts.declare)) };
+}
+
+// Apply bot moves while the turn belongs to a bot. The bot's hand and
+// the undealt deck are read fresh from their PokerHand rows on every
+// bot turn, so a bot always draws from the current deck; a bot draw is
+// persisted to the same rows the human draw uses, and `handsByUser`
+// is kept in sync for the caller. Returns the hand outcome.
+export async function driveDrawGameBotTurns(base44, table, players, handsByUser, opts = {}) {
+  return driveBotTurns(table, players, async (t, ps, seat) => {
+    const player = ps[seat];
+    const handRow = await getHandRow(base44, t.id, player.user_id);
+    const deckRow = await getDeckRow(base44, t.id);
+    const hand = handRow ? handRow.cards : [];
+    const deck = deckRow ? deckRow.cards : [];
+    const move = chooseBotMoveDrawGame(t, ps, seat, hand, opts);
+    const result = applyDrawGameAction(t, ps, seat, move.action, move.declare || '', move.discards || [], hand, deck, opts);
+    if (result.error) return 'error';
+    if (result.newHand && handRow) {
+      await base44.asServiceRole.entities.PokerHand.update(handRow.id, {
+        cards_json: JSON.stringify(result.newHand),
+      });
+      handsByUser[player.user_id] = result.newHand;
+    }
+    if (result.newDeck && deckRow) await saveDeckRow(base44, deckRow.id, result.newDeck);
+    return result.outcome;
+  });
+}
+
+// Deal a 4-card draw hand: deal 4 cards each and stash the rest of
+// the deck, then flip the table to in_play with the first draw pass
+// open. This mirrors the Deal button (start entries for Paduki and
+// Straight High) exactly — it is shared by the start entries and the
+// bot auto-deal in getState.
+export async function dealDrawGameHand(base44, table, players) {
+  await dealDrawHands(base44, table, players);
+
+  for (const p of players) {
+    p.drawn = false;
+    p.round_paid = 0;
+    p.acted = false;
+  }
+
+  const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
+  const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+    status: 'in_play',
+    phase: 'betting',
+    reveal_round: 0,
+    current_bet: 0,
+    pot: 0,
+    players_json: JSON.stringify(players),
+    turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
+    turn_expires_at:
+      firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
+    version: Number(table.version || 0) + 1,
+  });
+  return updated;
 }

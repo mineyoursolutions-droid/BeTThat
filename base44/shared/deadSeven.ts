@@ -22,6 +22,8 @@ import { HOUSE_FEE, round, moveFunds, recordLedger } from './wallet.ts';
 import {
   ACTION_TIMEOUT_MS,
   activePlayers,
+  chooseBettingMove,
+  driveBotTurns,
   firstActorSeat,
   getTableHands,
   newDeck,
@@ -309,4 +311,60 @@ export async function settleDeadSeven(base44, table, players, mode, lastStanding
   };
   const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, patch);
   return { table: updated, winners, note };
+}
+
+// ── Bot players (play-money tables only) ──────────────────────────────
+// Same contract as Bone Crusher: bots act through
+// applyDeadSevenAction, are labelled is_bot, and never touch wallets,
+// fees or ledgers. One betting round, no draws, no declare — the
+// cards speak both ways at showdown.
+
+function deadSevenBotHandStrong(hand) {
+  if (hasDeadSeven(hand)) return false; // a 7 kills the hand — never bet on it
+  const high = bestHigh4of5(hand);
+  const low = bestLow4of5(hand);
+  return (high && high.category >= 1) || (low && low.score[0] <= 6);
+}
+
+export function chooseBotMoveDeadSeven(table, players, seat, hand) {
+  const player = players[seat];
+  return { action: chooseBettingMove(table, player, deadSevenBotHandStrong(hand || [])) };
+}
+
+export async function driveDeadSevenBotTurns(base44, table, players, handsByUser) {
+  return driveBotTurns(table, players, async (t, ps, seat) => {
+    const player = ps[seat];
+    const move = chooseBotMoveDeadSeven(t, ps, seat, handsByUser[player.user_id] || []);
+    const result = applyDeadSevenAction(t, ps, seat, move.action);
+    if (result.error) return 'error';
+    return result.outcome;
+  });
+}
+
+// Deal a Dead Seven hand: deal 5 cards each, then flip the table to
+// in_play on the single betting round. This mirrors the Deal button
+// (start entry) exactly — it is shared by the start entry and the bot
+// auto-deal in getState.
+export async function dealDeadSevenHand(base44, table, players) {
+  await dealDeadSevenHands(base44, table, players);
+
+  for (const p of players) {
+    p.round_paid = 0;
+    p.acted = false;
+  }
+
+  const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
+  const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+    status: 'in_play',
+    phase: 'betting',
+    reveal_round: 0,
+    current_bet: 0,
+    pot: 0,
+    players_json: JSON.stringify(players),
+    turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
+    turn_expires_at:
+      firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
+    version: Number(table.version || 0) + 1,
+  });
+  return updated;
 }

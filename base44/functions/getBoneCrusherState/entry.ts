@@ -8,7 +8,16 @@ import {
   activePlayers,
   bestHigh7,
   bestLow7,
+  dealBoneCrusherHand,
+  driveBoneCrusherBotTurns,
 } from '../../shared/poker.ts';
+import {
+  seatBots,
+  removeBotsWhenNoHumans,
+  botPlayers,
+  humanPlayers,
+  botGraceExpired,
+} from '../../shared/bots.ts';
 
 // The table's live read: returns the public table state plus the
 // caller's own 7 cards (down cards are never sent to anyone else —
@@ -37,6 +46,46 @@ export default async function (req) {
     const playMoney = isPlayMoneyTable(table);
 
     let players = playersOf(table);
+
+    // Play-money lobby maintenance: bots fill a lone human's table,
+    // leave when the last human leaves, and deal on their own once
+    // the grace period has passed — so a player who pulls up alone
+    // sees cards without pressing anything.
+    if (
+      table.status === 'lobby' &&
+      playMoney &&
+      (botPlayers(players).length > 0 || humanPlayers(players).length === 1)
+    ) {
+      const versionBefore = Number(table.version || 0);
+      const botsRemoved = removeBotsWhenNoHumans(players);
+      const botsAdded = seatBots(table, players);
+      const fresh = await base44.asServiceRole.entities.PokerTable.get(table.id).catch(() => null);
+      if (fresh && Number(fresh.version || 0) === versionBefore) {
+        if (botsAdded.length > 0 || botsRemoved.length > 0) {
+          table = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+            players_json: JSON.stringify(players),
+            version: versionBefore + 1,
+          });
+          players = playersOf(table);
+        }
+        // Auto-deal once bots have sat through the grace period with
+        // exactly one human at the table.
+        if (
+          humanPlayers(players).length === 1 &&
+          botPlayers(players).length > 0 &&
+          botGraceExpired(table)
+        ) {
+          table = await dealBoneCrusherHand(base44, table, players);
+          players = playersOf(table);
+        }
+      } else if (fresh) {
+        // Someone changed the table while this call was maintaining
+        // it — serve their newer state instead.
+        table = fresh;
+        players = playersOf(table);
+      }
+    }
+
     const mySeat = players.findIndex((p) => p.user_id === me.id);
 
     if (table.status === 'in_play') {
@@ -75,6 +124,66 @@ export default async function (req) {
           // Someone acted while this call was sweeping — serve their
           // newer state instead of the stale in-memory one.
           table = fresh;
+        }
+      }
+      // Re-read the stored state before driving bots, so a bot never
+      // acts on a stale table.
+      players = playersOf(table);
+      // Bots act on their own turn so a hand with bots keeps moving
+      // without waiting for a human to open the table again.
+      if (playMoney && table.status === 'in_play') {
+        const stateBefore = JSON.stringify([
+          table.turn_user_id,
+          table.turn_expires_at,
+          table.phase,
+          table.current_bet,
+          table.reveal_round,
+          table.pot,
+          players,
+        ]);
+        const botOutcome = await driveBoneCrusherBotTurns(base44, table, players, handsByUser);
+        if (botOutcome === 'last-standing' || botOutcome === 'showdown') {
+          const last = activePlayers(players)[0];
+          const settled = await settleBoneCrusher(
+            base44,
+            table,
+            players,
+            botOutcome,
+            botOutcome === 'last-standing' ? last?.user_id : undefined,
+            { playMoney },
+          );
+          table = settled.table;
+        } else {
+          const stateAfter = JSON.stringify([
+            table.turn_user_id,
+            table.turn_expires_at,
+            table.phase,
+            table.current_bet,
+            table.reveal_round,
+            table.pot,
+            players,
+          ]);
+          if (stateAfter !== stateBefore) {
+            // Only write when the bots actually moved, version-checked
+            // like the sweep, so a concurrent player action is never
+            // clobbered.
+            const versionNow = Number(table.version || 0);
+            const fresh = await base44.asServiceRole.entities.PokerTable.get(table.id).catch(() => null);
+            if (fresh && Number(fresh.version || 0) === versionNow) {
+              table = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+                players_json: JSON.stringify(players),
+                pot: table.pot,
+                current_bet: table.current_bet,
+                reveal_round: table.reveal_round,
+                phase: table.phase,
+                turn_user_id: table.turn_user_id,
+                turn_expires_at: table.turn_expires_at,
+                version: versionNow + 1,
+              });
+            } else if (fresh) {
+              table = fresh;
+            }
+          }
         }
       }
       // Always answer from the table that is actually stored.

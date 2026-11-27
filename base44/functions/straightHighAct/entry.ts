@@ -8,6 +8,7 @@ import {
   getDeckRow,
   saveDeckRow,
   getHandRow,
+  driveDrawGameBotTurns,
 } from '../../shared/paduki.ts';
 
 // One endpoint for every in-hand move in Straight High: draw actions
@@ -124,6 +125,26 @@ export default async function (req) {
         { ...SETTLE_OPTS, playMoney },
       );
       return Response.json({ table: settled.table, settled: true, note: settled.note });
+    }
+
+    // Bots act on their own turn so a hand with bots keeps moving
+    // without waiting for a human to open the table again. The bot
+    // driver reads each bot's hand and the deck from their rows, so no
+    // hands map is needed here.
+    if (playMoney) {
+      const botOutcome = await driveDrawGameBotTurns(base44, table, players, {}, OPTS);
+      if (botOutcome === 'last-standing' || botOutcome === 'showdown') {
+        const last = activePlayers(players)[0];
+        const settled = await settleDrawGame(
+          base44,
+          table,
+          players,
+          botOutcome,
+          botOutcome === 'last-standing' ? last?.user_id : undefined,
+          { ...SETTLE_OPTS, playMoney },
+        );
+        return Response.json({ table: settled.table, settled: true, note: settled.note });
+      }
     }
 
     const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {

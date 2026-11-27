@@ -1,10 +1,11 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
 import { resolvePokerIdentity, isPlayMoneyTable } from '../../shared/guest.ts';
-import { playersOf, activePlayers } from '../../shared/poker.ts';
+import { playersOf, activePlayers, getTableHands } from '../../shared/poker.ts';
 import {
   applyDeadSevenAction,
   advanceTimeoutsDeadSeven,
   settleDeadSeven,
+  driveDeadSevenBotTurns,
 } from '../../shared/deadSeven.ts';
 
 // One endpoint for every in-hand move in Dead Seven: the single
@@ -86,6 +87,25 @@ export default async function (req) {
         { playMoney },
       );
       return Response.json({ table: settled.table, settled: true, note: settled.note });
+    }
+
+    // Bots act on their own turn so a hand with bots keeps moving
+    // without waiting for a human to open the table again.
+    if (playMoney) {
+      const handsByUser = await getTableHands(base44, table.id);
+      const botOutcome = await driveDeadSevenBotTurns(base44, table, players, handsByUser);
+      if (botOutcome === 'last-standing' || botOutcome === 'showdown') {
+        const last = activePlayers(players)[0];
+        const settled = await settleDeadSeven(
+          base44,
+          table,
+          players,
+          botOutcome,
+          botOutcome === 'last-standing' ? last?.user_id : undefined,
+          { playMoney },
+        );
+        return Response.json({ table: settled.table, settled: true, note: settled.note });
+      }
     }
 
     const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {

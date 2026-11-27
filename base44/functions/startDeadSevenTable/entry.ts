@@ -1,7 +1,8 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.54';
-import { resolvePokerIdentity } from '../../shared/guest.ts';
-import { playersOf, ACTION_TIMEOUT_MS, firstActorSeat } from '../../shared/poker.ts';
-import { dealDeadSevenHands } from '../../shared/deadSeven.ts';
+import { resolvePokerIdentity, isPlayMoneyTable } from '../../shared/guest.ts';
+import { playersOf } from '../../shared/poker.ts';
+import { dealDeadSevenHand } from '../../shared/deadSeven.ts';
+import { seatBots } from '../../shared/bots.ts';
 
 // Deal a Dead Seven hand. The creator starts the hand once 2-5
 // players are seated. The deck is shuffled server-side and each
@@ -32,30 +33,14 @@ export default async function (req) {
     }
 
     const players = playersOf(table);
+    // Play-money tables: a lone human gets bot opponents so the hand
+    // can start. Real-money tables keep the human-only 2+ player rule.
+    if (isPlayMoneyTable(table)) seatBots(table, players);
     if (players.length < 2) {
       return Response.json({ error: 'Need at least 2 players seated to deal.' }, { status: 400 });
     }
 
-    await dealDeadSevenHands(base44, table, players);
-
-    for (const p of players) {
-      p.round_paid = 0;
-      p.acted = false;
-    }
-
-    const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
-    const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
-      status: 'in_play',
-      phase: 'betting',
-      reveal_round: 0,
-      current_bet: 0,
-      pot: 0,
-      players_json: JSON.stringify(players),
-      turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
-      turn_expires_at:
-        firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
-      version: Number(table.version || 0) + 1,
-    });
+    const updated = await dealDeadSevenHand(base44, table, players);
 
     return Response.json({ table: updated });
   } catch (error) {

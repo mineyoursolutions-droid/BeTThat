@@ -47,9 +47,11 @@ export default function TicTacToeTable() {
     load();
   }, [load]);
 
-  // Live poll while the hand is in play (paused while the tab hides).
+  // Live poll while the hand is in play or the table is waiting in
+  // the lobby (bots seat and auto-deal there, so the lobby has to stay
+  // live too). Paused while the tab hides.
   useEffect(() => {
-    if (!state?.table || state.table.status !== 'in_play') return;
+    if (!state?.table || (state.table.status !== 'in_play' && state.table.status !== 'lobby')) return;
     const tick = () => {
       if (!document.hidden) load();
     };
@@ -247,6 +249,11 @@ export default function TicTacToeTable() {
                   {p.handle}
                   {isMe ? ' (you)' : ''}
                 </p>
+                {p.is_bot && (
+                  <span className="shrink-0 rounded-full border border-violet-400/40 bg-violet-400/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-violet-300">
+                    Bot
+                  </span>
+                )}
                 {p.seat === Number(table.dealer_seat || 0) && (
                   <span title="Dealer">
                     <Crown className="h-3.5 w-3.5 text-amber-400" />
@@ -320,7 +327,7 @@ export default function TicTacToeTable() {
             <>
               <button
                 type="button"
-                disabled={busy || players.length < 2}
+                disabled={busy || (playMoney ? players.length < 1 : players.length < 2)}
                 onClick={() =>
                   invoke('startTicTacToeTable', { table_id: id }, 'Cards dealt', 'Your 3x3 grid is dealt — good luck.')
                 }
@@ -343,7 +350,11 @@ export default function TicTacToeTable() {
             </>
           )}
           {players.length < 2 && (
-            <p className="w-full text-sm text-muted-foreground">Waiting on at least 2 players to deal.</p>
+            <p className="w-full text-sm text-muted-foreground">
+              {playMoney
+                ? 'Bots will fill the empty seats — deal whenever you are ready, or wait for friends to join.'
+                : 'Waiting on at least 2 players to deal.'}
+            </p>
           )}
         </div>
       )}
@@ -469,6 +480,11 @@ export default function TicTacToeTable() {
                 <li key={p.user_id} className="rounded-xl border border-border/80 bg-background/60 px-4 py-3">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-bold text-foreground">{p.handle}</span>
+                    {p.is_bot && (
+                      <span className="rounded-full border border-violet-400/40 bg-violet-400/10 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-violet-300">
+                        Bot
+                      </span>
+                    )}
                     {hand?.declared && (
                       <span className="rounded-full border border-border px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
                         {DECLARED_LABEL[hand.declared]}

@@ -12,6 +12,8 @@ import { HOUSE_FEE, round, moveFunds, recordLedger } from './wallet.ts';
 import {
   ACTION_TIMEOUT_MS,
   activePlayers,
+  chooseBettingMove,
+  driveBotTurns,
   firstActorSeat,
   getTableHands,
   newDeck,
@@ -375,3 +377,100 @@ export async function settleLowball(base44, table, players, mode, lastStandingUs
 }
 
 export { getDeckRow, saveDeckRow, getHandRow };
+
+// ── Bot players (play-money tables only) ──────────────────────────────
+// Same contract as Bone Crusher: bots act through
+// applyLowballAction, are labelled is_bot, and never touch wallets,
+// fees or ledgers. A bot's draw and its betting both run through the
+// same apply function the human endpoints use.
+
+// A bot's discards in Lowball: throw back high cards (9 and up) and
+// the extra card of any pair, keeping the lowest card of each rank.
+// Stand pat when the hand is already a made low (no pair, all cards
+// 8 or under). The ace counts as 1 here, not 14 — a wheel A-2-3-4-5
+// is the best hand, so the ace is never a "high card" to throw.
+export function lowballBotDiscards(hand) {
+  const lowValue = (card) => (rankValue(card) === 14 ? 1 : rankValue(card));
+  const discards = [];
+  const byRank = new Map();
+  hand.forEach((card, i) => {
+    const rank = rankValue(card);
+    if (!byRank.has(rank)) byRank.set(rank, []);
+    byRank.get(rank).push(i);
+  });
+  for (const idxs of byRank.values()) {
+    if (idxs.length > 1) discards.push(...idxs.slice(1));
+  }
+  hand.forEach((card, i) => {
+    if (lowValue(card) >= 9 && !discards.includes(i)) discards.push(i);
+  });
+  return discards.slice(0, 5);
+}
+
+function lowballBotHandStrong(hand) {
+  const ev = evaluateLow5(hand);
+  return !!ev && ev.distinct === 5 && ev.score[0] <= 8;
+}
+
+export function chooseBotMoveLowball(table, players, seat, hand) {
+  const player = players[seat];
+  if (drawPassActive(players)) {
+    return { action: 'draw', discards: lowballBotDiscards(hand || []) };
+  }
+  return { action: chooseBettingMove(table, player, lowballBotHandStrong(hand || [])) };
+}
+
+// Apply bot moves while the turn belongs to a bot. The bot's hand and
+// the undealt deck are read fresh from their PokerHand rows on every
+// bot turn, so a bot always draws from the current deck; a bot draw is
+// persisted to the same rows the human draw uses, and `handsByUser`
+// is kept in sync for the caller. Returns the hand outcome.
+export async function driveLowballBotTurns(base44, table, players, handsByUser) {
+  return driveBotTurns(table, players, async (t, ps, seat) => {
+    const player = ps[seat];
+    const handRow = await getHandRow(base44, t.id, player.user_id);
+    const deckRow = await getDeckRow(base44, t.id);
+    const hand = handRow ? handRow.cards : [];
+    const deck = deckRow ? deckRow.cards : [];
+    const move = chooseBotMoveLowball(t, ps, seat, hand);
+    const result = applyLowballAction(t, ps, seat, move.action, move.discards || [], hand, deck);
+    if (result.error) return 'error';
+    if (result.newHand && handRow) {
+      await base44.asServiceRole.entities.PokerHand.update(handRow.id, {
+        cards_json: JSON.stringify(result.newHand),
+      });
+      handsByUser[player.user_id] = result.newHand;
+    }
+    if (result.newDeck && deckRow) await saveDeckRow(base44, deckRow.id, result.newDeck);
+    return result.outcome;
+  });
+}
+
+// Deal a Lowball hand: deal 5-card hands and stash the rest of the
+// deck, then flip the table to in_play with the single draw pass
+// open. This mirrors the Deal button (start entry) exactly — it is
+// shared by the start entry and the bot auto-deal in getState.
+export async function dealLowballHand(base44, table, players) {
+  await dealLowballHands(base44, table, players);
+
+  for (const p of players) {
+    p.drawn = false;
+    p.round_paid = 0;
+    p.acted = false;
+  }
+
+  const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
+  const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+    status: 'in_play',
+    phase: 'betting',
+    reveal_round: 0,
+    current_bet: 0,
+    pot: 0,
+    players_json: JSON.stringify(players),
+    turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
+    turn_expires_at:
+      firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
+    version: Number(table.version || 0) + 1,
+  });
+  return updated;
+}

@@ -218,6 +218,16 @@ export async function joinGuestTableRecord(base44, { tableId, joinCode, me }) {
   if (players.some((p) => p.user_id === me.id)) {
     throw new Error('You are already seated at this table.');
   }
+  // A joining human takes a bot's seat, so a full table with bots
+  // still has room for a real player. (Same rule as
+  // displaceBotForHuman in ./bots.ts, inlined here to avoid a
+  // guest <-> bots import cycle — this record is play-money only.)
+  for (let i = players.length - 1; i >= 0; i--) {
+    if (players[i].is_bot) {
+      players.splice(i, 1);
+      break;
+    }
+  }
   if (players.length >= MAX_POKER_PLAYERS) {
     throw new Error(`This table is full — ${MAX_POKER_PLAYERS} players max.`);
   }

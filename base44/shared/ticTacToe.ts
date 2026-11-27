@@ -26,12 +26,16 @@ import { HOUSE_FEE, round, moveFunds, recordLedger } from './wallet.ts';
 import {
   ACTION_TIMEOUT_MS,
   activePlayers,
+  chooseBettingMove,
+  driveBotTurns,
   firstActorSeat,
   getTableHands,
+  newDeck,
   newPlayerState,
   nextActorSeat,
   playersOf,
   rankValue,
+  shuffleDeck,
   suitOf,
 } from './poker.ts';
 
@@ -471,4 +475,85 @@ export async function settleTicTacToe(base44, table, players, mode, lastStanding
   };
   const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, patch);
   return { table: updated, winners, note };
+}
+
+// ── Bot players (play-money tables only) ──────────────────────────────
+// Same contract as Bone Crusher: bots act through
+// applyTicTacToeAction, are labelled is_bot, and never touch wallets,
+// fees or ledgers.
+
+function tttBotHandStrong(hand) {
+  const high = bestHighLine(hand);
+  const low = bestLowLine(hand);
+  return (high && high.category >= 1) || (low && low.score[0] <= 4);
+}
+
+function tttBotDeclare(hand) {
+  const high = bestHighLine(hand);
+  const low = bestLowLine(hand);
+  const highStrong = high && high.category >= 2;
+  const lowStrong = low && low.score[0] <= 4;
+  const highWeak = !high || high.category === 0;
+  const lowWeak = !low || low.score[0] >= 8;
+  if (highStrong && lowWeak) return 'high';
+  if (lowStrong && highWeak) return 'low';
+  return 'speak';
+}
+
+export function chooseBotMoveTicTacToe(table, players, seat, hand) {
+  const player = players[seat];
+  if (table.phase === 'declare') {
+    return { action: 'declare', declare: tttBotDeclare(hand || []) };
+  }
+  return { action: chooseBettingMove(table, player, tttBotHandStrong(hand || [])) };
+}
+
+export async function driveTicTacToeBotTurns(base44, table, players, handsByUser) {
+  return driveBotTurns(table, players, async (t, ps, seat) => {
+    const player = ps[seat];
+    const move = chooseBotMoveTicTacToe(t, ps, seat, handsByUser[player.user_id] || []);
+    const result = applyTicTacToeAction(t, ps, seat, move.action, move.declare || '');
+    if (result.error) return 'error';
+    return result.outcome;
+  });
+}
+
+// Deal a Tic Tac Toe hand: shuffle, deal 9 cards per player into the
+// 3x3 grid, create the private hand rows, and flip the table to
+// in_play on the single betting round. The grid stays private — it is
+// NOT copied into up_cards (up_cards is public). This mirrors the
+// Deal button (start entry) exactly — it is shared by the start entry
+// and the bot auto-deal in getState.
+export async function dealTicTacToeHand(base44, table, players) {
+  const deck = shuffleDeck(newDeck());
+  const handsByUser = {};
+  for (let i = 0; i < players.length; i++) {
+    const hand = deck.slice(i * 9, i * 9 + 9);
+    handsByUser[players[i].user_id] = hand;
+    await base44.asServiceRole.entities.PokerHand.create({
+      table_id: table.id,
+      user_id: players[i].user_id,
+      cards_json: JSON.stringify(hand),
+    });
+  }
+
+  for (const p of players) {
+    p.round_paid = 0;
+    p.acted = false;
+  }
+
+  const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
+  const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+    status: 'in_play',
+    phase: 'betting',
+    reveal_round: 0,
+    current_bet: 0,
+    pot: 0,
+    players_json: JSON.stringify(players),
+    turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
+    turn_expires_at:
+      firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
+    version: Number(table.version || 0) + 1,
+  });
+  return updated;
 }

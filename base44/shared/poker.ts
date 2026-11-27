@@ -231,7 +231,7 @@ export function firstActorSeat(players, dealerSeat) {
   return null;
 }
 
-export function newPlayerState({ userId, handle, seat, stake }) {
+export function newPlayerState({ userId, handle, seat, stake, isBot }) {
   return {
     user_id: userId,
     handle,
@@ -246,6 +246,9 @@ export function newPlayerState({ userId, handle, seat, stake }) {
     best_high: null,
     best_low: null,
     result: null,
+    // Bot players (play-money tables only) carry is_bot so the UI can
+    // label them and the server can tell them apart from humans.
+    is_bot: !!isBot,
   };
 }
 
@@ -622,4 +625,143 @@ export async function settleBoneCrusher(base44, table, players, mode, lastStandi
   };
   const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, patch);
   return { table: updated, winners, note };
+}
+
+// ── Bot players (play-money tables only) ──────────────────────────────
+// Bots fill empty seats on a play-money table with a single human so a
+// hand can start, and act on their own turn through the same
+// applyPlayerAction the human endpoints use. They are labelled
+// is_bot: true and shown with a BOT badge in the UI; they never play
+// real-money tables and never touch wallets, fees or ledgers
+// (play-money settlement already skips those).
+
+export function isBotPlayer(p) {
+  return !!p && p.is_bot === true;
+}
+
+// A bot's legal betting move for one turn: bet when the hand is strong
+// and the round is free (no bet yet), call when facing a bet it can
+// cover, fold only when it cannot cover the bet. Bots never raise —
+// there is one bet per round in these games — and they never fold a
+// hand they can afford to see to showdown, so play-money hands
+// actually reach a showdown.
+export function chooseBettingMove(table, player, handStrong) {
+  const coin = table.coin;
+  const currentBet = round(Number(table.current_bet || 0), coin);
+  const paid = round(Number(player.round_paid || 0), coin);
+  const stack = Number(player.stack || 0);
+  if (paid >= currentBet) {
+    // No bet to answer: bet when the round is free and the hand is
+    // strong, otherwise check. (When a bet is already paid, only
+    // check is legal — betting again would be a raise.)
+    if (currentBet === 0 && handStrong && stack >= round(Number(table.bet_unit || 0), coin)) {
+      return 'bet';
+    }
+    return 'check';
+  }
+  const owed = round(currentBet - paid, coin);
+  if (stack < owed) return 'fold';
+  return 'call';
+}
+
+// Drive bot turns while the turn belongs to a bot. `takeBotTurn`
+// applies ONE legal move for the bot at `seat` and returns the hand
+// outcome ('continue' | 'showdown' | 'last-standing') or 'error'.
+// Stops as soon as a human is to act, the hand ends, or a bot move
+// fails (never spins).
+export async function driveBotTurns(table, players, takeBotTurn) {
+  for (let i = 0; i < 64; i++) {
+    if (table.status !== 'in_play') return 'continue';
+    const turn = players.find((p) => p.user_id === table.turn_user_id);
+    if (!turn || !isBotPlayer(turn) || turn.folded) return 'continue';
+    const seat = players.indexOf(turn);
+    const outcome = await takeBotTurn(table, players, seat);
+    if (outcome === 'showdown' || outcome === 'last-standing') return outcome;
+    if (outcome !== 'continue') return 'continue';
+  }
+  return 'continue';
+}
+
+// How strong is a 7-card Bone Crusher hand, for a bot's betting and
+// declare decisions? Strong: two pair or better, or a 6-low or better.
+// (bestLow7 returns the low score highest card first, so score[0] of
+// 6 or below is a 6-low or better.)
+function bcBotHandStrong(hand) {
+  const high = bestHigh7(hand);
+  const low = bestLow7(hand);
+  return (high && high.category >= 2) || (low && low.score[0] <= 6);
+}
+
+function bcBotDeclare(hand) {
+  const high = bestHigh7(hand);
+  const low = bestLow7(hand);
+  const highStrong = high && high.category >= 2;
+  const lowStrong = low && low.score[0] <= 6;
+  const highWeak = !high || high.category <= 1;
+  const lowWeak = !low || low.score[0] >= 9;
+  if (highStrong && lowWeak) return 'high';
+  if (lowStrong && highWeak) return 'low';
+  return 'speak';
+}
+
+export function chooseBotMoveBoneCrusher(table, players, seat, hand) {
+  const player = players[seat];
+  if (table.phase === 'declare') {
+    return { action: 'declare', declare: bcBotDeclare(hand || []) };
+  }
+  return { action: chooseBettingMove(table, player, bcBotHandStrong(hand || [])) };
+}
+
+// Apply bot moves while the turn belongs to a bot. `handsByUser` is
+// the private hands map (used to reveal cards as the hand progresses).
+// Returns the hand outcome.
+export async function driveBoneCrusherBotTurns(base44, table, players, handsByUser) {
+  return driveBotTurns(table, players, async (t, ps, seat) => {
+    const player = ps[seat];
+    const move = chooseBotMoveBoneCrusher(t, ps, seat, handsByUser[player.user_id] || []);
+    const result = applyPlayerAction(t, ps, seat, move.action, move.declare || '', handsByUser);
+    if (result.error) return 'error';
+    return result.outcome;
+  });
+}
+
+// Deal a Bone Crusher hand: shuffle, deal 7 cards per player, create
+// the private hand rows, turn over each player's first up-card
+// (hand[3]), and flip the table to in_play on betting round 1. This
+// mirrors the Deal button (start entry) exactly — it is shared by the
+// start entry and the bot auto-deal in getState.
+export async function dealBoneCrusherHand(base44, table, players) {
+  const deck = shuffleDeck(newDeck());
+  const handsByUser = {};
+  for (let i = 0; i < players.length; i++) {
+    const hand = deck.slice(i * 7, i * 7 + 7);
+    handsByUser[players[i].user_id] = hand;
+    await base44.asServiceRole.entities.PokerHand.create({
+      table_id: table.id,
+      user_id: players[i].user_id,
+      cards_json: JSON.stringify(hand),
+    });
+  }
+
+  // Turn over the first up-card (hand[3]) for every player.
+  for (const p of players) {
+    p.up_cards = [handsByUser[p.user_id][3]];
+    p.round_paid = 0;
+    p.acted = false;
+  }
+
+  const firstSeat = firstActorSeat(players, Number(table.dealer_seat || 0));
+  const updated = await base44.asServiceRole.entities.PokerTable.update(table.id, {
+    status: 'in_play',
+    phase: 'betting',
+    reveal_round: 1,
+    current_bet: 0,
+    pot: 0,
+    players_json: JSON.stringify(players),
+    turn_user_id: firstSeat === null ? '' : players[firstSeat].user_id,
+    turn_expires_at:
+      firstSeat === null ? '' : new Date(Date.now() + ACTION_TIMEOUT_MS).toISOString(),
+    version: Number(table.version || 0) + 1,
+  });
+  return updated;
 }
